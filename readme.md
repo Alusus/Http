@@ -24,10 +24,13 @@ module TestModule {
 
     func callbackRequest(connection: ptr[Http.Connection]): Int {
         def requestInfo: ptr[Http.RequestInfo] = Http.getRequestInfo(connection);
-        def content: ptr[Char] = "";
+        def content: array[Char, 1024];
 
-        String.assign(content, "<h1>Welcome from alusus</h1><p> you are in \"%s\"", requestInfo~cnt.localUri);
-        Http.print(connection, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: %d\r\n\r\n%s", String.getLength(content), content);
+        String.assign(content~ptr, "<h1>Welcome from alusus</h1><p> you are in \"%s\"", requestInfo~cnt.localUri);
+        Http.print(connection, "HTTP/1.1 200 OK\r\n");
+        Http.print(connection, "Content-Type: text/html\r\n");
+        Http.print(connection, "Content-Length: %d\r\n\r\n", String.getLength(content~ptr));
+        Http.print(connection, "%s", content~ptr);
 
         return 1;
     };

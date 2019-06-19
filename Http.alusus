@@ -177,6 +177,9 @@ module Http {
     @expname[mg_printf]
     func print(connection: ptr[Connection], format: ptr[Char], ...any): Int;
 
+    @expname[mg_send_file]
+    func sendFile(connection: ptr[Connection], fileName: ptr[Char]): Void;
+
     @expname[mg_get_request_info]
     func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo];
 
