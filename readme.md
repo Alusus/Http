@@ -1,3 +1,12 @@
+# Http module for alusus
+
+## Methods
+- Http.createServer(callback: ptr[func (connection: ptr[Http.Connection]): Int], port: ptr[Char]): ptr[Http.Context] <br> ```create server with custom port and invoke callback on any request```
+- Http.closeServer(context: ptr[Http.Context]): Void <br> ```stop server```
+- Http.print(connection: ptr[Http.Connection], format: ptr[Char], ...any): Int <br> ```write string to connection```
+
+## Example
+```
 import "Srl/Console.alusus";
 import "Srl/String.alusus";
 import "Srl/Memory.alusus";
@@ -25,3 +34,4 @@ module TestModule {
 };
 
 TestModule.start();
+```

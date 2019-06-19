@@ -4,11 +4,11 @@ import "Srl/String.alusus";
 import "libcivetweb.so";
 
 module Http {
-    type mg_context{
-        def stop_flag: int;             /* Should we stop event loop */
+    type Context{
+        def stopFlag: int;             /* Should we stop event loop */
     };
 
-    type mg_callbacks{
+    type Callbacks{
         /* Called when civetweb has received new HTTP request.
         If the callback returns one, it must process the request
         by sending valid HTTP headers and a body. Civetweb will not do
@@ -23,27 +23,27 @@ module Http {
                     not send any data after the callback returned. The
                     return code is stored as a HTTP status code for the
                     access log. */
-        def begin_request: ptr[func (con: ptr[mg_connection]): Int];
+        def beginRequest: ptr[func (connection: ptr[Connection]): Int];
 
         /* Called when civetweb has finished processing request. */
-        def end_request: ptr[func (con: ptr[mg_connection], reply_status_code: Int)];
+        def endRequest: ptr[func (connection: ptr[Connection], replyStatusCode: Int)];
 
         /* Called when civetweb is about to log a message. If callback returns
         non-zero, civetweb does not log anything. */
-        def log_message: ptr[func (con: ptr[mg_connection], message: ptr[Char]): Int];
+        def logMessage: ptr[func (connection: ptr[Connection], message: ptr[Char]): Int];
 
         /* Called when civetweb is about to log access. If callback returns
         non-zero, civetweb does not log anything. */
-        def log_access: ptr[func (con: ptr[mg_connection], message: ptr[Char]): Int];
+        def logAccess: ptr[func (connection: ptr[Connection], message: ptr[Char]): Int];
 
         /* Called when civetweb initializes SSL library.
         Parameters:
-            user_data: parameter user_data passed when starting the server.
+            userData: parameter user_data passed when starting the server.
         Return value:
             0: civetweb will set up the SSL certificate.
             1: civetweb assumes the callback already set up the certificate.
             -1: initializing ssl fails. */
-        def init_ssl: ptr[func (ssl_context: ptr[Void], user_data: ptr[Void]): Int];
+        def initSsl: ptr[func (sslContext: ptr[Void], userData: ptr[Void]): Int];
 
         /* Called when civetweb is closing a connection.  The per-context mutex is
 	   locked when this is invoked.  This is primarily useful for noting when
@@ -51,27 +51,27 @@ module Http {
 	   list of clients.
 	   Using this callback for websocket connections is deprecated: Use
 	   mg_set_websocket_handler instead. */
-       def connection_close: ptr[func (con: ptr[mg_connection]): Void];
+       def connectionClose: ptr[func (connection: ptr[Connection]): Void];
 
         /* Called when civetweb tries to open a file. Used to intercept file open
         calls, and serve file data from memory instead.
         Parameters:
             path:     Full path to the file to open.
-            data_len: Placeholder for the file size, if file is served from
+            dataLen: Placeholder for the file size, if file is served from
                         memory.
         Return value:
             NULL: do not serve file from memory, proceed with normal file open.
             non-NULL: pointer to the file contents in memory. data_len must be
             initilized with the size of the memory block. */
-        def open_file: ptr[func (con: ptr[mg_connection],
+        def openFile: ptr[func (connection: ptr[Connection],
                                 path: ptr[Char],
-                                data_len: ptr): Char];
+                                dataLen: ptr): Char];
 
         /* Called when civetweb is about to serve Lua server page, if
         Lua support is enabled.
         Parameters:
-            lua_context: "lua_State *" pointer. */
-        def init_lua: ptr[func (con: ptr[mg_connection], lua_context: ptr[Void]): Void];
+            luaContext: "lua_State *" pointer. */
+        def initLua: ptr[func (connection: ptr[Connection], luaContext: ptr[Void]): Void];
 
         /* Called when civetweb is about to send HTTP error to the client.
         Implementing this callback allows to create custom error pages.
@@ -80,71 +80,71 @@ module Http {
         Return value:
             1: run civetweb error handler.
             0: callback already handled the error. */
-        def http_error: ptr[func (con: ptr[mg_connection], status: Int): Int];
+        def httpError: ptr[func (connection: ptr[Connection], status: Int): Int];
 
         /* Called after civetweb context has been created, before requests
         are processed.
         Parameters:
-            ctx: context handle */
-        def init_context: ptr[func (ctx: ptr[mg_context]): Void];
+            context: context handle */
+        def initContext: ptr[func (context: ptr[Context]): Void];
 
         /* Called when a new worker thread is initialized.
         Parameters:
-            ctx: context handle
-            thread_type:
+            context: context handle
+            threadType:
             0 indicates the master thread
             1 indicates a worker thread handling client connections
             2 indicates an internal helper thread (timer thread)
             */
-        def init_thread: ptr[func (ctx: ptr[mg_context], thread_type: Int): Void];
+        def initThread: ptr[func (context: ptr[Context], threadType: Int): Void];
 
         /* Called when civetweb context is deleted.
         Parameters:
-            ctx: context handle */
-        def exit_context: ptr[func (ctx: ptr[mg_context]): Void];
+            context: context handle */
+        def exitContext: ptr[func (context: ptr[Context]): Void];
     };
 
-    type mg_request_info {
-        def request_method: ptr[Char]; /* "GET", "POST", etc */
-        def request_uri: ptr[Char];    /* URL-decoded URI (absolute or relative,
+    type RequestInfo {
+        def requestMethod: ptr[Char]; /* "GET", "POST", etc */
+        def requestUri: ptr[Char];    /* URL-decoded URI (absolute or relative,
                                     * as in the request) */
-        def local_uri: ptr[Char];      /* URL-decoded URI (relative). Can be NULL
+        def localUri: ptr[Char];      /* URL-decoded URI (relative). Can be NULL
                                     * if the request_uri does not address a
                                     * resource at the server host. */
         def uri: ptr[Char];            /* Deprecated: use local_uri instead */
-        def http_version: ptr[Char];   /* E.g. "1.0", "1.1" */
-        def query_string: ptr[Char];   /* URL part after '?', not including '?', or
+        def httpVersion: ptr[Char];   /* E.g. "1.0", "1.1" */
+        def queryString: ptr[Char];   /* URL part after '?', not including '?', or
                                     NULL */
-        def remote_user: ptr[Char];    /* Authenticated user, or NULL if no auth
+        def remoteUser: ptr[Char];    /* Authenticated user, or NULL if no auth
                                     used */
-        def remote_addr: array[Char, 48];       /* Client's IP address as a string. */
+        def remoteAddr: array[Char, 48];       /* Client's IP address as a string. */
 
-        def remote_ip: Int[64]; /* Client's IP address. Deprecated: use remote_addr instead */
+        def remoteIp: Int[64]; /* Client's IP address. Deprecated: use remote_addr instead */
 
-        def content_length: Int[64]; /* Length (in bytes) of the request body,
+        def contentLength: Int[64]; /* Length (in bytes) of the request body,
                                     can be -1 if no length was given. */
-        def remote_port: Int;          /* Client's port */
-        def is_ssl: Int;               /* 1 if SSL-ed, 0 if not */
-        def user_data: ptr[Void];          /* User data pointer passed to mg_start() */
-        def conn_data: ptr[Void];          /* Connection-specific user data */
+        def remotePort: Int;          /* Client's port */
+        def isSsl: Int;               /* 1 if SSL-ed, 0 if not */
+        def userData: ptr[Void];          /* User data pointer passed to mg_start() */
+        def connData: ptr[Void];          /* Connection-specific user data */
 
-        def num_headers: Int; /* Number of HTTP headers */
+        def numberHeaders: Int; /* Number of HTTP headers */
     };
 
-    type mg_connection {
-        def request_info: ptr[mg_request_info];
-        def ctx: ptr[mg_context];
+    type Connection {
+        def requestInfo: ptr[RequestInfo];
+        def context: ptr[Context];
         def ssl: ptr;                 /* SSL descriptor */
-        def client_ssl_ctx: ptr;  /* SSL context for client connections */
+        def clientSslContext: ptr;  /* SSL context for client connections */
         def client: ptr;     /* Connected client */
-        def conn_birth_time: Int;   /* Time (wall clock) when connection was
+        def connectionBirthTime: Int;   /* Time (wall clock) when connection was
                                 * established */
-        def req_time: Int; /* Time (since system start) when the request
+        def requestTime: Int; /* Time (since system start) when the request
                                 * was received */
-        def num_bytes_sent: int[64];   /* Total bytes sent to client */
-        def content_len: int[64];      /* Content-Length header value */
-        def consumed_content: int[64]; /* How many bytes of content have been read */
-        def is_chunked: int;           /* Transfer-Encoding is chunked: 0=no, 1=yes:
+        def numberBytesSent: int[64];   /* Total bytes sent to client */
+        def contentLen: int[64];      /* Content-Length header value */
+        def consumedContent: int[64]; /* How many bytes of content have been read */
+        def isChunked: int;           /* Transfer-Encoding is chunked: 0=no, 1=yes:
         //                         * data available, 2: all data read */
         // size_t chunk_remainder;   /* Unread data from the last chunk */
         // char *buf;                /* Buffer for received data */
@@ -169,37 +169,33 @@ module Http {
     };
     
     @expname[mg_start]
-    func mg_start(callbacks: ptr[mg_callbacks], user_data: Int, options: ptr[ptr[Char]]): ptr[mg_context];
+    func _mg_start(callbacks: ptr[Callbacks], user_data: Int, options: ptr[ptr[Char]]): ptr[Context];
     
     @expname[mg_stop]
-    func mg_stop(context: ptr[mg_context]): Void;
+    func closeServer(context: ptr[Context]): Void;
 
     @expname[mg_printf]
-    func mg_printf(con: ptr[mg_connection], fmt: ptr[Char], ...any): Int;
+    func print(connection: ptr[Connection], format: ptr[Char], ...any): Int;
 
     @expname[mg_get_request_info]
-    func mg_get_request_info(con: ptr[mg_connection]): ptr[mg_request_info];
+    func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo];
 
-    func createServer(callback: ptr[func (connection: ptr[mg_connection]): Int], port: ptr[Char]): ptr[mg_context] {
+    func createServer(callback: ptr[func (connection: ptr[Connection]): Int], port: ptr[Char]): ptr[Context] {
         @shared 
-        def context: ptr[mg_context];
-        def callbacks: ptr[mg_callbacks] = Srl.Memory.alloc(mg_callbacks~size)~cast[ptr[mg_callbacks]];
+        def context: ptr[Context];
+        def callbacks: ptr[Callbacks] = Srl.Memory.alloc(Callbacks~size)~cast[ptr[Callbacks]];
 
         def options: array[ptr[Char], 3];
         options(0) = "listening_ports";
         options(1) = port;
         options(2) = 0;
 
-        Srl.Memory.set(callbacks, 0, mg_callbacks~size);
-        callbacks~cnt.begin_request = callback;
+        Srl.Memory.set(callbacks, 0, Callbacks~size);
+        callbacks~cnt.beginRequest = callback;
 
-        context = mg_start(callbacks, 0, options~ptr);     
+        context = _mg_start(callbacks, 0, options~ptr);     
         Srl.Memory.free(callbacks);
         
         return context;
-    };
-
-    func closeServer(context: ptr[mg_context]): Void {
-        mg_stop(context);
     };
 };
