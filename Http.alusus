@@ -119,8 +119,6 @@ module Http {
                                     used */
         def remoteAddr: array[Char, 48];       /* Client's IP address as a string. */
 
-        def remoteIp: Int[64]; /* Client's IP address. Deprecated: use remote_addr instead */
-
         def contentLength: Int[64]; /* Length (in bytes) of the request body,
                                     can be -1 if no length was given. */
         def remotePort: Int;          /* Client's port */
@@ -129,6 +127,13 @@ module Http {
         def connData: ptr[Void];          /* Connection-specific user data */
 
         def numberHeaders: Int; /* Number of HTTP headers */
+
+        def httpHeaders: array[Header, 64]; /* Maximum 64 headers */
+        
+        type Header {
+            def name: ptr[Char]; /* HTTP header name */
+            def value: ptr[Char]; /* HTTP header valuue */
+        };
     };
 
     type Connection {
@@ -146,25 +151,25 @@ module Http {
         def consumedContent: int[64]; /* How many bytes of content have been read */
         def isChunked: int;           /* Transfer-Encoding is chunked: 0=no, 1=yes:
         //                         * data available, 2: all data read */
-        // size_t chunk_remainder;   /* Unread data from the last chunk */
-        // char *buf;                /* Buffer for received data */
-        // char *path_info;          /* PATH_INFO part of the URL */
+        def chunkRemainder: word[64];   /* Unread data from the last chunk */
+        def buf: ptr[char];                /* Buffer for received data */
+        def pathInfo: ptr[char];          /* PATH_INFO part of the URL */
 
-        // int must_close;       /* 1 if connection must be closed */
-        // int in_error_handler; /* 1 if in handler for user defined error
+        def mustClose: int;       /* 1 if connection must be closed */
+        def inErrorHandler: int; /* 1 if in handler for user defined error
         //                     * pages */
-        // int internal_error;   /* 1 if an error occured while processing the
+        def internalError: int;   /* 1 if an error occured while processing the
         //                     * request */
 
-        // int buf_size;                /* Buffer size */
-        // int request_len;             /* Size of the request + headers in a buffer */
-        // int data_len;                /* Total size of data in a buffer */
-        // int status_code;             /* HTTP reply status code, e.g. 200 */
-        // int throttle;                /* Throttling, bytes/sec. <= 0 means no
+        def bufSize: int;                /* Buffer size */
+        def request_len: int;             /* Size of the request + headers in a buffer */
+        def data_len: int;                /* Total size of data in a buffer */
+        def status_code: int;             /* HTTP reply status code, e.g. 200 */
+        def throttle: int;                /* Throttling, bytes/sec. <= 0 means no
         //                             * throttle */
-        // time_t last_throttle_time;   /* Last time throttled data was sent */
-        // int64_t last_throttle_bytes; /* Bytes sent this second */
-        // pthread_mutex_t mutex;       /* Used by mg_(un)lock_connection to ensure
+        def last_throttle_time: int;   /* Last time throttled data was sent */
+        def last_throttle_bytes: int[64]; /* Bytes sent this second */
+        def mutex: int[64];       /* Used by mg_(un)lock_connection to ensure
         //                             * atomic transmissions for websockets */
     };
     

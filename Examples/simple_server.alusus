@@ -2,7 +2,8 @@ import "Srl/Console.alusus";
 import "Srl/String.alusus";
 import "Srl/Memory.alusus";
 import "Apm.alusus";
-Apm.importFile("Alusus/Http");
+// import "../Http.alusus"; // for testing
+Apm.importFile("Alusus/Http"); // for release
 
 module TestModule {
     use Srl;
