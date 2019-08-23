@@ -4,7 +4,9 @@
 - Http.createServer(callback: ptr[func (connection: ptr[Http.Connection]): Int], port: ptr[Char]): ptr[Http.Context] <br> ```create server with custom port and invoke callback on any request```
 - Http.closeServer(context: ptr[Http.Context]): Void <br> ```stop server```
 - Http.print(connection: ptr[Http.Connection], format: ptr[Char], ...any): Int <br> ```write string to connection```
-- Http.sendFile(connection: ptr[Connection], fileName: ptr[Char]): Void; <br> ```send file to connection```
+- Http.sendFile(connection: ptr[Connection], fileName: ptr[Char]): Void <br> ```send file to connection```
+- Http.getCookie(cookiesString: ptr[Char], cookieName: ptr[Char], outCookieContent: ptr[Char], outCookieSize: Word[64]): Int <br> ```get cookie content to buffer```
+
 
 ## Example
 ```

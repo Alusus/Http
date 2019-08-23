@@ -188,6 +188,9 @@ module Http {
     @expname[mg_get_request_info]
     func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo];
 
+    @expname[mg_get_cookie]
+    func getCookie(cookiesString: ptr[Char], cookieName: ptr[Char], outCookieContent: ptr[Char], outCookieSize: Word[64]): Int;
+
     func createServer(callback: ptr[func (connection: ptr[Connection]): Int], port: ptr[Char]): ptr[Context] {
         @shared 
         def context: ptr[Context];
