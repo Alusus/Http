@@ -129,11 +129,11 @@ module Http {
         def numberHeaders: Int; /* Number of HTTP headers */
 
         def httpHeaders: array[Header, 64]; /* Maximum 64 headers */
-        
-        type Header {
-            def name: ptr[Char]; /* HTTP header name */
-            def value: ptr[Char]; /* HTTP header valuue */
-        };
+    };
+      
+    type Header {
+        def name: ptr[Char]; /* HTTP header name */
+        def value: ptr[Char]; /* HTTP header valuue */
     };
 
     type Connection {
