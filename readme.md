@@ -3,9 +3,14 @@
 ## Methods
 - Http.createServer(callback: ptr[func (connection: ptr[Http.Connection]): Int], port: ptr[Char]): ptr[Http.Context] <br> ```create server with custom port and invoke callback on any request```
 - Http.closeServer(context: ptr[Http.Context]): Void <br> ```stop server```
-- Http.print(connection: ptr[Http.Connection], format: ptr[Char], ...any): Int <br> ```write string to connection```
+- Http.read(connection: ptr[Http.Connection], buffer: ptr, bufferSize: Int): Int <br> ```read data from client```
+- Http.write(connection: ptr[Http.Connection], buffer: ptr[Char], bufferSize: Int): Int <br> ```send data to client```
+- Http.write(connection: ptr[Http.Connection], format: ptr[Char], ...any): Int <br> ```work like write(), but allows to do message formatting```
 - Http.sendFile(connection: ptr[Connection], fileName: ptr[Char]): Void <br> ```send file to connection```
 - Http.getCookie(cookiesString: ptr[Char], cookieName: ptr[Char], outCookieContent: ptr[Char], outCookieSize: Word[64]): Int <br> ```get cookie content to buffer```
+- Http.getHeader(connection: ptr[Connection], headerName: ptr[Char]): ptr[Char] <br> ```get header content by name``
+- Http.getVariable(data: ptr[Char], dataSize: Int, variableName: ptr[Char], outVariable: ptr[Char], outVariableSize: Int): Int <br> ```get variable content from data to buffer```
+- Http.getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo]
 
 
 ## Example

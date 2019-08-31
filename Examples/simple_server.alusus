@@ -2,7 +2,7 @@ import "Srl/Console.alusus";
 import "Srl/String.alusus";
 import "Srl/Memory.alusus";
 import "Apm.alusus";
-// import "../Http.alusus"; // for testing
+import "../Http.alusus"; // for testing
 Apm.importFile("Alusus/Http"); // for release
 
 module TestModule {
@@ -22,7 +22,7 @@ module TestModule {
         Http.print(connection, "HTTP/1.1 200 OK\r\n");
         Http.print(connection, "Content-Type: text/html\r\n");
         Http.print(connection, "Content-Length: %d\r\n\r\n", String.getLength(content~ptr));
-        Http.print(connection, "%s", content~ptr);
+        Http.print(connection, content~ptr);
 
         return 1;
     };

@@ -179,17 +179,32 @@ module Http {
     @expname[mg_stop]
     func closeServer(context: ptr[Context]): Void;
 
+    // read data from client
+    @expname[mg_read]
+    func read(connection: ptr[Connection], buffer: ptr, bufferSize: Int): Int;
+
+    // send data to client
+    @expname[mg_write]
+    func write(connection: ptr[Connection], buffer: ptr[Char], bufferSize: Int): Int;
+
+    // work like write(), but allows to do message formatting
     @expname[mg_printf]
-    func print(connection: ptr[Connection], format: ptr[Char], ...any): Int;
+    func write(connection: ptr[Connection], format: ptr[Char], ...any): Int;
 
     @expname[mg_send_file]
     func sendFile(connection: ptr[Connection], fileName: ptr[Char]): Void;
 
+    @expname[mg_get_cookie]
+    func getCookie(cookiesString: ptr[Char], cookieName: ptr[Char], outCookieContent: ptr[Char], outCookieSize: Word[64]): Int;
+
+    @expname[mg_get_header]
+    func getHeader(connection: ptr[Connection], headerName: ptr[Char]): ptr[Char];
+
     @expname[mg_get_request_info]
     func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo];
 
-    @expname[mg_get_cookie]
-    func getCookie(cookiesString: ptr[Char], cookieName: ptr[Char], outCookieContent: ptr[Char], outCookieSize: Word[64]): Int;
+    @expname[mg_get_var]
+    func getVariable(data: ptr[Char], dataSize: Int, variableName: ptr[Char], outVariable: ptr[Char], outVariableSize: Int): Int;
 
     func createServer(callback: ptr[func (connection: ptr[Connection]): Int], port: ptr[Char]): ptr[Context] {
         @shared 
