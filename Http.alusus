@@ -130,7 +130,7 @@ module Http {
 
         def httpHeaders: array[Header, 64]; /* Maximum 64 headers */
     };
-      
+
     type Header {
         def name: ptr[Char]; /* HTTP header name */
         def value: ptr[Char]; /* HTTP header valuue */
@@ -172,10 +172,10 @@ module Http {
         def mutex: int[64];       /* Used by mg_(un)lock_connection to ensure
         //                             * atomic transmissions for websockets */
     };
-    
+
     @expname[mg_start]
     func _mg_start(callbacks: ptr[Callbacks], user_data: Int, options: ptr[ptr[Char]]): ptr[Context];
-    
+
     @expname[mg_stop]
     func closeServer(context: ptr[Context]): Void;
 
@@ -189,7 +189,7 @@ module Http {
 
     // work like write(), but allows to do message formatting
     @expname[mg_printf]
-    func write(connection: ptr[Connection], format: ptr[Char], ...any): Int;
+    func print(connection: ptr[Connection], format: ptr[Char], ...any): Int;
 
     @expname[mg_send_file]
     func sendFile(connection: ptr[Connection], fileName: ptr[Char]): Void;
@@ -207,7 +207,7 @@ module Http {
     func getVariable(data: ptr[Char], dataSize: Int, variableName: ptr[Char], outVariable: ptr[Char], outVariableSize: Int): Int;
 
     func createServer(callback: ptr[func (connection: ptr[Connection]): Int], port: ptr[Char]): ptr[Context] {
-        @shared 
+        @shared
         def context: ptr[Context];
         def callbacks: ptr[Callbacks] = Srl.Memory.alloc(Callbacks~size)~cast[ptr[Callbacks]];
 
@@ -219,9 +219,9 @@ module Http {
         Srl.Memory.set(callbacks, 0, Callbacks~size);
         callbacks~cnt.beginRequest = callback;
 
-        context = _mg_start(callbacks, 0, options~ptr);     
+        context = _mg_start(callbacks, 0, options~ptr);
         Srl.Memory.free(callbacks);
-        
+
         return context;
     };
 };
