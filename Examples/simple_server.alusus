@@ -2,14 +2,13 @@ import "Srl/Console.alusus";
 import "Srl/String.alusus";
 import "Srl/Memory.alusus";
 import "Apm.alusus";
-import "../Http.alusus"; // for testing
-Apm.importFile("Alusus/Http"); // for release
+Apm.importFile("Alusus/Http");
 
 module TestModule {
     use Srl;
     func start() {
         def context: ptr[Http.Context] = Http.createServer(callbackRequest~ptr, "8080"); // Server is running in separate thread, when navigating to http://localhost:8080/ will invoke callbackRequest
-        Console.print("it's work in port 8080: http://localhost:8080/\npress enter to close server: ");
+        Console.print("it's working in port 8080: http://localhost:8080/\npress enter to close server: ");
         Console.getChar(); // stop proccess here waiting user to press enter
         Http.closeServer(context); // stop the server
     };
@@ -18,7 +17,7 @@ module TestModule {
         def requestInfo: ptr[Http.RequestInfo] = Http.getRequestInfo(connection);
         def content: array[Char, 1024];
 
-        String.assign(content~ptr, "<h1>Welcome from alusus</h1><p> you are in \"%s\"", requestInfo~cnt.localUri);
+        String.assign(content~ptr, "<h1>Welcome from Alusus</h1><p> you are in \"%s\"", requestInfo~cnt.localUri);
         Http.print(connection, "HTTP/1.1 200 OK\r\n");
         Http.print(connection, "Content-Type: text/html\r\n");
         Http.print(connection, "Content-Length: %d\r\n\r\n", String.getLength(content~ptr));
