@@ -30,11 +30,11 @@ module Http {
 
         /* Called when civetweb is about to log a message. If callback returns
         non-zero, civetweb does not log anything. */
-        def logMessage: ptr[func (connection: ptr[Connection], message: ptr[Char]): Int];
+        def logMessage: ptr[func (connection: ptr[Connection], message: ptr[array[Char]]): Int];
 
         /* Called when civetweb is about to log access. If callback returns
         non-zero, civetweb does not log anything. */
-        def logAccess: ptr[func (connection: ptr[Connection], message: ptr[Char]): Int];
+        def logAccess: ptr[func (connection: ptr[Connection], message: ptr[array[Char]]): Int];
 
         /* Called when civetweb initializes SSL library.
         Parameters:
@@ -64,7 +64,7 @@ module Http {
             non-NULL: pointer to the file contents in memory. data_len must be
             initilized with the size of the memory block. */
         def openFile: ptr[func (connection: ptr[Connection],
-                                path: ptr[Char],
+                                path: ptr[array[Char]],
                                 dataLen: ptr): Char];
 
         /* Called when civetweb is about to serve Lua server page, if
@@ -105,17 +105,17 @@ module Http {
     };
 
     type RequestInfo {
-        def requestMethod: ptr[Char]; /* "GET", "POST", etc */
-        def requestUri: ptr[Char];    /* URL-decoded URI (absolute or relative,
+        def requestMethod: ptr[array[Char]]; /* "GET", "POST", etc */
+        def requestUri: ptr[array[Char]];    /* URL-decoded URI (absolute or relative,
                                     * as in the request) */
-        def localUri: ptr[Char];      /* URL-decoded URI (relative). Can be NULL
+        def localUri: ptr[array[Char]];      /* URL-decoded URI (relative). Can be NULL
                                     * if the request_uri does not address a
                                     * resource at the server host. */
-        def uri: ptr[Char];            /* Deprecated: use local_uri instead */
-        def httpVersion: ptr[Char];   /* E.g. "1.0", "1.1" */
-        def queryString: ptr[Char];   /* URL part after '?', not including '?', or
+        def uri: ptr[array[Char]];            /* Deprecated: use local_uri instead */
+        def httpVersion: ptr[array[Char]];   /* E.g. "1.0", "1.1" */
+        def queryString: ptr[array[Char]];   /* URL part after '?', not including '?', or
                                     NULL */
-        def remoteUser: ptr[Char];    /* Authenticated user, or NULL if no auth
+        def remoteUser: ptr[array[Char]];    /* Authenticated user, or NULL if no auth
                                     used */
         def remoteAddr: array[Char, 48];       /* Client's IP address as a string. */
 
@@ -132,8 +132,8 @@ module Http {
     };
 
     type Header {
-        def name: ptr[Char]; /* HTTP header name */
-        def value: ptr[Char]; /* HTTP header valuue */
+        def name: ptr[array[Char]]; /* HTTP header name */
+        def value: ptr[array[Char]]; /* HTTP header valuue */
     };
 
     type Connection {
@@ -152,8 +152,8 @@ module Http {
         def isChunked: int;           /* Transfer-Encoding is chunked: 0=no, 1=yes:
         //                         * data available, 2: all data read */
         def chunkRemainder: word[64];   /* Unread data from the last chunk */
-        def buf: ptr[char];                /* Buffer for received data */
-        def pathInfo: ptr[char];          /* PATH_INFO part of the URL */
+        def buf: ptr[array[Char]];                /* Buffer for received data */
+        def pathInfo: ptr[array[Char]];          /* PATH_INFO part of the URL */
 
         def mustClose: int;       /* 1 if connection must be closed */
         def inErrorHandler: int; /* 1 if in handler for user defined error
@@ -174,7 +174,7 @@ module Http {
     };
 
     @expname[mg_start]
-    func _mg_start(callbacks: ptr[Callbacks], user_data: Int, options: ptr[ptr[Char]]): ptr[Context];
+    func _mg_start(callbacks: ptr[Callbacks], user_data: Int, options: ptr[ptr[array[Char]]]): ptr[Context];
 
     @expname[mg_stop]
     func closeServer(context: ptr[Context]): Void;
@@ -185,33 +185,33 @@ module Http {
 
     // send data to client
     @expname[mg_write]
-    func write(connection: ptr[Connection], buffer: ptr[Char], bufferSize: Int): Int;
+    func write(connection: ptr[Connection], buffer: ptr[array[Char]], bufferSize: Int): Int;
 
     // work like write(), but allows to do message formatting
     @expname[mg_printf]
-    func print(connection: ptr[Connection], format: ptr[Char], ...any): Int;
+    func print(connection: ptr[Connection], format: ptr[array[Char]], ...any): Int;
 
     @expname[mg_send_file]
-    func sendFile(connection: ptr[Connection], fileName: ptr[Char]): Void;
+    func sendFile(connection: ptr[Connection], fileName: ptr[array[Char]]): Void;
 
     @expname[mg_get_cookie]
-    func getCookie(cookiesString: ptr[Char], cookieName: ptr[Char], outCookieContent: ptr[Char], outCookieSize: Word[64]): Int;
+    func getCookie(cookiesString: ptr[array[Char]], cookieName: ptr[array[Char]], outCookieContent: ptr[array[Char]], outCookieSize: Word[64]): Int;
 
     @expname[mg_get_header]
-    func getHeader(connection: ptr[Connection], headerName: ptr[Char]): ptr[Char];
+    func getHeader(connection: ptr[Connection], headerName: ptr[array[Char]]): ptr[array[Char]];
 
     @expname[mg_get_request_info]
     func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo];
 
     @expname[mg_get_var]
-    func getVariable(data: ptr[Char], dataSize: Int, variableName: ptr[Char], outVariable: ptr[Char], outVariableSize: Int): Int;
+    func getVariable(data: ptr[array[Char]], dataSize: Int, variableName: ptr[array[Char]], outVariable: ptr[array[Char]], outVariableSize: Int): Int;
 
-    func createServer(callback: ptr[func (connection: ptr[Connection]): Int], port: ptr[Char]): ptr[Context] {
+    func createServer(callback: ptr[func (connection: ptr[Connection]): Int], port: ptr[array[Char]]): ptr[Context] {
         @shared
         def context: ptr[Context];
         def callbacks: ptr[Callbacks] = Srl.Memory.alloc(Callbacks~size)~cast[ptr[Callbacks]];
 
-        def options: array[ptr[Char], 3];
+        def options: array[ptr[array[Char]], 3];
         options(0) = "listening_ports";
         options(1) = port;
         options(2) = 0;
