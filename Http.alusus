@@ -23,7 +23,7 @@ module Http {
                     not send any data after the callback returned. The
                     return code is stored as a HTTP status code for the
                     access log. */
-        def beginRequest: ptr[func (connection: ptr[Connection]): Int];
+        def beginRequest: ptr[@shared func (connection: ptr[Connection]): Int];
 
         /* Called when civetweb has finished processing request. */
         def endRequest: ptr[func (connection: ptr[Connection], replyStatusCode: Int)];
