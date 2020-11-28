@@ -1,12 +1,13 @@
-import "Srl/Console.alusus";
 import "Srl/Memory.alusus";
-import "Srl/String.alusus";
+import "Srl/Array.alusus";
 import "libcivetweb.so";
 
 module Http {
     type Context{
         def stopFlag: int;             /* Should we stop event loop */
     };
+
+    def RequestCallback: alias ptr[func (connection: ptr[Connection]): Int];
 
     type Callbacks{
         /* Called when civetweb has received new HTTP request.
@@ -23,18 +24,18 @@ module Http {
                     not send any data after the callback returned. The
                     return code is stored as a HTTP status code for the
                     access log. */
-        def beginRequest: ptr[@shared func (connection: ptr[Connection]): Int];
+        def beginRequest: RequestCallback;
 
         /* Called when civetweb has finished processing request. */
         def endRequest: ptr[func (connection: ptr[Connection], replyStatusCode: Int)];
 
         /* Called when civetweb is about to log a message. If callback returns
         non-zero, civetweb does not log anything. */
-        def logMessage: ptr[func (connection: ptr[Connection], message: ptr[array[Char]]): Int];
+        def logMessage: ptr[func (connection: ptr[Connection], message: CharsPtr): Int];
 
         /* Called when civetweb is about to log access. If callback returns
         non-zero, civetweb does not log anything. */
-        def logAccess: ptr[func (connection: ptr[Connection], message: ptr[array[Char]]): Int];
+        def logAccess: ptr[func (connection: ptr[Connection], message: CharsPtr): Int];
 
         /* Called when civetweb initializes SSL library.
         Parameters:
@@ -64,7 +65,7 @@ module Http {
             non-NULL: pointer to the file contents in memory. data_len must be
             initilized with the size of the memory block. */
         def openFile: ptr[func (connection: ptr[Connection],
-                                path: ptr[array[Char]],
+                                path: CharsPtr,
                                 dataLen: ptr): Char];
 
         /* Called when civetweb is about to serve Lua server page, if
@@ -105,17 +106,17 @@ module Http {
     };
 
     type RequestInfo {
-        def requestMethod: ptr[array[Char]]; /* "GET", "POST", etc */
-        def requestUri: ptr[array[Char]];    /* URL-decoded URI (absolute or relative,
+        def requestMethod: CharsPtr; /* "GET", "POST", etc */
+        def requestUri: CharsPtr;    /* URL-decoded URI (absolute or relative,
                                     * as in the request) */
-        def localUri: ptr[array[Char]];      /* URL-decoded URI (relative). Can be NULL
+        def localUri: CharsPtr;      /* URL-decoded URI (relative). Can be NULL
                                     * if the request_uri does not address a
                                     * resource at the server host. */
-        def uri: ptr[array[Char]];            /* Deprecated: use local_uri instead */
-        def httpVersion: ptr[array[Char]];   /* E.g. "1.0", "1.1" */
-        def queryString: ptr[array[Char]];   /* URL part after '?', not including '?', or
+        def uri: CharsPtr;            /* Deprecated: use local_uri instead */
+        def httpVersion: CharsPtr;   /* E.g. "1.0", "1.1" */
+        def queryString: CharsPtr;   /* URL part after '?', not including '?', or
                                     NULL */
-        def remoteUser: ptr[array[Char]];    /* Authenticated user, or NULL if no auth
+        def remoteUser: CharsPtr;    /* Authenticated user, or NULL if no auth
                                     used */
         def remoteAddr: array[Char, 48];       /* Client's IP address as a string. */
 
@@ -132,8 +133,8 @@ module Http {
     };
 
     type Header {
-        def name: ptr[array[Char]]; /* HTTP header name */
-        def value: ptr[array[Char]]; /* HTTP header valuue */
+        def name: CharsPtr; /* HTTP header name */
+        def value: CharsPtr; /* HTTP header valuue */
     };
 
     type Connection {
@@ -152,8 +153,8 @@ module Http {
         def isChunked: int;           /* Transfer-Encoding is chunked: 0=no, 1=yes:
         //                         * data available, 2: all data read */
         def chunkRemainder: word[64];   /* Unread data from the last chunk */
-        def buf: ptr[array[Char]];                /* Buffer for received data */
-        def pathInfo: ptr[array[Char]];          /* PATH_INFO part of the URL */
+        def buf: CharsPtr;                /* Buffer for received data */
+        def pathInfo: CharsPtr;          /* PATH_INFO part of the URL */
 
         def mustClose: int;       /* 1 if connection must be closed */
         def inErrorHandler: int; /* 1 if in handler for user defined error
@@ -174,7 +175,7 @@ module Http {
     };
 
     @expname[mg_start]
-    func _mg_start(callbacks: ptr[Callbacks], user_data: Int, options: ptr[ptr[array[Char]]]): ptr[Context];
+    func _mg_start(callbacks: ptr[Callbacks], user_data: Int, options: ptr[CharsPtr]): ptr[Context];
 
     @expname[mg_stop]
     func closeServer(context: ptr[Context]): Void;
@@ -185,43 +186,48 @@ module Http {
 
     // send data to client
     @expname[mg_write]
-    func write(connection: ptr[Connection], buffer: ptr[array[Char]], bufferSize: Int): Int;
+    func write(connection: ptr[Connection], buffer: CharsPtr, bufferSize: Int): Int;
 
     // work like write(), but allows to do message formatting
     @expname[mg_printf]
-    func print(connection: ptr[Connection], format: ptr[array[Char]], ...any): Int;
+    func print(connection: ptr[Connection], format: CharsPtr, ...any): Int;
 
     @expname[mg_send_file]
-    func sendFile(connection: ptr[Connection], fileName: ptr[array[Char]]): Void;
+    func sendFile(connection: ptr[Connection], fileName: CharsPtr): Void;
+
+    @expname[mg_send_mime_file]
+    func sendFile(connection: ptr[Connection], filename: CharsPtr, mime: CharsPtr): Void;
 
     @expname[mg_get_cookie]
-    func getCookie(cookiesString: ptr[array[Char]], cookieName: ptr[array[Char]], outCookieContent: ptr[array[Char]], outCookieSize: Word[64]): Int;
+    func getCookie(cookiesString: CharsPtr, cookieName: CharsPtr, outCookieContent: CharsPtr, outCookieSize: Word[64]): Int;
 
     @expname[mg_get_header]
-    func getHeader(connection: ptr[Connection], headerName: ptr[array[Char]]): ptr[array[Char]];
+    func getHeader(connection: ptr[Connection], headerName: CharsPtr): CharsPtr;
 
     @expname[mg_get_request_info]
     func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo];
 
     @expname[mg_get_var]
-    func getVariable(data: ptr[array[Char]], dataSize: Int, variableName: ptr[array[Char]], outVariable: ptr[array[Char]], outVariableSize: Int): Int;
+    func getVariable(data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVariable: CharsPtr, outVariableSize: Int): Int;
 
-    func createServer(callback: ptr[func (connection: ptr[Connection]): Int], port: ptr[array[Char]]): ptr[Context] {
-        @shared
-        def context: ptr[Context];
-        def callbacks: ptr[Callbacks] = Srl.Memory.alloc(Callbacks~size)~cast[ptr[Callbacks]];
+    func createServer (callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context] {
+        def callbacks: Callbacks;
+        Srl.Memory.set(callbacks~ptr, 0, Callbacks~size);
+        callbacks.beginRequest = callback;
 
-        def options: array[ptr[array[Char]], 3];
-        options(0) = "listening_ports";
-        options(1) = port;
-        options(2) = 0;
+        return _mg_start(callbacks~ptr, 0, options.buf~ptr);
+    }
 
-        Srl.Memory.set(callbacks, 0, Callbacks~size);
-        callbacks~cnt.beginRequest = callback;
+    func createServer (callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context] {
+        def options: Srl.Array[CharsPtr];
+        while optsCount-- > 0 options.add(opts~next_arg[CharsPtr]);
+        options.add(0);
 
-        context = _mg_start(callbacks, 0, options~ptr);
-        Srl.Memory.free(callbacks);
+        return createServer(callback, options);
+    }
 
-        return context;
-    };
+    func createServer(callback: RequestCallback, port: CharsPtr): ptr[Context] {
+        return createServer(callback, { "listening_ports", port });
+    }
 };
+
