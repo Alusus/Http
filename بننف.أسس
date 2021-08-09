@@ -173,21 +173,21 @@ import "libcivetweb.so";
     };
     
 
-    @expname[mg_start]
+
 
     
 
 
     
 عرف توقف: لقب stop؛ 
-    @expname[mg_stop]
+
 
     
 
  عرف  اغلاق_الخادم: لقب closeServer؛
 
 
-    @expname[mg_read]
+
 
 عرف أقرا: لقب read؛
    
@@ -195,7 +195,7 @@ import "libcivetweb.so";
 عرف أقرا: لقب read؛
 
 
-    @expname[mg_write]
+
 
 عرف اكتب: لقب write؛
    
@@ -203,33 +203,33 @@ import "libcivetweb.so";
 عرف اكتب: لقب write؛
 
 
-    @expname[mg_printf]
+
 
     
 
 عرف اطبع: لقب print؛
 
-    @expname[mg_send_file]
+
     عرف ملف_مرسل: لقب send_file؛
 
      
 
 عرف ملف_مرسل: لقب sendFile؛
 
-   @expname[mg_send_mime_file] 
+
 عرف تمثيل_الملف_المرسل: لقب send_mime_file؛
 
 عرف ملف_مرسل: لقب sendFile؛
   
 
-   @expname[mg_get_cookie]
+
 عرف هات_الارتباط: لقب get_cookie؛
 
     
 
 عرف هات_الارتباط: لقب getCookie؛
 
-   @expname[mg_get_header]
+
 عرف هات_المقدمة: لقب get_header؛
 
     
