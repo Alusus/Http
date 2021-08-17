@@ -1,0 +1,96 @@
+اشمل "Http.alusus";
+اشمل"مـتم/مـصفوفة.أسس"؛
+ 
+عرف بـننف: لقب Http؛
+@دمج وحدة بـننف{
+    عرف اتـصال: لقب Connection؛
+
+    عرف سـياق: لقب Context؛
+    @دمج صنف سـياق {
+        عرف علم_التوقف: لقب stopFlag؛
+    }
+
+    عرف مـنادى_الطلب: لقب RequestCallback؛
+
+    عرف مـناديات: لقب Callbacks؛
+    @دمج صنف مـناديات {
+        عرف بداية_الطلب: لقب beginRequest؛
+        عرف نهاية_الطلب: لقب endRequest؛
+        عرف تسجيل_رسالة: لقب logMessage؛
+        عرف تسجيل_ولوج: لقب  logAccess؛
+        عرف تهيئة_طما:لقب initSsl؛
+        عرف غلق_الاتصال: لقب connectionClose؛
+        عرف فتح_ملف: لقب openFile؛
+        عرف خطأ_بننف: لقب httpError؛
+        عرف تهيئة_السياق: لقب initContext؛
+        عرف تهيئة_الموضوع: لقب initThread؛
+        عرف نهاية_السياق: لقب exitContext؛
+    }
+    
+    عرف مـعلومات_الطلب: لقب RequestInfo؛
+    @دمج صنف مـعلومات_الطلب {
+        عرف طريقة_الطلب: لقب requestMethod؛
+        عرف معرف_الطلب: لقب requestUri؛
+        عرف المعرف_المحلي: لقب localUri؛
+        عرف معرف: لقب uri;
+        عرف إصدار_بننف: لقب httpVersion؛
+        عرف نص_الاستعلام: لقب queryString؛
+        عرف المستخدم_البعيد: لقب remoteUser؛
+        عرف العنوان_البعيد: لقب remoteAddr؛
+        عرف طول_المحتوى: لقب contentLength؛
+        عرف المنفذ_البعيد: لقب remotePort؛
+        عرف مشفر: لقب isSsl؛
+        عرف بيانات_المستخدم: لقب userData؛
+        عرف بيانات_الاتصال: لقب connData؛
+        عرف عدد_الترويسات: لقب numberHeaders؛
+        عرف ترويسات_بننف: لقب httpHeaders؛
+    }
+
+    عرف تـرويسة: لقب Header؛
+    @دمج صنف تـرويسة {
+        عرف اسم: لقب name؛
+        عرف قيمة: لقب value؛
+    }
+
+  عرف اتـصال: لقب Connection؛
+   @دمج صنف اتـصال {
+        عرف معلومات_الطلب: لقب requestInfo؛
+        عرف سياق: لقب context؛
+        عرف طما: لقب ssl؛
+        عرف سياق_طما_للعميل: لقب clientSslContext؛
+        عرف عميل: لقب client؛
+        عرف موعد_الاتصال: لقب connectionBirthTime؛
+        عرف وقت_الطلب: لقب requestTime؛
+        عرف عدد_البايت_المرسلة: لقب numberBytesSent؛
+        عرف حجم_المحتوى: لقب contentLen؛
+        عرف المحتوى_المستهلك: لقب consumedContent؛
+        عرف مقطع: لقب isChunked؛
+        عرف باقي_التقطيع: لقب chunkRemainder؛
+        عرف صوان: لقب buf؛
+        عرف معلومات_المسار: لقب pathInfo؛
+        عرف يجب_الاغلاق: لقب mustClose؛
+        عرف معالج_الاخطاء: لقب inErrorHandler؛
+        عرف خطأ_داخلي: لقب internalError؛
+        عرف حجم_الصوان: لقب bufSize؛
+        عرف حجم_الطلب: لقب requestLen؛
+        عرف حجم_البيانات: لقب dataLen؛
+        عرف رمز_الحالة: لقب statusCode؛
+        عرف خنق: لقب throttle؛
+        عرف آخر_وقت_خنق: لقب lastThrottleTime؛
+        عرف آخر_بايتات_خنق: لقب lastThrottleBytes؛
+        عرف قفل_المزامنة: لقب mutex؛
+    }
+    
+    عرف توقف: لقب stop؛ 
+    عرف أغلق_الخادم: لقب closeServer؛
+    عرف اقرأ: لقب read؛
+    عرف اكتب: لقب write؛
+    عرف اطبع: لقب print؛
+    عرف أرسل_ملف: لقب sendFile؛
+    عرف هات_الارتباط: لقب getCookie؛
+    عرف هات_الترويسة: لقب getHeader؛
+    عرف هات_معلومات_الطلب: لقب getRequestInfo؛
+    عرف هات_متغير: لقب getVariable؛
+    عرف  أنشئ_الخادم: لقب createServer؛
+}
+

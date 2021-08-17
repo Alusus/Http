@@ -4,7 +4,7 @@ import "libcivetweb.so";
 
 module Http {
     type Context{
-        def stopFlag: int;             /* Should we stop event loop */
+        def stopFlag: int; // Should we stop event loop
     };
 
     def RequestCallback: alias ptr[func (connection: ptr[Connection]): Int];
@@ -47,12 +47,12 @@ module Http {
         def initSsl: ptr[func (sslContext: ptr[Void], userData: ptr[Void]): Int];
 
         /* Called when civetweb is closing a connection.  The per-context mutex is
-	   locked when this is invoked.  This is primarily useful for noting when
-	   a websocket is closing and removing it from any application-maintained
-	   list of clients.
-	   Using this callback for websocket connections is deprecated: Use
-	   mg_set_websocket_handler instead. */
-       def connectionClose: ptr[func (connection: ptr[Connection]): Void];
+        locked when this is invoked.  This is primarily useful for noting when
+        a websocket is closing and removing it from any application-maintained
+        list of clients.
+        Using this callback for websocket connections is deprecated: Use
+        mg_set_websocket_handler instead. */
+        def connectionClose: ptr[func (connection: ptr[Connection]): Void];
 
         /* Called when civetweb tries to open a file. Used to intercept file open
         calls, and serve file data from memory instead.
@@ -106,72 +106,60 @@ module Http {
     };
 
     type RequestInfo {
-        def requestMethod: CharsPtr; /* "GET", "POST", etc */
-        def requestUri: CharsPtr;    /* URL-decoded URI (absolute or relative,
-                                    * as in the request) */
-        def localUri: CharsPtr;      /* URL-decoded URI (relative). Can be NULL
-                                    * if the request_uri does not address a
-                                    * resource at the server host. */
-        def uri: CharsPtr;            /* Deprecated: use local_uri instead */
-        def httpVersion: CharsPtr;   /* E.g. "1.0", "1.1" */
-        def queryString: CharsPtr;   /* URL part after '?', not including '?', or
-                                    NULL */
-        def remoteUser: CharsPtr;    /* Authenticated user, or NULL if no auth
-                                    used */
-        def remoteAddr: array[Char, 48];       /* Client's IP address as a string. */
+        def requestMethod: CharsPtr;     // "GET", "POST", etc
+        def requestUri: CharsPtr;        // URL-decoded URI (absolute or relative, as in the request)
+        def localUri: CharsPtr;          // URL-decoded URI (relative). Can be NULL if the request_uri does not address
+                                         // a resource at the server host.
+        def uri: CharsPtr;               // Deprecated: use local_uri instead
+        def httpVersion: CharsPtr;       // E.g. "1.0", "1.1"
+        def queryString: CharsPtr;       // URL part after '?', not including '?', or NULL
+        def remoteUser: CharsPtr;        // Authenticated user, or NULL if no auth used
+        def remoteAddr: array[Char, 48]; // Client's IP address as a string.
 
-        def contentLength: Int[64]; /* Length (in bytes) of the request body,
-                                    can be -1 if no length was given. */
-        def remotePort: Int;          /* Client's port */
-        def isSsl: Int;               /* 1 if SSL-ed, 0 if not */
-        def userData: ptr[Void];          /* User data pointer passed to mg_start() */
-        def connData: ptr[Void];          /* Connection-specific user data */
+        def contentLength: Int[64];      // Length (in bytes) of the request body, can be -1 if no length was given.
+        def remotePort: Int;             // Client's port
+        def isSsl: Int;                  // 1 if SSL-ed, 0 if not
+        def userData: ptr[Void];         // User data pointer passed to mg_start()
+        def connData: ptr[Void];         // Connection-specific user data
 
-        def numberHeaders: Int; /* Number of HTTP headers */
+        def numberHeaders: Int;          // Number of HTTP headers
 
-        def httpHeaders: array[Header, 64]; /* Maximum 64 headers */
+        def httpHeaders: array[Header, 64]; // Maximum 64 headers
     };
 
     type Header {
-        def name: CharsPtr; /* HTTP header name */
-        def value: CharsPtr; /* HTTP header valuue */
+        def name: CharsPtr;  // HTTP header name
+        def value: CharsPtr; // HTTP header valuue
     };
 
     type Connection {
         def requestInfo: ptr[RequestInfo];
         def context: ptr[Context];
-        def ssl: ptr;                 /* SSL descriptor */
-        def clientSslContext: ptr;  /* SSL context for client connections */
-        def client: ptr;     /* Connected client */
-        def connectionBirthTime: Int;   /* Time (wall clock) when connection was
-                                * established */
-        def requestTime: Int; /* Time (since system start) when the request
-                                * was received */
-        def numberBytesSent: int[64];   /* Total bytes sent to client */
-        def contentLen: int[64];      /* Content-Length header value */
-        def consumedContent: int[64]; /* How many bytes of content have been read */
-        def isChunked: int;           /* Transfer-Encoding is chunked: 0=no, 1=yes:
-        //                         * data available, 2: all data read */
-        def chunkRemainder: word[64];   /* Unread data from the last chunk */
-        def buf: CharsPtr;                /* Buffer for received data */
-        def pathInfo: CharsPtr;          /* PATH_INFO part of the URL */
+        def ssl: ptr;                   // SSL descriptor
+        def clientSslContext: ptr;      // SSL context for client connections
+        def client: ptr;                // Connected client
+        def connectionBirthTime: Int;   // Time (wall clock) when connection was established
+        def requestTime: Int;           // Time (since system start) when the request was received
+        def numberBytesSent: int[64];   // Total bytes sent to client
+        def contentLen: int[64];        // Content-Length header value
+        def consumedContent: int[64];   // How many bytes of content have been read
+        def isChunked: int;             // Transfer-Encoding is chunked: 0=no, 1=yes: data available, 2: all data read
+        def chunkRemainder: word[64];   // Unread data from the last chunk
+        def buf: CharsPtr;              // Buffer for received data
+        def pathInfo: CharsPtr;         // PATH_INFO part of the URL
 
-        def mustClose: int;       /* 1 if connection must be closed */
-        def inErrorHandler: int; /* 1 if in handler for user defined error
-        //                     * pages */
-        def internalError: int;   /* 1 if an error occured while processing the
-        //                     * request */
+        def mustClose: int;             // 1 if connection must be closed
+        def inErrorHandler: int;        // 1 if in handler for user defined error pages
+        def internalError: int;         // 1 if an error occured while processing the request
 
-        def bufSize: int;                /* Buffer size */
-        def request_len: int;             /* Size of the request + headers in a buffer */
-        def data_len: int;                /* Total size of data in a buffer */
-        def status_code: int;             /* HTTP reply status code, e.g. 200 */
-        def throttle: int;                /* Throttling, bytes/sec. <= 0 means no
-        //                             * throttle */
-        def last_throttle_time: int;   /* Last time throttled data was sent */
-        def last_throttle_bytes: int[64]; /* Bytes sent this second */
-        def mutex: int[64];       /* Used by mg_(un)lock_connection to ensure
-        //                             * atomic transmissions for websockets */
+        def bufSize: int;               // Buffer size
+        def requestLen: int;            // Size of the request + headers in a buffer
+        def dataLen: int;               // Total size of data in a buffer
+        def statusCode: int;            // HTTP reply status code, e.g. 200
+        def throttle: int;              // Throttling, bytes/sec. <= 0 means no throttle
+        def lastThrottleTime: int;      // Last time throttled data was sent
+        def lastThrottleBytes: int[64]; // Bytes sent this second
+        def mutex: int[64];             // Used by mg_(un)lock_connection to ensure atomic transmissions for websockets
     };
 
     @expname[mg_start]
@@ -199,7 +187,9 @@ module Http {
     func sendFile(connection: ptr[Connection], filename: CharsPtr, mime: CharsPtr): Void;
 
     @expname[mg_get_cookie]
-    func getCookie(cookiesString: CharsPtr, cookieName: CharsPtr, outCookieContent: CharsPtr, outCookieSize: Word[64]): Int;
+    func getCookie(
+        cookiesString: CharsPtr, cookieName: CharsPtr, outCookieContent: CharsPtr, outCookieSize: Word[64]
+    ): Int;
 
     @expname[mg_get_header]
     func getHeader(connection: ptr[Connection], headerName: CharsPtr): CharsPtr;
@@ -208,7 +198,9 @@ module Http {
     func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo];
 
     @expname[mg_get_var]
-    func getVariable(data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVariable: CharsPtr, outVariableSize: Int): Int;
+    func getVariable(
+        data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVariable: CharsPtr, outVariableSize: Int
+    ): Int;
 
     func createServer (callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context] {
         def callbacks: Callbacks;
