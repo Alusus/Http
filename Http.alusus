@@ -3,13 +3,13 @@ import "Srl/Array.alusus";
 import "libcivetweb.so";
 
 module Http {
-    type Context{
+    class Context{
         def stopFlag: int; // Should we stop event loop
     };
 
     def RequestCallback: alias ptr[func (connection: ptr[Connection]): Int];
 
-    type Callbacks{
+    class Callbacks{
         /* Called when civetweb has received new HTTP request.
         If the callback returns one, it must process the request
         by sending valid HTTP headers and a body. Civetweb will not do
@@ -105,7 +105,7 @@ module Http {
         def exitContext: ptr[func (context: ptr[Context]): Void];
     };
 
-    type RequestInfo {
+    class RequestInfo {
         def requestMethod: CharsPtr;     // "GET", "POST", etc
         def requestUri: CharsPtr;        // URL-decoded URI (absolute or relative, as in the request)
         def localUri: CharsPtr;          // URL-decoded URI (relative). Can be NULL if the request_uri does not address
@@ -127,12 +127,12 @@ module Http {
         def httpHeaders: array[Header, 64]; // Maximum 64 headers
     };
 
-    type Header {
+    class Header {
         def name: CharsPtr;  // HTTP header name
         def value: CharsPtr; // HTTP header valuue
     };
 
-    type Connection {
+    class Connection {
         def requestInfo: ptr[RequestInfo];
         def context: ptr[Context];
         def ssl: ptr;                   // SSL descriptor
