@@ -1,6 +1,6 @@
 import "Srl/Memory.alusus";
 import "Srl/Array.alusus";
-import "libcivetweb.so";
+import "civetweb";
 
 module Http {
     class Context{
