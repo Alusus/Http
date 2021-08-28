@@ -10,99 +10,26 @@ module Http {
     def RequestCallback: alias ptr[func (connection: ptr[Connection]): Int];
 
     class Callbacks{
-        /* Called when civetweb has received new HTTP request.
-        If the callback returns one, it must process the request
-        by sending valid HTTP headers and a body. Civetweb will not do
-        any further processing. Otherwise it must return zero.
-        Note that since V1.7 the "begin_request" function is called
-        before an authorization check. If an authorization check is
-        required, use a request_handler instead.
-        Return value:
-            0: civetweb will process the request itself. In this case,
-                the callback must not send any data to the client.
-            1-999: callback already processed the request. Civetweb will
-                    not send any data after the callback returned. The
-                    return code is stored as a HTTP status code for the
-                    access log. */
         def beginRequest: RequestCallback;
-
-        /* Called when civetweb has finished processing request. */
         def endRequest: ptr[func (connection: ptr[Connection], replyStatusCode: Int)];
-
-        /* Called when civetweb is about to log a message. If callback returns
-        non-zero, civetweb does not log anything. */
         def logMessage: ptr[func (connection: ptr[Connection], message: CharsPtr): Int];
-
-        /* Called when civetweb is about to log access. If callback returns
-        non-zero, civetweb does not log anything. */
         def logAccess: ptr[func (connection: ptr[Connection], message: CharsPtr): Int];
-
-        /* Called when civetweb initializes SSL library.
-        Parameters:
-            userData: parameter user_data passed when starting the server.
-        Return value:
-            0: civetweb will set up the SSL certificate.
-            1: civetweb assumes the callback already set up the certificate.
-            -1: initializing ssl fails. */
         def initSsl: ptr[func (sslContext: ptr[Void], userData: ptr[Void]): Int];
-
-        /* Called when civetweb is closing a connection.  The per-context mutex is
-        locked when this is invoked.  This is primarily useful for noting when
-        a websocket is closing and removing it from any application-maintained
-        list of clients.
-        Using this callback for websocket connections is deprecated: Use
-        mg_set_websocket_handler instead. */
+        def initSslDomain: ptr[func (serverDomain: ptr[array[Char]], sslContext: ptr[Void], userData: ptr[Void]): Int];
+        def externalSslCtx: ptr[func (sslCtx: ptr[ptr[Void]], userData: ptr[Void]): Int];
+        def externalSslCtxDomain: ptr[func (
+            serverDomain: ptr[array[Char]], sslCtx: ptr[ptr[Void]], userData: ptr[Void]
+        ): Int];
         def connectionClose: ptr[func (connection: ptr[Connection]): Void];
-
-        /* Called when civetweb tries to open a file. Used to intercept file open
-        calls, and serve file data from memory instead.
-        Parameters:
-            path:     Full path to the file to open.
-            dataLen: Placeholder for the file size, if file is served from
-                        memory.
-        Return value:
-            NULL: do not serve file from memory, proceed with normal file open.
-            non-NULL: pointer to the file contents in memory. data_len must be
-            initilized with the size of the memory block. */
-        def openFile: ptr[func (connection: ptr[Connection],
-                                path: CharsPtr,
-                                dataLen: ptr): Char];
-
-        /* Called when civetweb is about to serve Lua server page, if
-        Lua support is enabled.
-        Parameters:
-            luaContext: "lua_State *" pointer. */
+        def connectionClosed: ptr[func (connection: ptr[Connection]): Void];
         def initLua: ptr[func (connection: ptr[Connection], luaContext: ptr[Void]): Void];
-
-        /* Called when civetweb is about to send HTTP error to the client.
-        Implementing this callback allows to create custom error pages.
-        Parameters:
-            status: HTTP error status code.
-        Return value:
-            1: run civetweb error handler.
-            0: callback already handled the error. */
-        def httpError: ptr[func (connection: ptr[Connection], status: Int): Int];
-
-        /* Called after civetweb context has been created, before requests
-        are processed.
-        Parameters:
-            context: context handle */
+        def exitLua: ptr[func (connection: ptr[Connection], luaContext: ptr[Void]): Void];
+        def httpError: ptr[func (connection: ptr[Connection], status: Int, msg: ptr[array[Char]]): Int];
         def initContext: ptr[func (context: ptr[Context]): Void];
-
-        /* Called when a new worker thread is initialized.
-        Parameters:
-            context: context handle
-            threadType:
-            0 indicates the master thread
-            1 indicates a worker thread handling client connections
-            2 indicates an internal helper thread (timer thread)
-            */
-        def initThread: ptr[func (context: ptr[Context], threadType: Int): Void];
-
-        /* Called when civetweb context is deleted.
-        Parameters:
-            context: context handle */
         def exitContext: ptr[func (context: ptr[Context]): Void];
+        def initThread: ptr[func (context: ptr[Context], threadType: Int): Void];
+        def exitThread: ptr[func (context: ptr[Context], threadType: Int, threadPtr: ptr[Void]): Void];
+        def initConnection: ptr[func (connection: ptr[Connection], connData: ptr[ptr[Void]]): Void];
     };
 
     class RequestInfo {

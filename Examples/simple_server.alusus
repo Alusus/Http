@@ -7,10 +7,12 @@ Apm.importFile("Alusus/Http");
 module TestModule {
     use Srl;
     func start() {
-        def context: ptr[Http.Context] = Http.createServer(callbackRequest~ptr, "8080"); // Server is running in separate thread, when navigating to http://localhost:8080/ will invoke callbackRequest
-        Console.print("it's working in port 8080: http://localhost:8080/\npress enter to close server: ");
+        def context: ptr[Http.Context] = Http.createServer(callbackRequest~ptr, "8080");
+        Console.print("Server is listening on port 8080\nhttp://localhost:8080/\nPress enter to close server.");
         Console.getChar(); // stop proccess here waiting user to press enter
         Http.closeServer(context); // stop the server
+        Console.print("Server closed.\nPress enter to exit.");
+        Console.getChar(); // stop proccess here waiting user to press enter
     };
 
     func callbackRequest(connection: ptr[Http.Connection]): Int {
