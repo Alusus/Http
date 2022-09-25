@@ -33,24 +33,22 @@ module Http {
     };
 
     class RequestInfo {
-        def requestMethod: CharsPtr;     // "GET", "POST", etc
-        def requestUri: CharsPtr;        // URL-decoded URI (absolute or relative, as in the request)
-        def localUri: CharsPtr;          // URL-decoded URI (relative). Can be NULL if the request_uri does not address
-                                         // a resource at the server host.
-        def uri: CharsPtr;               // Deprecated: use local_uri instead
-        def httpVersion: CharsPtr;       // E.g. "1.0", "1.1"
-        def queryString: CharsPtr;       // URL part after '?', not including '?', or NULL
-        def remoteUser: CharsPtr;        // Authenticated user, or NULL if no auth used
-        def remoteAddr: array[Char, 48]; // Client's IP address as a string.
-
-        def contentLength: Int[64];      // Length (in bytes) of the request body, can be -1 if no length was given.
-        def remotePort: Int;             // Client's port
-        def isSsl: Int;                  // 1 if SSL-ed, 0 if not
-        def userData: ptr[Void];         // User data pointer passed to mg_start()
-        def connData: ptr[Void];         // Connection-specific user data
-
-        def numberHeaders: Int;          // Number of HTTP headers
-
+        def requestMethod: CharsPtr;        // "GET", "POST", etc
+        def requestUri: CharsPtr;           // URL-decoded URI (absolute or relative, as in the request)
+        def localUriRaw: CharsPtr;
+        def localUri: CharsPtr;             // URL-decoded URI (relative). Can be NULL if the request_uri does not address
+                                            // a resource at the server host.
+        def httpVersion: CharsPtr;          // E.g. "1.0", "1.1"
+        def queryString: CharsPtr;          // URL part after '?', not including '?', or NULL
+        def remoteUser: CharsPtr;           // Authenticated user, or NULL if no auth used
+        def remoteAddr: array[Char, 48];    // Client's IP address as a string.
+        def contentLength: Int[64];         // Length (in bytes) of the request body, can be -1 if no length was given.
+        def remotePort: Int;                // Client's port
+        def serverPort: Int;
+        def isSsl: Int;                     // 1 if SSL-ed, 0 if not
+        def userData: ptr[Void];            // User data pointer passed to mg_start()
+        def connData: ptr[Void];            // Connection-specific user data
+        def numberHeaders: Int;             // Number of HTTP headers
         def httpHeaders: array[Header, 64]; // Maximum 64 headers
     };
 
