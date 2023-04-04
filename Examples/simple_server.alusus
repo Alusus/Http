@@ -7,10 +7,10 @@ Apm.importFile("Alusus/Http");
 module TestModule {
     use Srl;
     func start() {
-        def context: ptr[Http.Context] = Http.createServer(callbackRequest~ptr, "8080");
+        def context: ptr[Http.Context] = Http.startServer(callbackRequest~ptr, "8080");
         Console.print("Server is listening on port 8080\nhttp://localhost:8080/\nPress enter to close server.");
         Console.getChar(); // stop proccess here waiting user to press enter
-        Http.closeServer(context); // stop the server
+        Http.stopServer(context); // stop the server
         Console.print("Server closed.\nPress enter to exit.");
         Console.getChar(); // stop proccess here waiting user to press enter
     };

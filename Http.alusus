@@ -88,10 +88,30 @@ module Http {
     };
 
     @expname[mg_start]
-    func _mg_start(callbacks: ptr[Callbacks], user_data: Int, options: ptr[CharsPtr]): ptr[Context];
+    func startServer(callbacks: ptr[Callbacks], user_data: Int, options: ptr[CharsPtr]): ptr[Context];
+
+    func startServer (callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context] {
+        def callbacks: Callbacks;
+        Srl.Memory.set(callbacks~ptr, 0, Callbacks~size);
+        callbacks.beginRequest = callback;
+
+        return startServer(callbacks~ptr, 0, options.buf~ptr);
+    }
+
+    func startServer (callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context] {
+        def options: Srl.Array[CharsPtr];
+        while optsCount-- > 0 options.add(opts~next_arg[CharsPtr]);
+        options.add(0);
+
+        return startServer(callback, options);
+    }
+
+    func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context] {
+        return startServer(callback, { "listening_ports", port });
+    }
 
     @expname[mg_stop]
-    func closeServer(context: ptr[Context]): Void;
+    func stopServer(context: ptr[Context]): Void;
 
     // read data from client
     @expname[mg_read]
@@ -126,25 +146,5 @@ module Http {
     func getVariable(
         data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVariable: CharsPtr, outVariableSize: Int
     ): Int;
-
-    func createServer (callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context] {
-        def callbacks: Callbacks;
-        Srl.Memory.set(callbacks~ptr, 0, Callbacks~size);
-        callbacks.beginRequest = callback;
-
-        return _mg_start(callbacks~ptr, 0, options.buf~ptr);
-    }
-
-    func createServer (callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context] {
-        def options: Srl.Array[CharsPtr];
-        while optsCount-- > 0 options.add(opts~next_arg[CharsPtr]);
-        options.add(0);
-
-        return createServer(callback, options);
-    }
-
-    func createServer(callback: RequestCallback, port: CharsPtr): ptr[Context] {
-        return createServer(callback, { "listening_ports", port });
-    }
 };
 
