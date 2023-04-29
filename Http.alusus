@@ -1,8 +1,19 @@
 import "Srl/Memory.alusus";
 import "Srl/Array.alusus";
-import "civetweb";
+import "Srl/String.alusus";
+import "libcivetweb.so.1" or "libcivetweb.dylib";
 
 module Http {
+    func getBuildDependencies(): Array[String] {
+        return Array[String]({ String(getThisSourceDirectory[]) + preprocess {
+            if String.isEqual(Process.platform, "macos") {
+                Spp.astMgr.insertAst(ast "libcivetweb.dylib");
+            } else {
+                Spp.astMgr.insertAst(ast "libcivetweb.so.1");
+            }
+        } });
+    }
+
     class Context{
         def stopFlag: int; // Should we stop event loop
     };
