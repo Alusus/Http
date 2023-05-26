@@ -130,5 +130,7 @@ module Http {
     func getVariable(
         data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVariable: CharsPtr, outVariableSize: Int
     ): Int;
-};
 
+    @expname[mg_url_decode]
+    func urlDecode(src: CharsPtr, srcLen: Int, dst: CharsPtr, dstLen: Int, isFormUrlEncoded: Int): Int;
+};
