@@ -69,33 +69,6 @@ module Http {
     };
 
     class Connection {
-        def requestInfo: ptr[RequestInfo];
-        def context: ptr[Context];
-        def ssl: ptr;                   // SSL descriptor
-        def clientSslContext: ptr;      // SSL context for client connections
-        def client: ptr;                // Connected client
-        def connectionBirthTime: Int;   // Time (wall clock) when connection was established
-        def requestTime: Int;           // Time (since system start) when the request was received
-        def numberBytesSent: int[64];   // Total bytes sent to client
-        def contentLen: int[64];        // Content-Length header value
-        def consumedContent: int[64];   // How many bytes of content have been read
-        def isChunked: int;             // Transfer-Encoding is chunked: 0=no, 1=yes: data available, 2: all data read
-        def chunkRemainder: word[64];   // Unread data from the last chunk
-        def buf: CharsPtr;              // Buffer for received data
-        def pathInfo: CharsPtr;         // PATH_INFO part of the URL
-
-        def mustClose: int;             // 1 if connection must be closed
-        def inErrorHandler: int;        // 1 if in handler for user defined error pages
-        def internalError: int;         // 1 if an error occured while processing the request
-
-        def bufSize: int;               // Buffer size
-        def requestLen: int;            // Size of the request + headers in a buffer
-        def dataLen: int;               // Total size of data in a buffer
-        def statusCode: int;            // HTTP reply status code, e.g. 200
-        def throttle: int;              // Throttling, bytes/sec. <= 0 means no throttle
-        def lastThrottleTime: int;      // Last time throttled data was sent
-        def lastThrottleBytes: int[64]; // Bytes sent this second
-        def mutex: int[64];             // Used by mg_(un)lock_connection to ensure atomic transmissions for websockets
     };
 
     @expname[mg_start]

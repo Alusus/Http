@@ -5,8 +5,6 @@
 @دمج وحدة بـننف {
     عرف هات_اعتماديات_البناء: لقب getBuildDependencies؛
 
-    عرف اتـصال: لقب Connection؛
-
     عرف سـياق: لقب Context؛
     @دمج صنف سـياق {
         عرف علم_التوقف: لقب stopFlag؛
@@ -55,33 +53,6 @@
     }
 
   عرف اتـصال: لقب Connection؛
-   @دمج صنف اتـصال {
-        عرف معلومات_الطلب: لقب requestInfo؛
-        عرف سياق: لقب context؛
-        عرف طما: لقب ssl؛
-        عرف سياق_طما_للعميل: لقب clientSslContext؛
-        عرف عميل: لقب client؛
-        عرف موعد_الاتصال: لقب connectionBirthTime؛
-        عرف وقت_الطلب: لقب requestTime؛
-        عرف عدد_البايت_المرسلة: لقب numberBytesSent؛
-        عرف حجم_المحتوى: لقب contentLen؛
-        عرف المحتوى_المستهلك: لقب consumedContent؛
-        عرف مقطع: لقب isChunked؛
-        عرف باقي_التقطيع: لقب chunkRemainder؛
-        عرف صوان: لقب buf؛
-        عرف معلومات_المسار: لقب pathInfo؛
-        عرف يجب_الاغلاق: لقب mustClose؛
-        عرف معالج_الاخطاء: لقب inErrorHandler؛
-        عرف خطأ_داخلي: لقب internalError؛
-        عرف حجم_الصوان: لقب bufSize؛
-        عرف حجم_الطلب: لقب requestLen؛
-        عرف حجم_البيانات: لقب dataLen؛
-        عرف رمز_الحالة: لقب statusCode؛
-        عرف خنق: لقب throttle؛
-        عرف آخر_وقت_خنق: لقب lastThrottleTime؛
-        عرف آخر_بايتات_خنق: لقب lastThrottleBytes؛
-        عرف قفل_المزامنة: لقب mutex؛
-    }
     
     عرف شغل_الخادم: لقب startServer؛
     عرف أوقف_الخادم: لقب stopServer؛
