@@ -64,6 +64,4 @@
     عرف هات_الترويسة: لقب getHeader؛
     عرف هات_معلومات_الطلب: لقب getRequestInfo؛
     عرف هات_متغير: لقب getVariable؛
-    عرف فك_عنوانيا: لقب urlDecode؛
 }
-
