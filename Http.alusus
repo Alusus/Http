@@ -72,14 +72,26 @@ module Http {
     };
 
     @expname[mg_start]
-    func startServer(callbacks: ptr[Callbacks], user_data: Int, options: ptr[CharsPtr]): ptr[Context];
+    func startServer(callbacks: ptr[Callbacks], userData: ptr, options: ptr[CharsPtr]): ptr[Context];
 
-    func startServer (callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context] {
+    func startServer (callback: RequestCallback, userData: ptr, options: ref[Srl.Array[CharsPtr]]): ptr[Context] {
         def callbacks: Callbacks;
         Srl.Memory.set(callbacks~ptr, 0, Callbacks~size);
         callbacks.beginRequest = callback;
 
-        return startServer(callbacks~ptr, 0, options.buf~ptr);
+        return startServer(callbacks~ptr, userData, options.buf~ptr);
+    }
+
+    func startServer (callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context] {
+        return startServer(callback, 0, options);
+    }
+
+    func startServer (callback: RequestCallback, userData: ptr, optsCount: Int, opts: ...CharsPtr): ptr[Context] {
+        def options: Srl.Array[CharsPtr];
+        while optsCount-- > 0 options.add(opts~next_arg[CharsPtr]);
+        options.add(0);
+
+        return startServer(callback, userData, options);
     }
 
     func startServer (callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context] {
@@ -87,11 +99,15 @@ module Http {
         while optsCount-- > 0 options.add(opts~next_arg[CharsPtr]);
         options.add(0);
 
-        return startServer(callback, options);
+        return startServer(callback, 0, options);
+    }
+
+    func startServer(callback: RequestCallback, userData: ptr, port: CharsPtr): ptr[Context] {
+        return startServer(callback, userData, { "listening_ports", port });
     }
 
     func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context] {
-        return startServer(callback, { "listening_ports", port });
+        return startServer(callback, 0, port);
     }
 
     @expname[mg_stop]

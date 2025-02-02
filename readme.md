@@ -192,7 +192,7 @@ This class holds the information about a request.
 
 `isSsl`: Whether the connection uses SSL.
 
-`userData`: Data specific to the user.
+`userData`: Custom user data that is passed to `startServer`.
 
 `connData`: Data specific to the connection.
 
@@ -309,7 +309,7 @@ This class holds the information about the connection.
 
 ```
 @expname[mg_start]
-func startServer(callbacks: ptr[Callbacks], user_data: Int, options: ptr[CharsPtr]): ptr[Context];
+func startServer(callbacks: ptr[Callbacks], userData: ptr, options: ptr[CharsPtr]): ptr[Context];
 ```
 
 This function is used for initializing and starting the server.
@@ -322,7 +322,7 @@ Parameters:
 
 `callbacks`: The list of callback that used to determine the behaviour of the server, and how it processes the requests.
 
-`user_data`: Optional user data.
+`userData`: The optional custo user data that was passed to `startServer`.
 
 `options`: A list of options used in server initialization.
 
@@ -331,6 +331,7 @@ Return value:
 A pointer to server's context, or a null in case of initialization failure.
 
 ```
+func startServer (callback: RequestCallback, userData: ptr, options: ref[Srl.Array[CharsPtr]]): ptr[Context];
 func startServer (callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context];
 ```
 
@@ -338,9 +339,12 @@ Parameters:
 
 `callback`: callback that server will execute when receiving a request.
 
+`userData`: The optional custo user data that was passed to `startServer`.
+
 `options`: options related to server initialization, like port number.
 
 ```
+func startServer (callback: RequestCallback, userData: ptr, optsCount: Int, opts: ...CharsPtr): ptr[Context];
 func startServer (callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context];
 ```
 
@@ -348,15 +352,20 @@ Parameters:
 
 `callback`: Callback that server will execute when receiving a request.
 
+`userData`: The optional custo user data that was passed to `startServer`.
+
 `optsCount`: Number of options in `opts`.
 
 `opts`: Options related to server initialization, like port number.
 
 ```
+func startServer(callback: RequestCallback, userData: ptr, port: CharsPtr): ptr[Context];
 func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context];
 ```
 
 `callback`: Callback that server will execute when receiving a request.
+
+`userData`: The optional custo user data that was passed to `startServer`.
 
 `port`: Port number that server listens to.
 
