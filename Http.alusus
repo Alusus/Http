@@ -83,7 +83,7 @@ module Http {
     }
 
     func startServer (callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context] {
-        return startServer(callback, 0, options);
+        return startServer(callback, 0~cast[ptr], options);
     }
 
     func startServer (callback: RequestCallback, userData: ptr, optsCount: Int, opts: ...CharsPtr): ptr[Context] {
@@ -99,7 +99,7 @@ module Http {
         while optsCount-- > 0 options.add(opts~next_arg[CharsPtr]);
         options.add(0);
 
-        return startServer(callback, 0, options);
+        return startServer(callback, 0~cast[ptr], options);
     }
 
     func startServer(callback: RequestCallback, userData: ptr, port: CharsPtr): ptr[Context] {
@@ -107,7 +107,7 @@ module Http {
     }
 
     func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context] {
-        return startServer(callback, 0, port);
+        return startServer(callback, 0~cast[ptr], port);
     }
 
     @expname[mg_stop]
