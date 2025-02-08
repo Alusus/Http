@@ -312,7 +312,7 @@ class RequestInfo {
 
 `مشفر` (`isSsl`): هل الاتصال مشفر بتقنية ط.م.آ؟
 
-`بيانات_المستخدم` (`userData`): بيانات خاصة بالمستخدم,
+`بيانات_المستخدم` (`userData`): بيانات خاصة بالمستخدم تُمرر إلى دالة `شغل_الخادم`.
 
 `بيانات_الاتصال` (`connData`): بيانات خاصة بالاتصال.
 
@@ -477,14 +477,14 @@ class Connection {
 
 ```
 @تصدير[mg_start]
-دالة شغل_الخادم(مناديات: مؤشر[مـناديات]، بيانات_المستخدم: صـحيح، خيارات: مؤشر[مـؤشر_محارف]): مؤشر[سـياق]؛
+دالة شغل_الخادم(مناديات: مؤشر[مـناديات]، بيانات_المستخدم: مؤشر، خيارات: مؤشر[مـؤشر_محارف]): مؤشر[سـياق]؛
 ```
 
 </div>
 
 ```
 @expname[mg_start]
-func startServer(callbacks: ptr[Callbacks], user_data: Int, options: ptr[CharsPtr]): ptr[Context];
+func startServer(callbacks: ptr[Callbacks], userData: ptr, options: ptr[CharsPtr]): ptr[Context];
 ```
 
 تستخدم هذه الدالة لتهيئة الخادم و تشغيله.
@@ -498,7 +498,7 @@ func startServer(callbacks: ptr[Callbacks], user_data: Int, options: ptr[CharsPt
 
 `مناديات` (`callbacks`): المناديات التي يمكن عن طريقها تحديد آلية عمل الخادم في حالات مختلفة و كيفية معالجته للطلبات.
 
-`بيانات_المستخدم` (`user_data`): بيانات مستخدم اختيارية.
+`بيانات_المستخدم` (`userData`): بيانات مستخدم اختيارية تُمرر لاحقا إلى المناديات عند استلام طلب HTTP.
 
 `خيارات` (`options`): عدد من الخيارات التي يتم استعمالها لتهيئة الخادم.
 
@@ -509,35 +509,43 @@ func startServer(callbacks: ptr[Callbacks], user_data: Int, options: ptr[CharsPt
 <div dir=rtl>
 
 ```
+دالة  شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، خيارات: سند[مـتم.مـصفوفة[مؤشر[مـحرف]]]): مؤشر[سـياق]؛
 دالة  شغل_الخادم(منادي: مـنادى_الطلب، خيارات: سند[مـتم.مـصفوفة[مؤشر[مـحرف]]]): مؤشر[سـياق]؛
 ```
 
 </div>
 
 ```
+func startServer (callback: RequestCallback, userData: ptr, options: ref[Srl.Array[CharsPtr]]): ptr[Context];
 func startServer (callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context];
 ```
 المعطيات:
 
 `منادي` (`callback`): المنادي الذي يقوم الخادم بتنفيذه.
 
+`بيانات_المستخدم` (`user_data`): بيانات مستخدم اختيارية تُمرر لاحقا إلى المناديات عند استلام طلب HTTP.
+
 `خيارات` (`options`): خيارات خاصة بالخادم مثل المنفذ الذي سيستمع إليه الخادم.
 
 <div dir=rtl>
 
 ```
+دالة  شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، عدد_الخيارات: صـحيح، خيارات: ...مؤشر[محرف]): مؤشر[سـياق]؛
 دالة  شغل_الخادم(منادي: مـنادى_الطلب، عدد_الخيارات: صـحيح، خيارات: ...مؤشر[محرف]): مؤشر[سـياق]؛
 ```
 
 </div>
 
 ```
+func startServer (callback: RequestCallback, userData: ptr, optsCount: Int, opts: ...CharsPtr): ptr[Context];
 func startServer (callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context];
 ```
 
 المعطيات:
 
 `منادي` (`callback`): المنادي الذي يقوم الخادم بتنفيذه.
+
+`بيانات_المستخدم` (`user_data`): بيانات مستخدم اختيارية تُمرر لاحقا إلى المناديات عند استلام طلب HTTP.
 
 `عدد_الخيارات` (`optsCount`): عدد الخيارات التي نريد ضبطها على هذا الخادم.
 
@@ -546,16 +554,20 @@ func startServer (callback: RequestCallback, optsCount: Int, opts: ...CharsPtr):
 <div dir=rtl>
 
 ```
+دالة  شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، منفذ: مؤشر[محرف]): مؤشر[سـياق]؛
 دالة  شغل_الخادم(منادي: مـنادى_الطلب، منفذ: مؤشر[محرف]): مؤشر[سـياق]؛
 ```
 
 </div>
 
 ```
+func startServer(callback: RequestCallback, userData: ptr, port: CharsPtr): ptr[Context];
 func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context];
 ```
 
 `منادي` (`callback`): المنادي الذي يقوم السيرفر بتنفيذه.
+
+`بيانات_المستخدم` (`user_data`): بيانات مستخدم اختيارية تُمرر لاحقا إلى المناديات عند استلام طلب HTTP.
 
 `منفذ` (`port`): المنفذ الذي سيستمع إليه السيرفر.
 
