@@ -71,6 +71,11 @@ module Http {
     class Connection {
     };
 
+    def WebSocketConnectCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Int];
+    def WebSocketReadyCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Void];
+    def WebSocketDataCallback: alias ptr[func (connection: ptr[Connection], bits: Int, data: CharsPtr, dataLen: Int, userData: ptr[Void]): Int];
+    def WebSocketCloseCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Void];
+
     @expname[mg_start]
     func startServer(callbacks: ptr[Callbacks], userData: ptr, options: ptr[CharsPtr]): ptr[Context];
 
@@ -146,4 +151,53 @@ module Http {
     func getVariable(
         data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVariable: CharsPtr, outVariableSize: Int
     ): Int;
+
+    @expname[mg_set_websocket_handler]
+    func setWebSocketHandler(
+        context: ptr[Context],
+        uri: CharsPtr,
+        connectHandler: WebSocketConnectCallback,
+        readyHandler: WebSocketReadyCallback,
+        dataHandler: WebSocketDataCallback,
+        closeHandler: WebSocketCloseCallback,
+        userData: ptr[Void]
+    ): Void;
+
+    @expname[mg_set_websocket_handler_with_subprotocols]
+    func setWebSocketHandlerWithSubprotocols(
+        context: ptr[Context],
+        uri: CharsPtr,
+        subprotocols: ptr[CharsPtr],
+        connectHandler: WebSocketConnectCallback,
+        readyHandler: WebSocketReadyCallback,
+        dataHandler: WebSocketDataCallback,
+        closeHandler: WebSocketCloseCallback,
+        userData: ptr[Void]
+    ): Void;
+
+    @expname[mg_websocket_write]
+    func writeWebSocket(connection: ptr[Connection], opcode: Int, data: CharsPtr, dataLen: Int): Int;
+
+    func setWebSocketHandler(
+        context: ptr[Context],
+        uri: CharsPtr,
+        connectHandler: WebSocketConnectCallback,
+        readyHandler: WebSocketReadyCallback,
+        dataHandler: WebSocketDataCallback,
+        closeHandler: WebSocketCloseCallback
+    ): Void {
+        setWebSocketHandler(context, uri, connectHandler, readyHandler, dataHandler, closeHandler, 0~cast[ptr[Void]]);
+    }
+
+    func writeWebSocketText(connection: ptr[Connection], data: CharsPtr, dataLen: Int): Int {
+        return writeWebSocket(connection, 1, data, dataLen);
+    }
+
+    func writeWebSocketBinary(connection: ptr[Connection], data: CharsPtr, dataLen: Int): Int {
+        return writeWebSocket(connection, 2, data, dataLen);
+    }
+
+    func closeWebSocket(connection: ptr[Connection]): Int {
+        return writeWebSocket(connection, 8, "", 0);
+    }
 };

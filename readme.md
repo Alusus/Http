@@ -1,7 +1,7 @@
 # HTTP
 [[عربي]](readme.ar.md)
 
-A library for creating HTTP servers using Alusus Language. This library is based on civetweb.
+A library for creating HTTP servers with WebSocket support using Alusus Language. This library is based on civetweb.
 
 ## Adding to the Project
 
@@ -64,6 +64,29 @@ module TestModule {
 
 TestModule.start();
 ```
+
+## WebSocket Support
+
+This library now includes comprehensive WebSocket support for real-time bidirectional communication. See the complete [WebSocket Documentation](websocket_documentation.md) for detailed information.
+
+### Quick WebSocket Example
+
+```alusus
+// Register WebSocket handler
+Http.setWebSocketHandler(
+    context,
+    "/websocket",
+    onConnect~ptr,
+    onReady~ptr,
+    onData~ptr,
+    onClose~ptr
+);
+
+// Send text message
+Http.writeWebSocketText(connection, "Hello WebSocket!", 16);
+```
+
+For a complete working example, see [websocket_server.alusus](Examples/websocket_server.alusus).
 
 ## Functions and Types
 

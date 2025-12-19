@@ -53,6 +53,11 @@
     }
 
   عرف اتـصال: لقب Connection؛
+
+    عرف منادى_اتصال_ويب_سوكت: لقب WebSocketConnectCallback؛
+    عرف منادى_استعداد_ويب_سوكت: لقب WebSocketReadyCallback؛
+    عرف منادى_بيانات_ويب_سوكت: لقب WebSocketDataCallback؛
+    عرف منادى_إغلاق_ويب_سوكت: لقب WebSocketCloseCallback؛
     
     عرف شغل_الخادم: لقب startServer؛
     عرف أوقف_الخادم: لقب stopServer؛
@@ -64,4 +69,11 @@
     عرف هات_الترويسة: لقب getHeader؛
     عرف هات_معلومات_الطلب: لقب getRequestInfo؛
     عرف هات_متغير: لقب getVariable؛
+
+    عرف ضع_معالج_ويب_سوكت: لقب setWebSocketHandler؛
+    عرف ضع_معالج_ويب_سوكت_مع_البروتوكولات_الفرعية: لقب setWebSocketHandlerWithSubprotocols؛
+    عرف اكتب_ويب_سوكت: لقب writeWebSocket؛
+    عرف اكتب_ويب_سوكت_نصي: لقب writeWebSocketText؛
+    عرف اكتب_ويب_سوكت_ثنائي: لقب writeWebSocketBinary؛
+    عرف أغلق_ويب_سوكت: لقب closeWebSocket؛
 }
