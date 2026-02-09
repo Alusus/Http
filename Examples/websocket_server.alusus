@@ -10,10 +10,10 @@ module WebSocketExample {
     func start() {
         def context: ptr[Http.Context] =
             Http.startServer(handleHttpRequest~ptr, {
-                "document_root", ".",
-                "listening_ports", "8080",
-                "websocket_timeout_ms", "3600000"
-            });
+            "document_root", ".",
+            "listening_ports", "8080",
+            "websocket_timeout_ms", "3600000"
+        });
 
         Http.setWebSocketHandler(
             context,
@@ -33,69 +33,66 @@ module WebSocketExample {
         Http.stopServer(context);
         Console.print("Server stopped. Press ENTER to exit.\n");
         Console.getChar();
-    };
-
-    func handleHttpRequest(connection: ptr[Http.Connection]): Int {
-    def req: ptr[Http.RequestInfo] = Http.getRequestInfo(connection);
-
-
-    if String.isEqual(req~cnt.localUri, "/websocket") {
-        return 0;
     }
 
+    func handleHttpRequest(connection: ptr[Http.Connection]): Int {
+        def req: ptr[Http.RequestInfo] = Http.getRequestInfo(connection);
 
-    if String.isEqual(req~cnt.localUri, "/") {
 
-        def page: CharsPtr =
-            "<!DOCTYPE html>\n"
-            "<html>\n"
-            "<head><meta charset=\"utf-8\"><title>WebSocket Test</title></head>\n"
-            "<body>\n"
-            "<h1>WebSocket Test</h1>\n"
-            "<div id=\"messages\"></div>\n"
-            "<input id=\"msg\" placeholder=\"Type message...\">\n"
-            "<button onclick=\"send()\">Send</button>\n"
-            "<script>\n"
-            "const ws = new WebSocket('ws://' + location.host + '/websocket');\n"
-            "const box = document.getElementById('messages');\n"
-            "const inp = document.getElementById('msg');\n"
-            "ws.onopen = () => add('Connected');\n"
-            "ws.onmessage = e => add('Server: ' + e.data);\n"
-            "ws.onclose = () => add('Connection closed');\n"
-            "function send(){\n"
-            "  if(inp.value){\n"
-            "    ws.send(inp.value);\n"
-            "    add('You: ' + inp.value);\n"
-            "    inp.value='';\n"
-            "  }\n"
-            "}\n"
-            "function add(t){\n"
-            "  let d=document.createElement('div');\n"
-            "  d.textContent=t;\n"
-            "  box.appendChild(d);\n"
-            "}\n"
-            "</script>\n"
-            "</body>\n"
-            "</html>";
+        if String.isEqual(req~cnt.localUri, "/websocket") {
+            return 0;
+        }
 
-        Http.print(connection, "HTTP/1.1 200 OK\r\n");
-        Http.print(connection, "Content-Type: text/html\r\n");
-        Http.print(
-            connection,
-            "Content-Length: %d\r\n\r\n",
-            String.getLength(page)
-        );
-        Http.print(connection, page);
+        if String.isEqual(req~cnt.localUri, "/") {
+            def page: CharsPtr =
+                "<!DOCTYPE html>\n"
+                "<html>\n"
+                "<head><meta charset=\"utf-8\"><title>WebSocket Test</title></head>\n"
+                "<body>\n"
+                "<h1>WebSocket Test</h1>\n"
+                "<div id=\"messages\"></div>\n"
+                "<input id=\"msg\" placeholder=\"Type message...\">\n"
+                "<button onclick=\"send()\">Send</button>\n"
+                "<script>\n"
+                "const ws = new WebSocket('ws://' + location.host + '/websocket');\n"
+                "const box = document.getElementById('messages');\n"
+                "const inp = document.getElementById('msg');\n"
+                "ws.onopen = () => add('Connected');\n"
+                "ws.onmessage = e => add('Server: ' + e.data);\n"
+                "ws.onclose = () => add('Connection closed');\n"
+                "function send(){\n"
+                "  if(inp.value){\n"
+                "    ws.send(inp.value);\n"
+                "    add('You: ' + inp.value);\n"
+                "    inp.value='';\n"
+                "  }\n"
+                "}\n"
+                "function add(t){\n"
+                "  let d=document.createElement('div');\n"
+                "  d.textContent=t;\n"
+                "  box.appendChild(d);\n"
+                "}\n"
+                "</script>\n"
+                "</body>\n"
+                "</html>";
+
+            Http.print(connection, "HTTP/1.1 200 OK\r\n");
+            Http.print(connection, "Content-Type: text/html\r\n");
+            Http.print(
+                connection,
+                "Content-Length: %d\r\n\r\n",
+                String.getLength(page)
+            );
+            Http.print(connection, page);
+
+            return 1;
+        }
+
+        Http.print(connection, "HTTP/1.1 404 Not Found\r\n");
+        Http.print(connection, "Content-Length: 9\r\n\r\nNot Found");
 
         return 1;
     }
-
-
-    Http.print(connection, "HTTP/1.1 404 Not Found\r\n");
-    Http.print(connection, "Content-Length: 9\r\n\r\nNot Found");
-
-    return 1;
-};
 
     func onWebSocketConnect(
         connection: ptr[Http.Connection],
@@ -103,7 +100,7 @@ module WebSocketExample {
     ): Int {
         Console.print("WebSocket client connected\n");
         return 0;
-    };
+    }
 
     func onWebSocketReady(
         connection: ptr[Http.Connection],
@@ -117,43 +114,42 @@ module WebSocketExample {
             msg,
             String.getLength(msg)
         );
-    };
-
-    func onWebSocketData(
-    connection: ptr[Http.Connection],
-    bits: Int,
-    data: CharsPtr,
-    dataLen: Int,
-    userData: ptr[Void]
-): Int {
-
-    if ((bits & 0x1) == 0) {
-        return 1;
     }
 
-    Console.print("Received: ");
-    Console.print(data, dataLen);
-    Console.print("\n");
+    func onWebSocketData(
+        connection: ptr[Http.Connection],
+        bits: Int,
+        data: CharsPtr,
+        dataLen: Int,
+        userData: ptr[Void]
+    ): Int {
+        if ((bits & 0x1) == 0) {
+            return 1;
+        }
 
-    def buffer: array[Char, 512];
-    String.assign(buffer~ptr, "Echo: ");
-    String.concat(buffer~ptr, data, dataLen);
+        Console.print("Received: ");
+        Console.print(data, dataLen);
+        Console.print("\n");
 
-    Http.writeWebSocketText(
-        connection,
-        buffer~ptr,
-        String.getLength(buffer~ptr)
-    );
+        def buffer: array[Char, 512];
+        String.assign(buffer~ptr, "Echo: ");
+        String.concat(buffer~ptr, data, dataLen);
 
-    return 1;
-};
+        Http.writeWebSocketText(
+            connection,
+            buffer~ptr,
+            String.getLength(buffer~ptr)
+        );
+
+        return 1;
+    }
 
     func onWebSocketClose(
         connection: ptr[Http.Connection],
         userData: ptr[Void]
     ): Void {
         Console.print("WebSocket client disconnected\n");
-    };
-};
+    }
+}
 
 WebSocketExample.start();

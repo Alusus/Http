@@ -8,12 +8,10 @@ module WebSocketChat {
 
     class Client {
         def conn: ptr[Http.Connection];
-    };
+    }
 
     def clients: array[Client, 32];
     def clientCount: Int = 0;
-
-
 
     func onWebSocketConnect(conn: ptr[Http.Connection], _: ptr[Void]): Int {
         clients(clientCount).conn = conn;
@@ -21,7 +19,7 @@ module WebSocketChat {
 
         Console.print("Client connected\n");
         return 0;
-    };
+    }
 
     func onWebSocketReady(conn: ptr[Http.Connection], _: ptr[Void]): Void {
         Http.writeWebSocketText(
@@ -29,7 +27,7 @@ module WebSocketChat {
             "Connected to broadcast chat",
             27
         );
-    };
+    }
 
     func onWebSocketData(
         conn: ptr[Http.Connection],
@@ -38,54 +36,45 @@ module WebSocketChat {
         len: Int,
         _: ptr[Void]
     ): Int {
-        if ((bits & 1) == 0) return 1;
+        if (bits & 1) == 0 return 1;
 
         def i: Int = 0;
-        def full_data : String ="";
-        while i < clientCount {
-        if (clients(i).conn == conn)
-            full_data = full_data + String.format("user : %i ",i+1) ;
-        i +=1;
+        while i < clientCount and clients(i).conn != conn {
+            ++i;
         }
-        full_data.append(data);
-        i=0;
-        len = full_data.getLength();
-        while i < clientCount {
+        def msg: String = String.format("user %i: %s", i + 1, String(data, len).buf);
+        for i = 0, i < clientCount, ++i {
             Http.writeWebSocketText(
                 clients(i).conn,
-                full_data.buf,
-                len
+                msg,
+                msg.getLength()
             );
-            i += 1;
         }
 
         return 1;
-    };
+    }
 
     func onWebSocketClose(conn: ptr[Http.Connection], _: ptr[Void]): Void {
         def i: Int = 0;
         while i < clientCount {
-            if (clients(i).conn == conn) {
-
+            if clients(i).conn == conn {
                 def j: Int = i;
                 while j < clientCount - 1 {
                     clients(j).conn = clients(j + 1).conn;
-                    j += 1;
+                    ++j;
                 }
 
-                clientCount -= 1;
+                --clientCount;
                 break;
             }
             i += 1;
         }
 
         Console.print("Client disconnected\n");
-    };
-
-
+    }
 
     func handleHttpRequest(conn: ptr[Http.Connection]): Int {
-        def req : ptr[Http.RequestInfo] = Http.getRequestInfo(conn);
+        def req: ptr[Http.RequestInfo] = Http.getRequestInfo(conn);
 
         if String.isEqual(req~cnt.localUri, "/websocket") return 0;
 
@@ -109,17 +98,16 @@ module WebSocketChat {
                 "</script></body></html>";
 
             Http.print(conn, "HTTP/1.1 200 OK\r\n");
-            Http.print(conn, "Content-Length: %d\r\n\r\n",
-                       String.getLength(html));
+            Http.print(conn, "Content-Length: %d\r\n\r\n", String.getLength(html));
             Http.print(conn, html);
             return 1;
         }
 
         return 1;
-    };
+    }
 
     func start() {
-        def ctx : ptr[Http.Context] = Http.startServer(handleHttpRequest~ptr, {
+        def ctx: ptr[Http.Context] = Http.startServer(handleHttpRequest~ptr, {
             "listening_ports", "8080"
         });
 
@@ -135,7 +123,7 @@ module WebSocketChat {
         Console.print("Server running on 8080\n");
         Console.getChar();
         Http.stopServer(ctx);
-    };
-};
+    }
+}
 
 WebSocketChat.start();
