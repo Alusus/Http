@@ -1,0 +1,141 @@
+import "Srl/Console.alusus";
+import "Srl/String.alusus";
+import "Apm.alusus";
+Apm.importFile("Alusus/Http");
+
+module WebSocketChat {
+    use Srl;
+
+    class Client {
+        def conn: ptr[Http.Connection];
+    };
+
+    def clients: array[Client, 32];
+    def clientCount: Int = 0;
+
+
+
+    func onWebSocketConnect(conn: ptr[Http.Connection], _: ptr[Void]): Int {
+        clients(clientCount).conn = conn;
+        clientCount += 1;
+
+        Console.print("Client connected\n");
+        return 0;
+    };
+
+    func onWebSocketReady(conn: ptr[Http.Connection], _: ptr[Void]): Void {
+        Http.writeWebSocketText(
+            conn,
+            "Connected to broadcast chat",
+            27
+        );
+    };
+
+    func onWebSocketData(
+        conn: ptr[Http.Connection],
+        bits: Int,
+        data: CharsPtr,
+        len: Int,
+        _: ptr[Void]
+    ): Int {
+        if ((bits & 1) == 0) return 1;
+
+        def i: Int = 0;
+        def full_data : String ="";
+        while i < clientCount {
+        if (clients(i).conn == conn)
+            full_data = full_data + String.format("user : %i ",i+1) ;
+        i +=1;
+        }
+        full_data.append(data);
+        i=0;
+        len = full_data.getLength();
+        while i < clientCount {
+            Http.writeWebSocketText(
+                clients(i).conn,
+                full_data.buf,
+                len
+            );
+            i += 1;
+        }
+
+        return 1;
+    };
+
+    func onWebSocketClose(conn: ptr[Http.Connection], _: ptr[Void]): Void {
+        def i: Int = 0;
+        while i < clientCount {
+            if (clients(i).conn == conn) {
+
+                def j: Int = i;
+                while j < clientCount - 1 {
+                    clients(j).conn = clients(j + 1).conn;
+                    j += 1;
+                }
+
+                clientCount -= 1;
+                break;
+            }
+            i += 1;
+        }
+
+        Console.print("Client disconnected\n");
+    };
+
+
+
+    func handleHttpRequest(conn: ptr[Http.Connection]): Int {
+        def req : ptr[Http.RequestInfo] = Http.getRequestInfo(conn);
+
+        if String.isEqual(req~cnt.localUri, "/websocket") return 0;
+
+        if String.isEqual(req~cnt.localUri, "/") {
+            def html: CharsPtr =
+                "<!DOCTYPE html><html><body>"
+                "<h2>Broadcast Chat</h2>"
+                "<input id='msg' placeholder='Message'>"
+                "<button onclick='send()'>Send</button>"
+                "<div id='box'></div>"
+                "<script>"
+                "const ws=new WebSocket('ws://'+location.host+'/websocket');"
+                "function send(){"
+                "ws.send(msg.value);"
+                "msg.value='';"
+                "}"
+                "ws.onmessage=e=>{"
+                "let d=document.createElement('div');"
+                "d.textContent=e.data;"
+                "box.appendChild(d);};"
+                "</script></body></html>";
+
+            Http.print(conn, "HTTP/1.1 200 OK\r\n");
+            Http.print(conn, "Content-Length: %d\r\n\r\n",
+                       String.getLength(html));
+            Http.print(conn, html);
+            return 1;
+        }
+
+        return 1;
+    };
+
+    func start() {
+        def ctx : ptr[Http.Context] = Http.startServer(handleHttpRequest~ptr, {
+            "listening_ports", "8080"
+        });
+
+        Http.setWebSocketHandler(
+            ctx,
+            "/websocket",
+            onWebSocketConnect~ptr,
+            onWebSocketReady~ptr,
+            onWebSocketData~ptr,
+            onWebSocketClose~ptr
+        );
+
+        Console.print("Server running on 8080\n");
+        Console.getChar();
+        Http.stopServer(ctx);
+    };
+};
+
+WebSocketChat.start();

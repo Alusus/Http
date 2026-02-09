@@ -15,7 +15,7 @@ module Http {
     }
 
     class Context{
-        def stopFlag: int; // Should we stop event loop
+
     };
 
     def RequestCallback: alias ptr[func (connection: ptr[Connection]): Int];
