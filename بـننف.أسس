@@ -52,12 +52,13 @@
         عرف قيمة: لقب value؛
     }
 
-  عرف اتـصال: لقب Connection؛
+    عرف اتـصال: لقب Connection؛
 
-    عرف منادى_اتصال_ويب_سوكت: لقب WebSocketConnectCallback؛
-    عرف منادى_استعداد_ويب_سوكت: لقب WebSocketReadyCallback؛
-    عرف منادى_بيانات_ويب_سوكت: لقب WebSocketDataCallback؛
-    عرف منادى_إغلاق_ويب_سوكت: لقب WebSocketCloseCallback؛
+    // أصناف ويب سوكت
+    عرف مـنادى_اتصال_ويب_سوكت: لقب WebSocketConnectCallback؛
+    عرف مـنادى_استعداد_ويب_سوكت: لقب WebSocketReadyCallback؛
+    عرف مـنادى_بيانات_ويب_سوكت: لقب WebSocketDataCallback؛
+    عرف مـنادى_إغلاق_ويب_سوكت: لقب WebSocketCloseCallback؛
     
     عرف شغل_الخادم: لقب startServer؛
     عرف أوقف_الخادم: لقب stopServer؛
@@ -70,10 +71,11 @@
     عرف هات_معلومات_الطلب: لقب getRequestInfo؛
     عرف هات_متغير: لقب getVariable؛
 
-    عرف ضع_معالج_ويب_سوكت: لقب setWebSocketHandler؛
-    عرف ضع_معالج_ويب_سوكت_مع_البروتوكولات_الفرعية: لقب setWebSocketHandlerWithSubprotocols؛
-    عرف اكتب_ويب_سوكت: لقب writeWebSocket؛
-    عرف اكتب_ويب_سوكت_نصي: لقب writeWebSocketText؛
-    عرف اكتب_ويب_سوكت_ثنائي: لقب writeWebSocketBinary؛
+    // دالات ويب سوكت
+    عرف حدد_معالج_ويب_سوكت: لقب setWebSocketHandler؛
+    عرف حدد_معالج_ويب_سوكت_مع_البروتوكولات_الفرعية: لقب setWebSocketHandlerWithSubprotocols؛
+    عرف اكتب_في_ويب_سوكت: لقب writeToWebSocket؛
+    عرف اكتب_نصا_في_ويب_سوكت: لقب writeTextToWebSocket؛
+    عرف اكتب_رقميا_في_ويب_سوكت: لقب writeBinaryToWebSocket؛
     عرف أغلق_ويب_سوكت: لقب closeWebSocket؛
 }

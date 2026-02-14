@@ -4,6 +4,7 @@ import "Srl/String.alusus";
 import "libcivetweb.so.1" or "libcivetweb.dylib";
 
 module Http {
+    use Srl;
     func getBuildDependencies(): Array[String] {
         return Array[String]({ String(getThisSourceDirectory[]) + preprocess {
             if String.isEqual(Process.platform, "macos") {
@@ -71,9 +72,12 @@ module Http {
     class Connection {
     };
 
+    // WebSocket Types
     def WebSocketConnectCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Int];
     def WebSocketReadyCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Void];
-    def WebSocketDataCallback: alias ptr[func (connection: ptr[Connection], bits: Int, data: CharsPtr, dataLen: Int, userData: ptr[Void]): Int];
+    def WebSocketDataCallback: alias ptr[func (
+        connection: ptr[Connection], opcode: Int, data: CharsPtr, dataLen: ArchWord, userData: ptr[Void]
+    ): Int];
     def WebSocketCloseCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Void];
 
     @expname[mg_start]
@@ -152,6 +156,8 @@ module Http {
         data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVariable: CharsPtr, outVariableSize: Int
     ): Int;
 
+    // WebSocket Funnctions
+
     @expname[mg_set_websocket_handler]
     func setWebSocketHandler(
         context: ptr[Context],
@@ -175,9 +181,6 @@ module Http {
         userData: ptr[Void]
     ): Void;
 
-    @expname[mg_websocket_write]
-    func writeWebSocket(connection: ptr[Connection], opcode: Int, data: CharsPtr, dataLen: Int): Int;
-
     func setWebSocketHandler(
         context: ptr[Context],
         uri: CharsPtr,
@@ -189,15 +192,22 @@ module Http {
         setWebSocketHandler(context, uri, connectHandler, readyHandler, dataHandler, closeHandler, 0~cast[ptr[Void]]);
     }
 
-    func writeWebSocketText(connection: ptr[Connection], data: CharsPtr, dataLen: Int): Int {
-        return writeWebSocket(connection, 1, data, dataLen);
+    @expname[mg_websocket_write]
+    func writeToWebSocket(connection: ptr[Connection], opcode: Int, data: CharsPtr, dataLen: ArchWord): Int;
+
+    func writeTextToWebSocket(connection: ptr[Connection], data: CharsPtr, dataLen: ArchWord): Int {
+        return writeToWebSocket(connection, 1, data, dataLen);
     }
 
-    func writeWebSocketBinary(connection: ptr[Connection], data: CharsPtr, dataLen: Int): Int {
-        return writeWebSocket(connection, 2, data, dataLen);
+    func writeTextToWebSocket(connection: ptr[Connection], data: CharsPtr): Int {
+        return writeToWebSocket(connection, 1, data, String.getLength(data));
+    }
+
+    func writeBinaryToWebSocket(connection: ptr[Connection], data: CharsPtr, dataLen: ArchWord): Int {
+        return writeToWebSocket(connection, 2, data, dataLen);
     }
 
     func closeWebSocket(connection: ptr[Connection]): Int {
-        return writeWebSocket(connection, 8, "", 0);
+        return writeToWebSocket(connection, 8, "", 0);
     }
-};
+}

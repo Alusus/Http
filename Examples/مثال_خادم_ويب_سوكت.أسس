@@ -10,77 +10,81 @@
     دالة ابدأ() {
         عرف سياق: مؤشر[بـننف.سـياق] = بـننف.شغل_الخادم(معالج_طلب_بننف~مؤشر، "8080")؛
         
-        بـننف.ضع_معالج_ويب_سوكت(
+        بـننف.حدد_معالج_ويب_سوكت(
             سياق،
-            "/websocket"،
+            ‏"/websocket"،
             عند_اتصال_ويب_سوكت~مؤشر،
             عند_استعداد_ويب_سوكت~مؤشر،
             عند_بيانات_ويب_سوكت~مؤشر،
             عند_إغلاق_ويب_سوكت~مؤشر
         )؛
 
-        طـرفية.اطبع("خادم مع دعم WebSocket يستمع على المنفذ 8080\ن")؛
-        طـرفية.اطبع("HTTP: http://localhost:8080/\ن")؛
-        طـرفية.اطبع("WebSocket: ws://localhost:8080/websocket\ن")؛
+        طـرفية.اطبع("خادم مع دعم WebSocket يستمع على المنفذ 8080\ج")؛
+        طـرفية.اطبع("HTTP: http://localhost:8080/\ج")؛
+        طـرفية.اطبع("WebSocket: ws://localhost:8080/websocket\ج")؛
         طـرفية.اطبع("اضغط زر الإدخال لإغلاق الخادم.")؛
         طـرفية.أدخل_محرفا()؛
         بـننف.أوقف_الخادم(سياق)؛
-        طـرفية.اطبع("أُغلق الخادم.\ناضغط زر الإدخال للخروج.")؛
+        طـرفية.اطبع("أُغلق الخادم.\جاضغط زر الإدخال للخروج.")؛
         طـرفية.أدخل_محرفا()؛
     }
 
-    دالة معالج_طلب_بننف(اتصال: مؤشر[بـننف.اتـصال]): صحيح {
+    دالة معالج_طلب_بننف(اتصال: مؤشر[بـننف.اتـصال]): صـحيح {
         عرف معلومات_الطلب: مؤشر[بـننف.مـعلومات_الطلب] = بـننف.هات_معلومات_الطلب(اتصال)؛
         
-        إذا نـص.متطابق(معلومات_الطلب~محتوى.المعرف_المحلي، "/") {
-            عرف محتوى_الصفحة: مؤشر[محرف] = 
-                "<!DOCTYPE html>\ن"
-                "<html>\ن"
-                "<head><title>اختبار WebSocket</title></head>\ن"
-                "<body>\ن"
-                "    <h1>صفحة اختبار WebSocket</h1>\ن"
-                "    <div id=\"messages\"></div>\ن"
-                "    <input type=\"text\" id=\"messageInput\" placeholder=\"اكتب رسالة...\">\ن"
-                "    <button onclick=\"sendMessage()\">إرسال</button>\ن"
-                "    <script>\ن"
-                "        const ws = new WebSocket('ws://localhost:8080/websocket');\ن"
-                "        const messages = document.getElementById('messages');\ن"
-                "        const input = document.getElementById('messageInput');\ن"
-                "\ن"
-                "        ws.onopen = function(event) {\ن"
-                "            addMessage('تم الاتصال بخادم WebSocket');\ن"
-                "        };\ن"
-                "\ن"
-                "        ws.onmessage = function(event) {\ن"
-                "            addMessage('الخادم: ' + event.data);\ن"
-                "        };\ن"
-                "\ن"
-                "        ws.onclose = function(event) {\ن"
-                "            addMessage('تم إغلاق الاتصال');\ن"
-                "        };\ن"
-                "\ن"
-                "        function sendMessage() {\ن"
-                "            const message = input.value;\ن"
-                "            if (message) {\ن"
-                "                ws.send(message);\ن"
-                "                addMessage('أنت: ' + message);\ن"
-                "                input.value = '';\ن"
-                "            }\ن"
-                "        }\ن"
-                "\ن"
-                "        function addMessage(message) {\ن"
-                "            const div = document.createElement('div');\ن"
-                "            div.textContent = message;\ن"
-                "            messages.appendChild(div);\ن"
-                "        }\ن"
-                "\ن"
-                "        input.addEventListener('keypress', function(e) {\ن"
-                "            if (e.key === 'Enter') {\ن"
-                "                sendMessage();\ن"
-                "            }\ن"
-                "        });\ن"
-                "    </script>\ن"
-                "</body>\ن"
+        إذا نـص.أمتطابق(معلومات_الطلب~محتوى.المعرف_المحلي، "/websocket") {
+            أرجع 0؛
+        }
+
+        إذا نـص.أمتطابق(معلومات_الطلب~محتوى.المعرف_المحلي، "/") {
+            عرف محتوى_الصفحة: مـؤشر_محارف =
+                "<!DOCTYPE html>\n"
+                "<html>\n"
+                "<head><title>اختبار WebSocket</title></head>\n"
+                "<body dir=rtl>\n"
+                "    <h1>صفحة اختبار WebSocket</h1>\n"
+                "    <div id=\"messages\"></div>\n"
+                "    <input type=\"text\" id=\"messageInput\" placeholder=\"اكتب رسالة...\">\n"
+                "    <button onclick=\"sendMessage()\">إرسال</button>\n"
+                "    <script>\n"
+                "        const ws = new WebSocket('ws://localhost:8080/websocket');\n"
+                "        const messages = document.getElementById('messages');\n"
+                "        const input = document.getElementById('messageInput');\n"
+                "\n"
+                "        ws.onopen = function(event) {\n"
+                "            addMessage('تم الاتصال بخادم WebSocket');\n"
+                "        };\n"
+                "\n"
+                "        ws.onmessage = function(event) {\n"
+                "            addMessage('الخادم: ' + event.data);\n"
+                "        };\n"
+                "\n"
+                "        ws.onclose = function(event) {\n"
+                "            addMessage('تم إغلاق الاتصال');\n"
+                "        };\n"
+                "\n"
+                "        function sendMessage() {\n"
+                "            const message = input.value;\n"
+                "            if (message) {\n"
+                "                ws.send(message);\n"
+                "                addMessage('أنت: ' + message);\n"
+                "                input.value = '';\n"
+                "            }\n"
+                "        }\n"
+                "\n"
+                "        function addMessage(message) {\n"
+                "            const div = document.createElement('div');\n"
+                "            div.textContent = message;\n"
+                "            messages.appendChild(div);\n"
+                "        }\n"
+                "\n"
+                "        input.addEventListener('keypress', function(e) {\n"
+                "            if (e.key === 'Enter') {\n"
+                "                sendMessage();\n"
+                "            }\n"
+                "        });\n"
+                "    </script>\n"
+                "</body>\n"
                 "</html>"؛
             
             بـننف.اطبع(اتصال، "HTTP/1.1 200 OK\r\n")؛
@@ -97,31 +101,39 @@
         أرجع 1؛
     }
 
-    دالة عند_اتصال_ويب_سوكت(اتصال: مؤشر[بـننف.اتـصال]، بيانات_المستخدم: مؤشر[فراغ]): صحيح {
-        طـرفية.اطبع("عميل WebSocket اتصل\ن")؛
+    دالة عند_اتصال_ويب_سوكت(اتصال: مؤشر[بـننف.اتـصال]، بيانات_المستخدم: مؤشر[فـراغ]): صـحيح {
+        طـرفية.اطبع("عميل WebSocket اتصل\n")؛
         أرجع 0؛
     }
 
-    دالة عند_استعداد_ويب_سوكت(اتصال: مؤشر[بـننف.اتـصال]، بيانات_المستخدم: مؤشر[فراغ]): فراغ {
-        طـرفية.اطبع("اتصال WebSocket جاهز\ن")؛
-        بـننف.اكتب_ويب_سوكت_نصي(اتصال، "مرحباً بك في خادم WebSocket!"، 39)؛
+    دالة عند_استعداد_ويب_سوكت(اتصال: مؤشر[بـننف.اتـصال]، بيانات_المستخدم: مؤشر[فـراغ]): فـراغ {
+        طـرفية.اطبع("اتصال WebSocket جاهز\n")؛
+        بـننف.اكتب_نصا_في_ويب_سوكت(اتصال، "مرحباً بك في خادم WebSocket!")؛
     }
 
-    دالة عند_بيانات_ويب_سوكت(اتصال: مؤشر[بـننف.اتـصال]، أجزاء: صحيح، بيانات: مؤشر[محرف]، طول_البيانات: صحيح، بيانات_المستخدم: مؤشر[فراغ]): صحيح {
+    دالة عند_بيانات_ويب_سوكت(
+        اتصال: مؤشر[بـننف.اتـصال]،
+        رمز_العملية: صـحيح،
+        بيانات: مـؤشر_محارف،
+        طول_البيانات: طـبيعي_متكيف،
+        بيانات_المستخدم: مؤشر[فـراغ]
+    ): صـحيح {
+        إذا (رمز_العملية & 1) == 0 ارجع 1؛
+
         طـرفية.اطبع("تم استلام رسالة WebSocket: ")؛
         طـرفية.اطبع(بيانات، طول_البيانات)؛
-        طـرفية.اطبع("\ن")؛
+        طـرفية.اطبع("\n")؛
         
-        عرف رد: مصفوفة[محرف، 256]؛
+        عرف رد: مصفوفة[مـحرف، 256]؛
         نـص.عيّن(رد~مؤشر، "صدى: ")؛
-        نـص.الحق(رد~مؤشر، بيانات، طول_البيانات)؛
+        نـص.سلسل(رد~مؤشر، بيانات، طول_البيانات)؛
         
-        بـننف.اكتب_ويب_سوكت_نصي(اتصال، رد~مؤشر، نـص.هات_الطول(رد~مؤشر))؛
+        بـننف.اكتب_نصا_في_ويب_سوكت(اتصال، رد~مؤشر)؛
         أرجع 1؛
     }
 
-    دالة عند_إغلاق_ويب_سوكت(اتصال: مؤشر[بـننف.اتـصال]، بيانات_المستخدم: مؤشر[فراغ]): فراغ {
-        طـرفية.اطبع("عميل WebSocket انقطع\ن")؛
+    دالة عند_إغلاق_ويب_سوكت(اتصال: مؤشر[بـننف.اتـصال]، بيانات_المستخدم: مؤشر[فـراغ]): فـراغ {
+        طـرفية.اطبع("عميل WebSocket انقطع\n")؛
     }
 }
 

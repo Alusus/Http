@@ -1,5 +1,9 @@
 # WebSocket Support Documentation
 
+[[عربي]](websocket_documentation.ar.md)
+
+[[Back]](readme.md)
+
 ## Overview
 
 The Alusus HTTP module now includes comprehensive WebSocket support, built on top of the CivetWeb library. WebSockets provide full-duplex communication channels over a single TCP connection, enabling real-time bidirectional communication between clients and servers.
@@ -85,9 +89,9 @@ Same as `setWebSocketHandler` but with support for WebSocket subprotocols.
 
 ## Message Sending Functions
 
-### writeWebSocket
+### writeToWebSocket
 ```alusus
-func writeWebSocket(connection: ptr[Connection], opcode: Int, data: CharsPtr, dataLen: Int): Int;
+func writeToWebSocket(connection: ptr[Connection], opcode: Int, data: CharsPtr, dataLen: Int): Int;
 ```
 Send raw WebSocket frame with specified opcode.
 
@@ -98,15 +102,15 @@ Send raw WebSocket frame with specified opcode.
 - `9`: Ping frame
 - `10`: Pong frame
 
-### writeWebSocketText
+### writeTextToWebSocket
 ```alusus
-func writeWebSocketText(connection: ptr[Connection], data: CharsPtr, dataLen: Int): Int;
+func writeTextToWebSocket(connection: ptr[Connection], data: CharsPtr, dataLen: Int): Int;
 ```
 Send text message to WebSocket client.
 
-### writeWebSocketBinary
+### writeBinaryToWebSocket
 ```alusus
-func writeWebSocketBinary(connection: ptr[Connection], data: CharsPtr, dataLen: Int): Int;
+func writeBinaryToWebSocket(connection: ptr[Connection], data: CharsPtr, dataLen: Int): Int;
 ```
 Send binary message to WebSocket client.
 
@@ -147,6 +151,9 @@ module WebSocketExample {
     };
 
     func handleHttpRequest(connection: ptr[Http.Connection]): Int {
+        def req: ptr[Http.RequestInfo] = Http.getRequestInfo(connection);
+        if String.isEqual(req~cnt.localUri, "/websocket") return 0;
+
         // Handle regular HTTP requests
         Http.print(connection, "HTTP/1.1 200 OK\r\n");
         Http.print(connection, "Content-Type: text/html\r\n\r\n");
@@ -161,7 +168,7 @@ module WebSocketExample {
 
     func onReady(connection: ptr[Http.Connection], userData: ptr[Void]): Void {
         Console.print("WebSocket ready\n");
-        Http.writeWebSocketText(connection, "Welcome!", 8);
+        Http.writeTextToWebSocket(connection, "Welcome!", 8);
     };
 
     func onData(connection: ptr[Http.Connection], bits: Int, data: CharsPtr, dataLen: Int, userData: ptr[Void]): Int {
@@ -171,7 +178,7 @@ module WebSocketExample {
             Console.print("\n");
             
             // Echo message back
-            Http.writeWebSocketText(connection, data, dataLen);
+            Http.writeTextToWebSocket(connection, data, dataLen);
         }
         return 1;
     };
@@ -230,3 +237,4 @@ ws.onerror = function(error) {
 - Add logging in callback functions to trace connection lifecycle
 - Check server logs for handshake and connection errors
 - Verify that the CivetWeb library has WebSocket support compiled in
+

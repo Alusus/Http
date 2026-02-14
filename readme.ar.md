@@ -1,4 +1,5 @@
 # HTTP
+
 [[English]](readme.md)
 
 مكتبة لإنشاء خوادم بروتوكول نقل النص الفائق (HTTP) مع دعم WebSocket بلغة الأسس. تعتمد هذه المكتبة على مكتبة civetweb.
@@ -132,7 +133,7 @@ TestModule.start();
 
 ## دعم WebSocket
 
-تتضمن هذه المكتبة الآن دعماً شاملاً لـ WebSocket للتواصل الثنائي الفوري. راجع [توثيق WebSocket الكامل](websocket_documentation_arabic.md) للحصول على معلومات مفصلة.
+تتضمن هذه المكتبة الآن دعماً شاملاً لـ WebSocket للتواصل الثنائي الفوري. راجع [توثيق WebSocket الكامل](websocket_documentation.ar.md) للحصول على معلومات مفصلة.
 
 ### مثال سريع لـ WebSocket
 
@@ -140,9 +141,9 @@ TestModule.start();
 
 ```
 // تسجيل معالج WebSocket
-بـننف.ضع_معالج_ويب_سوكت(
+بـننف.حدد_معالج_ويب_سوكت(
     سياق,
-    "/websocket",
+    ‏"/websocket",
     عند_الاتصال~مؤشر,
     عند_الاستعداد~مؤشر,
     عند_البيانات~مؤشر,
@@ -150,7 +151,7 @@ TestModule.start();
 )؛
 
 // إرسال رسالة نصية
-بـننف.اكتب_ويب_سوكت_نصي(اتصال, "مرحباً WebSocket!", 19)؛
+بـننف.اكتب_نصا_في_ويب_سوكت(اتصال, "مرحباً WebSocket!")؛
 ```
 
 </div>
@@ -167,10 +168,10 @@ Http.setWebSocketHandler(
 );
 
 // Send text message
-Http.writeWebSocketText(connection, "Hello WebSocket!", 16);
+Http.writeTextToWebSocket(connection, "Hello WebSocket!");
 ```
 
-للحصول على مثال كامل يعمل، راجع [websocket_server.alusus](Examples/websocket_server.alusus).
+راجع مجد الأمثلة للحصول على مثال كامل.
 
 ## الأصناف والوظائف
 

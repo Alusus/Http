@@ -22,21 +22,17 @@ module WebSocketChat {
     }
 
     func onWebSocketReady(conn: ptr[Http.Connection], _: ptr[Void]): Void {
-        Http.writeWebSocketText(
-            conn,
-            "Connected to broadcast chat",
-            27
-        );
+        Http.writeTextToWebSocket(conn, "Connected to chat");
     }
 
     func onWebSocketData(
         conn: ptr[Http.Connection],
-        bits: Int,
+        opcode: Int,
         data: CharsPtr,
-        len: Int,
+        len: ArchWord,
         _: ptr[Void]
     ): Int {
-        if (bits & 1) == 0 return 1;
+        if (opcode & 1) == 0 return 1;
 
         def i: Int = 0;
         while i < clientCount and clients(i).conn != conn {
@@ -44,11 +40,7 @@ module WebSocketChat {
         }
         def msg: String = String.format("user %i: %s", i + 1, String(data, len).buf);
         for i = 0, i < clientCount, ++i {
-            Http.writeWebSocketText(
-                clients(i).conn,
-                msg,
-                msg.getLength()
-            );
+            Http.writeTextToWebSocket(clients(i).conn, msg);
         }
 
         return 1;

@@ -109,21 +109,17 @@ module WebSocketExample {
         Console.print("WebSocket ready\n");
 
         def msg: CharsPtr = "Welcome to the WebSocket server!";
-        Http.writeWebSocketText(
-            connection,
-            msg,
-            String.getLength(msg)
-        );
+        Http.writeTextToWebSocket(connection, msg);
     }
 
     func onWebSocketData(
         connection: ptr[Http.Connection],
-        bits: Int,
+        opcode: Int,
         data: CharsPtr,
-        dataLen: Int,
+        dataLen: ArchWord,
         userData: ptr[Void]
     ): Int {
-        if ((bits & 0x1) == 0) {
+        if ((opcode & 0x1) == 0) {
             return 1;
         }
 
@@ -135,11 +131,7 @@ module WebSocketExample {
         String.assign(buffer~ptr, "Echo: ");
         String.concat(buffer~ptr, data, dataLen);
 
-        Http.writeWebSocketText(
-            connection,
-            buffer~ptr,
-            String.getLength(buffer~ptr)
-        );
+        Http.writeTextToWebSocket(connection, buffer~ptr);
 
         return 1;
     }
