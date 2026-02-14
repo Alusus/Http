@@ -1,7 +1,8 @@
 # HTTP
+
 [[English]](readme.md)
 
-مكتبة لإنشاء خوادم بروتوكول نقل النص الفائق (HTTP) بلغة الأسس. تعتمد هذه المكتبة هلى مكتبة civetweb.
+مكتبة لإنشاء خوادم بروتوكول نقل النص الفائق (HTTP) مع دعم WebSocket بلغة الأسس. تعتمد هذه المكتبة على مكتبة civetweb.
 
 ## الإضافة إلى المشروع
 
@@ -129,6 +130,48 @@ module TestModule {
 
 TestModule.start();
 ```
+
+## دعم WebSocket
+
+تتضمن هذه المكتبة الآن دعماً شاملاً لـ WebSocket للتواصل الثنائي الفوري. راجع [توثيق WebSocket الكامل](websocket_documentation.ar.md) للحصول على معلومات مفصلة.
+
+### مثال سريع لـ WebSocket
+
+<div dir=rtl>
+
+```
+// تسجيل معالج WebSocket
+بـننف.حدد_معالج_ويب_سوكت(
+    سياق,
+    ‏"/websocket",
+    عند_الاتصال~مؤشر,
+    عند_الاستعداد~مؤشر,
+    عند_البيانات~مؤشر,
+    عند_الإغلاق~مؤشر
+)؛
+
+// إرسال رسالة نصية
+بـننف.اكتب_نصا_في_ويب_سوكت(اتصال, "مرحباً WebSocket!")؛
+```
+
+</div>
+
+```alusus
+// Register WebSocket handler
+Http.setWebSocketHandler(
+    context,
+    "/websocket",
+    onConnect~ptr,
+    onReady~ptr,
+    onData~ptr,
+    onClose~ptr
+);
+
+// Send text message
+Http.writeTextToWebSocket(connection, "Hello WebSocket!");
+```
+
+راجع مجد الأمثلة للحصول على مثال كامل.
 
 ## الأصناف والوظائف
 
@@ -850,4 +893,12 @@ func getVariable(
 تعند عدم القدرة على إيجاد المتغير، القيمة -1.
 
 عند عدم القدرة على التخزين في الصوان، القيمة -2.
+
+---
+
+## الرخصة
+
+حقوق النشر © 2026 سرمد خالد عبد الله
+
+هذا المشروع مرخص بموجب رخصة غنو العمومية الصغرى الإصدار 3.0 (LGPL-3.0). راجع ملفات `COPYING` و `COPYING.LESSER` للحصول على التفاصيل.
 

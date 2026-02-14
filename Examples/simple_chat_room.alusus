@@ -1,0 +1,140 @@
+/*
+ * Simple web socket based chat example
+ *
+ * Copyright (C) 2026 Sarmad Abdullah
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, see <https://www.gnu.org/licenses/>.
+ */
+
+import "Srl/Console.alusus";
+import "Srl/String.alusus";
+import "Apm.alusus";
+Apm.importFile("Alusus/Http");
+
+module WebSocketChat {
+    use Srl;
+
+    class Client {
+        def conn: ptr[Http.Connection];
+    }
+
+    def clients: array[Client, 32];
+    def clientCount: Int = 0;
+
+    func onWebSocketConnect(conn: ptr[Http.Connection], _: ptr[Void]): Int {
+        clients(clientCount).conn = conn;
+        clientCount += 1;
+
+        Console.print("Client connected\n");
+        return 0;
+    }
+
+    func onWebSocketReady(conn: ptr[Http.Connection], _: ptr[Void]): Void {
+        Http.writeTextToWebSocket(conn, "Connected to chat");
+    }
+
+    func onWebSocketData(
+        conn: ptr[Http.Connection],
+        opcode: Int,
+        data: CharsPtr,
+        len: ArchWord,
+        _: ptr[Void]
+    ): Int {
+        if (opcode & 1) == 0 return 1;
+
+        def i: Int = 0;
+        while i < clientCount and clients(i).conn != conn {
+            ++i;
+        }
+        def msg: String = String.format("user %i: %s", i + 1, String(data, len).buf);
+        for i = 0, i < clientCount, ++i {
+            Http.writeTextToWebSocket(clients(i).conn, msg);
+        }
+
+        return 1;
+    }
+
+    func onWebSocketClose(conn: ptr[Http.Connection], _: ptr[Void]): Void {
+        def i: Int = 0;
+        while i < clientCount {
+            if clients(i).conn == conn {
+                def j: Int = i;
+                while j < clientCount - 1 {
+                    clients(j).conn = clients(j + 1).conn;
+                    ++j;
+                }
+
+                --clientCount;
+                break;
+            }
+            i += 1;
+        }
+
+        Console.print("Client disconnected\n");
+    }
+
+    func handleHttpRequest(conn: ptr[Http.Connection]): Int {
+        def req: ptr[Http.RequestInfo] = Http.getRequestInfo(conn);
+
+        if String.isEqual(req~cnt.localUri, "/websocket") return 0;
+
+        if String.isEqual(req~cnt.localUri, "/") {
+            def html: CharsPtr =
+                "<!DOCTYPE html><html><body>"
+                "<h2>Broadcast Chat</h2>"
+                "<input id='msg' placeholder='Message'>"
+                "<button onclick='send()'>Send</button>"
+                "<div id='box'></div>"
+                "<script>"
+                "const ws=new WebSocket('ws://'+location.host+'/websocket');"
+                "function send(){"
+                "ws.send(msg.value);"
+                "msg.value='';"
+                "}"
+                "ws.onmessage=e=>{"
+                "let d=document.createElement('div');"
+                "d.textContent=e.data;"
+                "box.appendChild(d);};"
+                "</script></body></html>";
+
+            Http.print(conn, "HTTP/1.1 200 OK\r\n");
+            Http.print(conn, "Content-Length: %d\r\n\r\n", String.getLength(html));
+            Http.print(conn, html);
+            return 1;
+        }
+
+        return 1;
+    }
+
+    func start() {
+        def ctx: ptr[Http.Context] = Http.startServer(handleHttpRequest~ptr, {
+            "listening_ports", "8080"
+        });
+
+        Http.setWebSocketHandler(
+            ctx,
+            "/websocket",
+            onWebSocketConnect~ptr,
+            onWebSocketReady~ptr,
+            onWebSocketData~ptr,
+            onWebSocketClose~ptr
+        );
+
+        Console.print("Server running on 8080\n");
+        Console.getChar();
+        Http.stopServer(ctx);
+    }
+}
+
+WebSocketChat.start();
