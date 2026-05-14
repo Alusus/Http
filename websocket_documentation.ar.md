@@ -245,7 +245,7 @@ func closeWebSocket(connection: ptr[Connection]): Int;
 اشمل "مـتم/طـرفية.أسس"؛
 اشمل "مـتم/نـص.أسس"؛
 اشمل "مـحا"؛
-مـحا.اشمل_ملف("Alusus/Http"، "بـننت.أسس")؛
+مـحا.اشمل_حزمة("Alusus/Http@0.3"، "بـننت.أسس")؛
 
 وحدة مـثال_ويب_سوكت {
     استخدم مـتم؛
@@ -324,7 +324,7 @@ func closeWebSocket(connection: ptr[Connection]): Int;
 import "Srl/Console.alusus";
 import "Srl/String.alusus";
 import "Apm.alusus";
-Apm.importFile("Alusus/Http");
+Apm.importPackage("Alusus/Http@0.3");
 
 module WebSocketExample {
     use Srl;

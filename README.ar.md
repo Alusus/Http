@@ -12,14 +12,14 @@
 
 ```
 اشمل "مـحا"؛
-مـحا.اشمل_ملف("Alusus/Http"، "بـننت.أسس")؛
+مـحا.اشمل_حزمة("Alusus/Http@0.3"، "بـننت.أسس")؛
 ```
 
 </div>
 
 ```
 import "Apm.alusus";
-Apm.importFile("Alusus/Http");
+Apm.importPackage("Alusus/Http@0.3");
 ```
 
 ## مثال
@@ -31,7 +31,7 @@ Apm.importFile("Alusus/Http");
 اشمل "مـتم/نـص.أسس"؛
 اشمل "مـتم/ذاكـرة.أسس"؛
 اشمل "مـحا"؛
-مـحا.اشمل_ملف("Alusus/Http"، "بـننت.أسس")؛
+مـحا.اشمل_حزمة("Alusus/Http@0.3"، "بـننت.أسس")؛
 
 وحدة أخـتبار_الوحدة {
     استخدم مـتم؛
@@ -85,7 +85,7 @@ import "Srl/Console.alusus";
 import "Srl/String.alusus";
 import "Srl/Memory.alusus";
 import "Apm.alusus";
-Apm.importFile("Alusus/Http");
+Apm.importPackage("Alusus/Http@0.3");
 
 module TestModule {
     use Srl;

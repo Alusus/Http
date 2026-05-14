@@ -10,7 +10,7 @@ You can add it to the project using APM:
 
 ```
 import "Apm.alusus";
-Apm.importFile("Alusus/Http");
+Apm.importPackage("Alusus/Http@0.3");
 ```
 
 ## Example
@@ -20,7 +20,7 @@ import "Srl/Console.alusus";
 import "Srl/String.alusus";
 import "Srl/Memory.alusus";
 import "Apm.alusus";
-Apm.importFile("Alusus/Http");
+Apm.importPackage("Alusus/Http@0.3");
 
 module TestModule {
     use Srl;

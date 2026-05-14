@@ -126,7 +126,7 @@ Close WebSocket connection gracefully.
 import "Srl/Console.alusus";
 import "Srl/String.alusus";
 import "Apm.alusus";
-Apm.importFile("Alusus/Http");
+Apm.importPackage("Alusus/Http@0.3");
 
 module WebSocketExample {
     use Srl;
