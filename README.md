@@ -72,7 +72,7 @@ This library now includes comprehensive WebSocket support for real-time bidirect
 
 ### Quick WebSocket Example
 
-```alusus
+```
 // Register WebSocket handler
 Http.setWebSocketHandler(
     context,
@@ -100,7 +100,12 @@ class Context{
 ```
 This class holds the information about the context.
 
-`stopFlag`: Whether to stop the event loop.
+#### stopFlag
+
+```
+def stopFlag: int
+```
+Whether to stop the event loop.
 
 ### Callbacks
 
@@ -118,61 +123,94 @@ class Callbacks{
     def initThread: ptr[func (context: ptr[Context], threadType: Int): Void];
 };
 ```
-
 This class holds the main callbacks that can be used with http protocol.
-Each callback is a poiner to a function that server execute.
+Each callback is a pointer to a function that the server executes.
 
-**`beginRequest`**: The server calls it when starting a request.
+#### beginRequest
 
-Return value:
+```
+def beginRequest: RequestCallback
+```
+The server calls it when starting a request.
 
 * `0`: if the request was not processed.
+* `1` ~ `99`: server let the function process the request.
 
-* `1` ~ `99`: server let the function process the request
+#### endRequest
 
-**`endRequest`**: Called by the server when a request on a given connection ends.
+```
+def endRequest: ptr[func (connection: ptr[Connection], replyStatusCode: Int)]
+```
+Called by the server when a request on a given connection ends.
 
-**`logMessage`**: Used to log a message on a given connection.
+#### logMessage
 
-Return value:
+```
+def logMessage: ptr[func (connection: ptr[Connection], message: CharsPtr): Int]
+```
+Used to log a message on a given connection.
 
 * `0`: The server should call the default routine to log the message.
-
 * Non-zero value: Message logging is done by the callback and default logger shouldn't be called.
 
-**`logAccess`**: Used to log an access message on a given connection.
+#### logAccess
 
-Return value:
+```
+def logAccess: ptr[func (connection: ptr[Connection], message: CharsPtr): Int]
+```
+Used to log an access message on a given connection.
 
 * `0`: The server should call the default logger.
-
 * Non-zero value: The server should not call the default logger.
 
-**`initSsl`**: Called when initializing SSL.
+#### initSsl
 
-Return value:
+```
+def initSsl: ptr[func (sslContext: ptr[Void], userData: ptr[Void]): Int]
+```
+Called when initializing SSL.
 
 * `0`: Server should configure SSL certificate.
-
 * `1`: SSL certificate is configured and the server should do nothing.
-
 * `-1`: SSL initialization failed.
 
-**`connectionClose`**: CAlled when a given connection is closed.
+#### connectionClose
 
-**`httpError`**: Called when an error occurs on a given connection with the status and a message.
+```
+def connectionClose: ptr[func (connection: ptr[Connection]): Void]
+```
+Called when a given connection is closed.
 
-Return value:
+#### httpError
+
+```
+def httpError: ptr[func (connection: ptr[Connection], status: Int, msg: ptr[array[Char]]): Int]
+```
+Called when an error occurs on a given connection with the status and a message.
 
 * `0` when the function sends the error page.
-
 * Non-zero value when the function does not send the error page and server should do that instead.
 
-**`initContext`**: Called to initialize the context of a given thread.
+#### initContext
 
-**`exitContext`** Called to exit the context.
+```
+def initContext: ptr[func (context: ptr[Context]): Void]
+```
+Called to initialize the context of a given thread.
 
-**`initThread`** Called to intialize a thread with a given context, for a given type.
+#### exitContext
+
+```
+def exitContext: ptr[func (context: ptr[Context]): Void]
+```
+Called to exit the context.
+
+#### initThread
+
+```
+def initThread: ptr[func (context: ptr[Context], threadType: Int): Void]
+```
+Called to initialize a thread with a given context, for a given type.
 
 ### RequestInfo
 
@@ -194,35 +232,105 @@ class RequestInfo {
     def httpHeaders: array[Header, 64];
 };
 ```
-This class holds the information about a request. 
+This class holds the information about a request.
 
-`requestMethod`: Request type, for example: GET.
+#### requestMethod
 
-`requestUri`: The URI of the request.
+```
+def requestMethod: CharsPtr
+```
+Request type, for example: GET.
 
-`localUri`: The local URI of the request, used for requests on the same server.
+#### requestUri
 
-`httpVersion`: HTTP protocol version used in the request.
+```
+def requestUri: CharsPtr
+```
+The URI of the request.
 
-`queryString`: Request parameters in the request.
+#### localUri
 
-`remoteUser`: The remote user we deal with.
+```
+def localUri: CharsPtr
+```
+The local URI of the request, used for requests on the same server.
 
-`remoteAddr`: IP address of the remote user.
+#### httpVersion
 
-`contentLength`: Request body length in bytes, -1 if nothing specified.
+```
+def httpVersion: CharsPtr
+```
+HTTP protocol version used in the request.
 
-`remotePort`: The port used on the remote user machine.
+#### queryString
 
-`isSsl`: Whether the connection uses SSL.
+```
+def queryString: CharsPtr
+```
+Request parameters in the request.
 
-`userData`: Custom user data that is passed to `startServer`.
+#### remoteUser
 
-`connData`: Data specific to the connection.
+```
+def remoteUser: CharsPtr
+```
+The remote user we deal with.
 
-`numberHeaders`: Request headers number.
+#### remoteAddr
 
-`httpHeaders`: Request headers.
+```
+def remoteAddr: array[Char, 48]
+```
+IP address of the remote user.
+
+#### contentLength
+
+```
+def contentLength: Int[64]
+```
+Request body length in bytes, -1 if nothing specified.
+
+#### remotePort
+
+```
+def remotePort: Int
+```
+The port used on the remote user machine.
+
+#### isSsl
+
+```
+def isSsl: Int
+```
+Whether the connection uses SSL.
+
+#### userData
+
+```
+def userData: ptr[Void]
+```
+Custom user data that is passed to `startServer`.
+
+#### connData
+
+```
+def connData: ptr[Void]
+```
+Data specific to the connection.
+
+#### numberHeaders
+
+```
+def numberHeaders: Int
+```
+Request headers number.
+
+#### httpHeaders
+
+```
+def httpHeaders: array[Header, 64]
+```
+Request headers.
 
 ### Header
 
@@ -232,12 +340,21 @@ class Header {
     def value: CharsPtr;
 };
 ```
-
 This class holds the information about request header.
 
-`name`: Header name, which is the key.
+#### name
 
-`value`: Header value under the key `name`.
+```
+def name: CharsPtr
+```
+Header name, which is the key.
+
+#### value
+
+```
+def value: CharsPtr
+```
+Header value under the key `name`.
 
 ### Connection
 
@@ -270,334 +387,316 @@ class Connection {
     def mutex: int[64];
 };
 ```
-
 This class holds the information about the connection.
 
-`requestInfo`: Information about the request sent with the connection.
+#### requestInfo
 
-`context`: Information about connection context.
+```
+def requestInfo: ptr[RequestInfo]
+```
+Information about the request sent with the connection.
 
-`ssl`: SSL descriptor.
+#### context
 
-`clientSslContext`: Client context on SSL.
+```
+def context: ptr[Context]
+```
+Information about connection context.
 
-`client`: The client connected to this connection.
+#### ssl
 
-`connectionBirthTime`: The time of creating the connection (wall time).
+```
+def ssl: ptr
+```
+SSL descriptor.
 
-`requestTime`: The time of creating the connection (server time).
+#### clientSslContext
 
-`numberBytesSent`: Number of bytes sent to the client.
+```
+def clientSslContext: ptr
+```
+Client context on SSL.
 
-`contentLen`: The value of "Content-length" header.
+#### client
 
-`consumedContent`: Number of bytes read from content.
+```
+def client: ptr
+```
+The client connected to this connection.
 
-`isChunked`: Is data transfering chuncked? Takes one of those values:
+#### connectionBirthTime
+
+```
+def connectionBirthTime: Int
+```
+The time of creating the connection (wall time).
+
+#### requestTime
+
+```
+def requestTime: Int
+```
+The time of creating the connection (server time).
+
+#### numberBytesSent
+
+```
+def numberBytesSent: int[64]
+```
+Number of bytes sent to the client.
+
+#### contentLen
+
+```
+def contentLen: int[64]
+```
+The value of "Content-length" header.
+
+#### consumedContent
+
+```
+def consumedContent: int[64]
+```
+Number of bytes read from content.
+
+#### isChunked
+
+```
+def isChunked: int
+```
+Is data transfering chuncked? Takes one of those values:
 
 * `0`: Transfer is not chuncked.
-
 * `1`: Transfer is not chuncked, and there is still some data to read.
-
 * `2`: Transfer is not chuncked, and no data left to read.
 
-`chunkRemainder`: Data no have been read yet from the last chunck.
+#### chunkRemainder
 
-`buf`: Buffer for recieved data.
+```
+def chunkRemainder: word[64]
+```
+Data not have been read yet from the last chunck.
 
-`pathInfo`: Path info part of the URI.
+#### buf
 
-`mustClose`: Should we close the connection?
+```
+def buf: CharsPtr
+```
+Buffer for recieved data.
 
-`inErrorHandler`: Whether the errors are being handled.
+#### pathInfo
 
-`internalError`: Whether an error occured while processing the request.
+```
+def pathInfo: CharsPtr
+```
+Path info part of the URI.
 
-`bufSize`: Buffer size.
+#### mustClose
 
-`requestLen`: Total size in bytes of the request and the headers in the buffer.
+```
+def mustClose: int
+```
+Should we close the connection?
 
-`dataLen`: Total size in bytes of the data in the buffer.
+#### inErrorHandler
 
-`statusCode`: Reply status code of the HTTP protocol.
+```
+def inErrorHandler: int
+```
+Whether the errors are being handled.
 
-`throttle`: Throttle value.
+#### internalError
 
-`lastThrottleTime`: Last time throttled data was sent.
+```
+def internalError: int
+```
+Whether an error occured while processing the request.
 
-`lastThrottleBytes`: The bytes recieved in this second.
+#### bufSize
 
-`mutex`: Used for locking when we need to access synced data safely.
+```
+def bufSize: int
+```
+Buffer size.
+
+#### requestLen
+
+```
+def requestLen: int
+```
+Total size in bytes of the request and the headers in the buffer.
+
+#### dataLen
+
+```
+def dataLen: int
+```
+Total size in bytes of the data in the buffer.
+
+#### statusCode
+
+```
+def statusCode: int
+```
+Reply status code of the HTTP protocol.
+
+#### throttle
+
+```
+def throttle: int
+```
+Throttle value.
+
+#### lastThrottleTime
+
+```
+def lastThrottleTime: int
+```
+Last time throttled data was sent.
+
+#### lastThrottleBytes
+
+```
+def lastThrottleBytes: int[64]
+```
+The bytes recieved in this second.
+
+#### mutex
+
+```
+def mutex: int[64]
+```
+Used for locking when we need to access synced data safely.
 
 ### startServer
 
 ```
 @expname[mg_start]
-func startServer(callbacks: ptr[Callbacks], userData: ptr, options: ptr[CharsPtr]): ptr[Context];
+func startServer(callbacks: ptr[Callbacks], userData: ptr, options: ptr[CharsPtr]): ptr[Context]
+func startServer(callback: RequestCallback, userData: ptr, options: ref[Srl.Array[CharsPtr]]): ptr[Context]
+func startServer(callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context]
+func startServer(callback: RequestCallback, userData: ptr, optsCount: Int, opts: ...CharsPtr): ptr[Context]
+func startServer(callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context]
+func startServer(callback: RequestCallback, userData: ptr, port: CharsPtr): ptr[Context]
+func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context]
 ```
+Initialize and start the server. Returns a pointer to the server's context, or null in case of initialization failure. In case a callback is not present in the list, the server will use a default one.
 
-This function is used for initializing and starting the server.
-
-The behaviour of the server is controlled by a list of callbacks and a list of options that the user gives.
-
-In case that one of the callbacks is not present in the list, the server will use a default one.
-
-Parameters:
-
-`callbacks`: The list of callback that used to determine the behaviour of the server, and how it processes the requests.
-
-`userData`: The optional custo user data that was passed to `startServer`.
-
-`options`: A list of options used in server initialization.
-
-Return value:
-
-A pointer to server's context, or a null in case of initialization failure.
-
-```
-func startServer (callback: RequestCallback, userData: ptr, options: ref[Srl.Array[CharsPtr]]): ptr[Context];
-func startServer (callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context];
-```
-
-Parameters:
-
-`callback`: callback that server will execute when receiving a request.
-
-`userData`: The optional custo user data that was passed to `startServer`.
-
-`options`: options related to server initialization, like port number.
-
-```
-func startServer (callback: RequestCallback, userData: ptr, optsCount: Int, opts: ...CharsPtr): ptr[Context];
-func startServer (callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context];
-```
-
-Parameters:
-
-`callback`: Callback that server will execute when receiving a request.
-
-`userData`: The optional custo user data that was passed to `startServer`.
-
-`optsCount`: Number of options in `opts`.
-
-`opts`: Options related to server initialization, like port number.
-
-```
-func startServer(callback: RequestCallback, userData: ptr, port: CharsPtr): ptr[Context];
-func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context];
-```
-
-`callback`: Callback that server will execute when receiving a request.
-
-`userData`: The optional custo user data that was passed to `startServer`.
-
-`port`: Port number that server listens to.
+* `callbacks`: The list of callbacks used to determine the behaviour of the server and how it processes requests.
+* `callback`: Callback that the server will execute when receiving a request.
+* `userData`: Optional custom user data passed to `startServer`.
+* `options`: Options related to server initialization, like port number. Can be a raw pointer or an array.
+* `optsCount`: Number of options in `opts`.
+* `opts`: Options related to server initialization, like port number.
+* `port`: Port number that the server listens to.
 
 ### stopServer
 
 ```
 @expname[mg_stop]
-func stopServer(context: ptr[Context]): Void;
+func stopServer(context: ptr[Context]): Void
 ```
+Close the server and release any acquired resources. Waits until all threads have finished, then releases resources and closes the server.
 
-This function is used for closing the server and release any accquired resources,
-it waits until all threads finished, and only then it release resources and close the server.
-
-Parameters:
-
-`context`: Pointer to server's context that we want to close.
+* `context`: Pointer to the server's context to close.
 
 ### read
 
 ```
 @expname[mg_read]
-func read(connection: ptr[Connection], buffer: ptr, bufferSize: Int): Int;
+func read(connection: ptr[Connection], buffer: ptr, bufferSize: Int): Int
 ```
+Read data from the connection in binary format and store it in `buffer`. Returns the number of bytes read on success, `0` when the connection is closed by a peer, or a negative value when there is no more data to read.
 
-This function read the data from the connection given by `connection` parameter.
-Data is considered in binary format and stored in `buffer`.
-
-Parameters:
-
-`connection`: Connection we want to read data from it.
-
-`buffer`: The buffer to store data in it.
-
-`bufferSize`: Max size in bytes of data we can store in `buffer`.
-
-Return value:
-
-On success: Number of bytes it read.
-
-When connection is closed from a peer: 0.
-
-When there is no more data to read: negative value.
+* `connection`: Connection to read data from.
+* `buffer`: The buffer to store data in.
+* `bufferSize`: Max size in bytes of data we can store in `buffer`.
 
 ### write
 
 ```
 @expname[mg_write]
-func write(connection: ptr[Connection], buffer: CharsPtr, bufferSize: Int): Int;
+func write(connection: ptr[Connection], buffer: CharsPtr, bufferSize: Int): Int
 ```
+Send data through a given connection. Returns the number of sent bytes on success, or `-1` on failure.
 
-This function is used to send data through a given connection
-
-Parameters:
-
-`connection`: Connection we want to send through it.
-
-`buffer`: Buffer holding the data we want to send.
-
-`bufferSize`: The size in bytes of `buffer`
-
-Return value:
-
-Number of sent bytes in case of success, or -1 in case of failure.
+* `connection`: Connection to send through.
+* `buffer`: Buffer holding the data to send.
+* `bufferSize`: The size in bytes of `buffer`.
 
 ### print
 
 ```
 @expname[mg_printf]
-func print(connection: ptr[Connection], format: CharsPtr, ...any): Int;
+func print(connection: ptr[Connection], format: CharsPtr, ...any): Int
 ```
+Send formatted messages through a given connection. Returns the number of bytes sent on success, `0` when the connection is closed, or `-1` on error.
 
-This function is used for sending formatted messages through a given connection
-
-Parameters:
-
-`connection`: Connection we want to send through it.
-
-`format`: Message's format.
-
-Var args: Arguments needed to fill `format`.
-
-Return value:
-
-When connection is closed: 0.
-
-When an error occurs: -1.
-
-On success: Number of bytes sent.
+* `connection`: Connection to send through.
+* `format`: Message's format.
+* `...any`: Arguments needed to fill `format`.
 
 ### sendFile
 
 ```
 @expname[mg_send_file]
-func sendFile(connection: ptr[Connection], fileName: CharsPtr): Void;
+func sendFile(connection: ptr[Connection], fileName: CharsPtr): Void
 ```
+Send a file through a connection. Adds the required headers automatically.
 
-This function is used to send a file through a connection.
-It adds the required headers automatically.
-
-Parameters:
-
-`connection`: The connection we want to send through it.
-
-`fileName`: The name of the file we want to send.
+* `connection`: The connection to send through.
+* `fileName`: The name of the file to send.
 
 ### getCookie
 
 ```
 @expname[mg_get_cookie]
-func getCookie(
-    cookiesString: CharsPtr, cookieName: CharsPtr, outCookieContent: CharsPtr, outCookieSize: Word[64]
-): Int;
+func getCookie(cookiesString: CharsPtr, cookieName: CharsPtr, outCookieContent: CharsPtr, outCookieSize: Word[64]): Int
 ```
+Get the value of a specific variable from a specific cookie. Returns the size of the cookie in bytes on success, `-1` when the cookie is not found, or `-2` on failure to store in the buffer.
 
-This function is used to get the value of a specific variable from a specific cookie. 
-
-Parameters:
-
-`cookiesString`: Cookie name.
-
-`cookieName`: Name of the variable in `cookiesString`.
-
-`outCookieContent`: Buffer to store the content of the variable in it.
-
-`outCookieSize`: The size in bytes of `outCookieContent`.
-
-Return value:
-
-On success: The size of the cookie in bytes.
-
-When cookie is not found: -1.
-
-On failure to store in the buffer: -2.
+* `cookiesString`: Cookie name.
+* `cookieName`: Name of the variable in `cookiesString`.
+* `outCookieContent`: Buffer to store the content of the variable in.
+* `outCookieSize`: The size in bytes of `outCookieContent`.
 
 ### getHeader
 
 ```
 @expname[mg_get_header]
-func getHeader(connection: ptr[Connection], headerName: CharsPtr): CharsPtr;
+func getHeader(connection: ptr[Connection], headerName: CharsPtr): CharsPtr
 ```
+Get a header from a given connection. Returns a pointer to the header value or null on failure.
 
-This function is used to get a header from a given connection.
-
-Parameters:
-
-`connection`: The connection we want to get a header from it.
-
-`headerName`: The name of header we want.
-
-Return value:
-
-A pointer to the header value or null in case of failure.
+* `connection`: The connection to get a header from.
+* `headerName`: The name of the header to retrieve.
 
 ### getRequestInfo
 
 ```
 @expname[mg_get_request_info]
-func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo];
+func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo]
 ```
+Get the information about a request through a given connection. Returns a pointer to request information.
 
-This function is used to get the information about a request through a given connection. 
-
-Parameters:
-
-`connection`: The connection we want to get request information from it.
-
-Return value:
-
-A pointer to request information.
+* `connection`: The connection to get request information from.
 
 ### getVariable
 
 ```
 @expname[mg_get_var]
-func getVariable(
-    data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVariable: CharsPtr, outVariableSize: Int
-): Int;
+func getVariable(data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVariable: CharsPtr, outVariableSize: Int): Int
 ```
+Get the value of a given variable passed to the server through POST (body) or GET (URI). Returns the size in bytes of the variable value on success, `-1` when the variable is not found, or `-2` on failure to store in the buffer.
 
-This function is used to get the value of a given variable from the server.
-
-This variable is passed to the server through POST (in the body), or GET (in the URI) request.
-
-Parameters:
-
-`data`: The data we passed the variable through it (POST body, or GET URI).
-
-`dataSize`: Size in bytes of `data`.
-
-`variableName`: The name of the variable we want.
-
-`outVariable`: Output buffer to store the value of the variable in it.
-
-`outVariableSize`: The size in bytes of `outVariable`.
-
-Return value:
-
-On success: The size in bytes of the variable value.
-
-When variable is not found: -1.
-
-On failure to store in the buffer: -2.
-
----
+* `data`: The data the variable was passed through (POST body or GET URI).
+* `dataSize`: Size in bytes of `data`.
+* `variableName`: The name of the variable to retrieve.
+* `outVariable`: Output buffer to store the value of the variable.
+* `outVariableSize`: The size in bytes of `outVariable`.
 
 ## License
 
 Copyright (C) 2026 Sarmad Abdullah
 
 This project is licensed under the GNU Lesser General Public License v3.0 (LGPL-3.0). See the `COPYING` and `COPYING.LESSER` files for details.
-
