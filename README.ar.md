@@ -1,8 +1,8 @@
-# HTTP
-
-[[English]](readme.md)
+# بـننت (HTTP)
 
 <div dir=rtl>
+
+[[English]](readme.md)
 
 مكتبة لإنشاء خوادم بروتوكول نقل النص الترابطي (HTTP) مع دعم WebSocket بلغة الأسس. تعتمد هذه المكتبة على مكتبة civetweb.
 
@@ -78,8 +78,6 @@ Apm.importPackage("Alusus/Http@0.3");
 أخـتبار_الوحدة.ابدا()؛
 ```
 
-<div dir=ltr>
-
 ```
 import "Srl/Console.alusus";
 import "Srl/String.alusus";
@@ -130,8 +128,6 @@ module TestModule {
 
 TestModule.start();
 ```
-
-</div>
 
 ## دعم WebSocket
 
@@ -213,21 +209,20 @@ def stopFlag: int
 
 يحدد إن كان يجب إيقاف حلقة الأحداث.
 
-
 ### مـناديات (Callbacks)
 
 ```
 صنف مـناديات {
     عرف بداية_الطلب: منادى_الطلب؛
-    عرف نهاية_الطلب: مؤشر[دالة(اتصال:مؤشر[اتصال]، رمز_حالة_الرد: صحيح): صحيح]؛
-    عرف تسجيل_رسالة: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مؤشر[محرف]): صحيح]؛
-    عرف تسجيل_ولوج: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مؤشر[محرف]): صحيح]؛
-    عرف تهيئة_طما:مؤشر[دالة(سياق_طما:مؤشر[فراغ]، بيانات_المستخدم: مؤشر[فراغ]): صحيح]؛
-    عرف غلق_الاتصال: مؤشر[دالة(اتصال:مؤشر[اتصال]): فراغ]؛
+    عرف نهاية_الطلب: مؤشر[دالة(اتصال:مؤشر[اتصال]، رمز_حالة_الرد: صحيح)]؛
+    عرف تسجيل_رسالة: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مـؤشر_محارف): صحيح]؛
+    عرف تسجيل_ولوج: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مـؤشر_محارف): صحيح]؛
+    عرف تهيئة_طما:مؤشر[دالة(سياق_طما:مؤشر[فـراغ]، بيانات_المستخدم: مؤشر[فـراغ]): صحيح]؛
+    عرف غلق_الاتصال: مؤشر[دالة(اتصال:مؤشر[اتصال]): فـراغ]؛
     عرف خطأ_بننف: مؤشر[دالة(اتصال:مؤشر[اتصال]، الحالة: صحيح، رسالة: مؤشر[مصفوفة[محرف]]): صحيح]؛
-    عرف تهيئة_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فراغ]؛
-    عرف نهاية_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فراغ]؛
-    عرف تهيئة_الموضوع: مؤشر[دالة(سياق:مؤشر[سياق]، نمط_المسلك: صحيح): فراغ]؛
+    عرف تهيئة_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فـراغ]؛
+    عرف نهاية_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فـراغ]؛
+    عرف تهيئة_الموضوع: مؤشر[دالة(سياق:مؤشر[سياق]، نمط_المسلك: صحيح): فـراغ]؛
 }
 ```
 
@@ -262,7 +257,7 @@ class Callbacks{
 <div dir=ltr>
 
 ```
-def beginRequest: RequestCallback
+def beginRequest: RequestCallback;
 ```
 
 </div>
@@ -275,13 +270,13 @@ def beginRequest: RequestCallback
 #### نهاية_الطلب (endRequest)
 
 ```
-عرف نهاية_الطلب: مؤشر[دالة(اتصال:مؤشر[اتصال]، رمز_حالة_الرد: صحيح): صحيح]؛
+عرف نهاية_الطلب: مؤشر[دالة(اتصال:مؤشر[اتصال]، رمز_حالة_الرد: صحيح)]؛
 ```
 
 <div dir=ltr>
 
 ```
-def endRequest: ptr[func (connection: ptr[Connection], replyStatusCode: Int)]
+def endRequest: ptr[func (connection: ptr[Connection], replyStatusCode: Int)];
 ```
 
 </div>
@@ -291,13 +286,13 @@ def endRequest: ptr[func (connection: ptr[Connection], replyStatusCode: Int)]
 #### تسجيل_رسالة (logMessage)
 
 ```
-عرف تسجيل_رسالة: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مؤشر[محرف]): صحيح]؛
+عرف تسجيل_رسالة: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مـؤشر_محارف: صحيح]؛
 ```
 
 <div dir=ltr>
 
 ```
-def logMessage: ptr[func (connection: ptr[Connection], message: CharsPtr): Int]
+def logMessage: ptr[func (connection: ptr[Connection], message: CharsPtr): Int];
 ```
 
 </div>
@@ -310,13 +305,13 @@ def logMessage: ptr[func (connection: ptr[Connection], message: CharsPtr): Int]
 #### تسجيل_ولوج (logAccess)
 
 ```
-عرف تسجيل_ولوج: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مؤشر[محرف]): صحيح]؛
+عرف تسجيل_ولوج: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مـؤشر_محارف): صحيح]؛
 ```
 
 <div dir=ltr>
 
 ```
-def logAccess: ptr[func (connection: ptr[Connection], message: CharsPtr): Int]
+def logAccess: ptr[func (connection: ptr[Connection], message: CharsPtr): Int];
 ```
 
 </div>
@@ -329,13 +324,13 @@ def logAccess: ptr[func (connection: ptr[Connection], message: CharsPtr): Int]
 #### تهيئة_طما (initSsl)
 
 ```
-عرف تهيئة_طما:مؤشر[دالة(سياق_طما:مؤشر[فراغ]، بيانات_المستخدم: مؤشر[فراغ]): صحيح]؛
+عرف تهيئة_طما:مؤشر[دالة(سياق_طما:مؤشر[فـراغ]، بيانات_المستخدم: مؤشر[فـراغ]): صحيح]؛
 ```
 
 <div dir=ltr>
 
 ```
-def initSsl: ptr[func (sslContext: ptr[Void], userData: ptr[Void]): Int]
+def initSsl: ptr[func (sslContext: ptr[Void], userData: ptr[Void]): Int];
 ```
 
 </div>
@@ -349,13 +344,13 @@ def initSsl: ptr[func (sslContext: ptr[Void], userData: ptr[Void]): Int]
 #### غلق_الاتصال (connectionClose)
 
 ```
-عرف غلق_الاتصال: مؤشر[دالة(اتصال:مؤشر[اتصال]): فراغ]؛
+عرف غلق_الاتصال: مؤشر[دالة(اتصال:مؤشر[اتصال]): فـراغ]؛
 ```
 
 <div dir=ltr>
 
 ```
-def connectionClose: ptr[func (connection: ptr[Connection]): Void]
+def connectionClose: ptr[func (connection: ptr[Connection]): Void];
 ```
 
 </div>
@@ -371,7 +366,7 @@ def connectionClose: ptr[func (connection: ptr[Connection]): Void]
 <div dir=ltr>
 
 ```
-def httpError: ptr[func (connection: ptr[Connection], status: Int, msg: ptr[array[Char]]): Int]
+def httpError: ptr[func (connection: ptr[Connection], status: Int, msg: ptr[array[Char]]): Int];
 ```
 
 </div>
@@ -384,13 +379,13 @@ def httpError: ptr[func (connection: ptr[Connection], status: Int, msg: ptr[arra
 #### تهيئة_السياق (initContext)
 
 ```
-عرف تهيئة_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فراغ]؛
+عرف تهيئة_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فـراغ]؛
 ```
 
 <div dir=ltr>
 
 ```
-def initContext: ptr[func (context: ptr[Context]): Void]
+def initContext: ptr[func (context: ptr[Context]): Void];
 ```
 
 </div>
@@ -400,13 +395,13 @@ def initContext: ptr[func (context: ptr[Context]): Void]
 #### نهاية_السياق (exitContext)
 
 ```
-عرف نهاية_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فراغ]؛
+عرف نهاية_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فـراغ]؛
 ```
 
 <div dir=ltr>
 
 ```
-def exitContext: ptr[func (context: ptr[Context]): Void]
+def exitContext: ptr[func (context: ptr[Context]): Void];
 ```
 
 </div>
@@ -416,36 +411,35 @@ def exitContext: ptr[func (context: ptr[Context]): Void]
 #### تهيئة_الموضوع (initThread)
 
 ```
-عرف تهيئة_الموضوع: مؤشر[دالة(سياق:مؤشر[سياق]، نمط_المسلك: صحيح): فراغ]؛
+عرف تهيئة_الموضوع: مؤشر[دالة(سياق:مؤشر[سياق]، نمط_المسلك: صحيح): فـراغ]؛
 ```
 
 <div dir=ltr>
 
 ```
-def initThread: ptr[func (context: ptr[Context], threadType: Int): Void]
+def initThread: ptr[func (context: ptr[Context], threadType: Int): Void];
 ```
 
 </div>
 
 يُستدعى لتهيئة مسلك بسياق ما مع تحديد نمط المسلك.
 
-
 ### مـعلومات_الطلب (RequestInfo)
 
 ```
 صنف مـعلومات_الطلب {
-    عرف طريقة_الطلب: مؤشر[محرف]؛
-    عرف معرف_الطلب: مؤشر[محرف]؛
-    عرف المعرف_المحلي: مؤشر[محرف]؛
-    عرف إصدار_بننف: مؤشر[محرف]؛
-    عرف نص_الاستعلام: مؤشر[محرف]؛
-    عرف المستخدم_البعيد: مؤشر[محرف]؛
+    عرف طريقة_الطلب: مـؤشر_محارف؛
+    عرف معرف_الطلب: مـؤشر_محارف؛
+    عرف المعرف_المحلي: مـؤشر_محارف؛
+    عرف إصدار_بننف: مـؤشر_محارف؛
+    عرف نص_الاستعلام: مـؤشر_محارف؛
+    عرف المستخدم_البعيد: مـؤشر_محارف؛
     عرف العنوان_البعيد: مصفوفة[محرف، 48]؛
     عرف طول_المحتوى: صحيح[64]؛
     عرف المنفذ_البعيد: صحيح؛
     عرف مشفر: صحيح؛
-    عرف بيانات_المستخدم: مؤشر[فراغ]؛
-    عرف بيانات_الاتصال: مؤشر[فراغ]؛
+    عرف بيانات_المستخدم: مؤشر[فـراغ]؛
+    عرف بيانات_الاتصال: مؤشر[فـراغ]؛
     عرف عدد_الترويسات: صحيح؛
     عرف ترويسات_بننف: مصفوفة[ترويسة، 64]؛
 }
@@ -479,13 +473,13 @@ class RequestInfo {
 #### طريقة_الطلب (requestMethod)
 
 ```
-عرف طريقة_الطلب: مؤشر[محرف]؛
+عرف طريقة_الطلب: مـؤشر_محارف؛
 ```
 
 <div dir=ltr>
 
 ```
-def requestMethod: CharsPtr
+def requestMethod: CharsPtr;
 ```
 
 </div>
@@ -495,13 +489,13 @@ def requestMethod: CharsPtr
 #### معرف_الطلب (requestUri)
 
 ```
-عرف معرف_الطلب: مؤشر[محرف]؛
+عرف معرف_الطلب: مـؤشر_محارف؛
 ```
 
 <div dir=ltr>
 
 ```
-def requestUri: CharsPtr
+def requestUri: CharsPtr;
 ```
 
 </div>
@@ -511,13 +505,13 @@ def requestUri: CharsPtr
 #### المعرف_المحلي (localUri)
 
 ```
-عرف المعرف_المحلي: مؤشر[محرف]؛
+عرف المعرف_المحلي: مـؤشر_محارف؛
 ```
 
 <div dir=ltr>
 
 ```
-def localUri: CharsPtr
+def localUri: CharsPtr;
 ```
 
 </div>
@@ -527,13 +521,13 @@ def localUri: CharsPtr
 #### إصدار_بننف (httpVersion)
 
 ```
-عرف إصدار_بننف: مؤشر[محرف]؛
+عرف إصدار_بننف: مـؤشر_محارف؛
 ```
 
 <div dir=ltr>
 
 ```
-def httpVersion: CharsPtr
+def httpVersion: CharsPtr;
 ```
 
 </div>
@@ -543,13 +537,13 @@ def httpVersion: CharsPtr
 #### نص_الاستعلام (queryString)
 
 ```
-عرف نص_الاستعلام: مؤشر[محرف]؛
+عرف نص_الاستعلام: مـؤشر_محارف؛
 ```
 
 <div dir=ltr>
 
 ```
-def queryString: CharsPtr
+def queryString: CharsPtr;
 ```
 
 </div>
@@ -559,13 +553,13 @@ def queryString: CharsPtr
 #### المستخدم_البعيد (remoteUser)
 
 ```
-عرف المستخدم_البعيد: مؤشر[محرف]؛
+عرف المستخدم_البعيد: مـؤشر_محارف؛
 ```
 
 <div dir=ltr>
 
 ```
-def remoteUser: CharsPtr
+def remoteUser: CharsPtr;
 ```
 
 </div>
@@ -581,7 +575,7 @@ def remoteUser: CharsPtr
 <div dir=ltr>
 
 ```
-def remoteAddr: array[Char, 48]
+def remoteAddr: array[Char, 48];
 ```
 
 </div>
@@ -597,7 +591,7 @@ def remoteAddr: array[Char, 48]
 <div dir=ltr>
 
 ```
-def contentLength: Int[64]
+def contentLength: Int[64];
 ```
 
 </div>
@@ -613,7 +607,7 @@ def contentLength: Int[64]
 <div dir=ltr>
 
 ```
-def remotePort: Int
+def remotePort: Int;
 ```
 
 </div>
@@ -629,7 +623,7 @@ def remotePort: Int
 <div dir=ltr>
 
 ```
-def isSsl: Int
+def isSsl: Int;
 ```
 
 </div>
@@ -639,13 +633,13 @@ def isSsl: Int
 #### بيانات_المستخدم (userData)
 
 ```
-عرف بيانات_المستخدم: مؤشر[فراغ]؛
+عرف بيانات_المستخدم: مؤشر[فـراغ]؛
 ```
 
 <div dir=ltr>
 
 ```
-def userData: ptr[Void]
+def userData: ptr[Void];
 ```
 
 </div>
@@ -655,13 +649,13 @@ def userData: ptr[Void]
 #### بيانات_الاتصال (connData)
 
 ```
-عرف بيانات_الاتصال: مؤشر[فراغ]؛
+عرف بيانات_الاتصال: مؤشر[فـراغ]؛
 ```
 
 <div dir=ltr>
 
 ```
-def connData: ptr[Void]
+def connData: ptr[Void];
 ```
 
 </div>
@@ -677,7 +671,7 @@ def connData: ptr[Void]
 <div dir=ltr>
 
 ```
-def numberHeaders: Int
+def numberHeaders: Int;
 ```
 
 </div>
@@ -693,20 +687,19 @@ def numberHeaders: Int
 <div dir=ltr>
 
 ```
-def httpHeaders: array[Header, 64]
+def httpHeaders: array[Header, 64];
 ```
 
 </div>
 
 الترويسات الخاصة بالطلب.
 
-
 ### تـرويسة (Header)
 
 ```
 صنف تـرويسة {
-    عرف اسم: مؤشر[محرف]؛
-    عرف قيمة: مؤشر[محرف]؛
+    عرف اسم: مـؤشر_محارف؛
+    عرف قيمة: مـؤشر_محارف؛
 }
 ```
 
@@ -726,7 +719,7 @@ class Header {
 #### اسم (name)
 
 ```
-عرف اسم: مؤشر[محرف]؛
+عرف اسم: مـؤشر_محارف؛
 ```
 
 <div dir=ltr>
@@ -742,7 +735,7 @@ def name: CharsPtr
 #### قيمة (value)
 
 ```
-عرف قيمة: مؤشر[محرف]؛
+عرف قيمة: مـؤشر_محارف؛
 ```
 
 <div dir=ltr>
@@ -754,7 +747,6 @@ def value: CharsPtr
 </div>
 
 قيمة الترويسة و هي بمثابة القيمة المخزنة بهذا المفتاح.
-
 
 ### اتـصال (Connection)
 
@@ -771,9 +763,9 @@ def value: CharsPtr
     عرف حجم_المحتوى: صحيح[64]؛
     عرف المحتوى_المستهلك: صحيح[64]؛
     عرف مقطع: صحيح؛
-    عرف باقي_التقطيع: كلمة[64]؛
-    عرف صوان: مؤشر[محرف]؛
-    عرف معلومات_المسار: مؤشر[محرف]؛
+    عرف باقي_التقطيع: طـبيعي[64]؛
+    عرف صوان: مـؤشر_محارف؛
+    عرف معلومات_المسار: مـؤشر_محارف؛
     عرف يجب_الاغلاق: صحيح؛
     عرف معالج_الاخطاء: صحيح؛
     عرف خطأ_داخلي: صحيح؛
@@ -833,7 +825,7 @@ class Connection {
 <div dir=ltr>
 
 ```
-def requestInfo: ptr[RequestInfo]
+def requestInfo: ptr[RequestInfo];
 ```
 
 </div>
@@ -849,7 +841,7 @@ def requestInfo: ptr[RequestInfo]
 <div dir=ltr>
 
 ```
-def context: ptr[Context]
+def context: ptr[Context];
 ```
 
 </div>
@@ -865,7 +857,7 @@ def context: ptr[Context]
 <div dir=ltr>
 
 ```
-def ssl: ptr
+def ssl: ptr;
 ```
 
 </div>
@@ -881,7 +873,7 @@ def ssl: ptr
 <div dir=ltr>
 
 ```
-def clientSslContext: ptr
+def clientSslContext: ptr;
 ```
 
 </div>
@@ -897,7 +889,7 @@ def clientSslContext: ptr
 <div dir=ltr>
 
 ```
-def client: ptr
+def client: ptr;
 ```
 
 </div>
@@ -913,7 +905,7 @@ def client: ptr
 <div dir=ltr>
 
 ```
-def connectionBirthTime: Int
+def connectionBirthTime: Int;
 ```
 
 </div>
@@ -929,7 +921,7 @@ def connectionBirthTime: Int
 <div dir=ltr>
 
 ```
-def requestTime: Int
+def requestTime: Int;
 ```
 
 </div>
@@ -945,7 +937,7 @@ def requestTime: Int
 <div dir=ltr>
 
 ```
-def numberBytesSent: int[64]
+def numberBytesSent: int[64];
 ```
 
 </div>
@@ -961,7 +953,7 @@ def numberBytesSent: int[64]
 <div dir=ltr>
 
 ```
-def contentLen: int[64]
+def contentLen: int[64];
 ```
 
 </div>
@@ -977,7 +969,7 @@ def contentLen: int[64]
 <div dir=ltr>
 
 ```
-def consumedContent: int[64]
+def consumedContent: int[64];
 ```
 
 </div>
@@ -993,7 +985,7 @@ def consumedContent: int[64]
 <div dir=ltr>
 
 ```
-def isChunked: int
+def isChunked: int;
 ```
 
 </div>
@@ -1007,13 +999,13 @@ def isChunked: int
 #### باقي_التقطيع (chunkRemainder)
 
 ```
-عرف باقي_التقطيع: كلمة[64]؛
+عرف باقي_التقطيع: طـبيعي[64]؛
 ```
 
 <div dir=ltr>
 
 ```
-def chunkRemainder: word[64]
+def chunkRemainder: word[64];
 ```
 
 </div>
@@ -1023,13 +1015,13 @@ def chunkRemainder: word[64]
 #### صوان (buf)
 
 ```
-عرف صوان: مؤشر[محرف]؛
+عرف صوان: مـؤشر_محارف؛
 ```
 
 <div dir=ltr>
 
 ```
-def buf: CharsPtr
+def buf: CharsPtr;
 ```
 
 </div>
@@ -1039,13 +1031,13 @@ def buf: CharsPtr
 #### معلومات_المسار (pathInfo)
 
 ```
-عرف معلومات_المسار: مؤشر[محرف]؛
+عرف معلومات_المسار: مـؤشر_محارف؛
 ```
 
 <div dir=ltr>
 
 ```
-def pathInfo: CharsPtr
+def pathInfo: CharsPtr;
 ```
 
 </div>
@@ -1061,7 +1053,7 @@ def pathInfo: CharsPtr
 <div dir=ltr>
 
 ```
-def mustClose: int
+def mustClose: int;
 ```
 
 </div>
@@ -1077,7 +1069,7 @@ def mustClose: int
 <div dir=ltr>
 
 ```
-def inErrorHandler: int
+def inErrorHandler: int;
 ```
 
 </div>
@@ -1093,7 +1085,7 @@ def inErrorHandler: int
 <div dir=ltr>
 
 ```
-def internalError: int
+def internalError: int;
 ```
 
 </div>
@@ -1109,7 +1101,7 @@ def internalError: int
 <div dir=ltr>
 
 ```
-def bufSize: int
+def bufSize: int;
 ```
 
 </div>
@@ -1125,7 +1117,7 @@ def bufSize: int
 <div dir=ltr>
 
 ```
-def requestLen: int
+def requestLen: int;
 ```
 
 </div>
@@ -1141,7 +1133,7 @@ def requestLen: int
 <div dir=ltr>
 
 ```
-def dataLen: int
+def dataLen: int;
 ```
 
 </div>
@@ -1157,7 +1149,7 @@ def dataLen: int
 <div dir=ltr>
 
 ```
-def statusCode: int
+def statusCode: int;
 ```
 
 </div>
@@ -1173,7 +1165,7 @@ def statusCode: int
 <div dir=ltr>
 
 ```
-def throttle: int
+def throttle: int;
 ```
 
 </div>
@@ -1189,7 +1181,7 @@ def throttle: int
 <div dir=ltr>
 
 ```
-def lastThrottleTime: int
+def lastThrottleTime: int;
 ```
 
 </div>
@@ -1205,7 +1197,7 @@ def lastThrottleTime: int
 <div dir=ltr>
 
 ```
-def lastThrottleBytes: int[64]
+def lastThrottleBytes: int[64];
 ```
 
 </div>
@@ -1221,38 +1213,37 @@ def lastThrottleBytes: int[64]
 <div dir=ltr>
 
 ```
-def mutex: int[64]
+def mutex: int[64];
 ```
 
 </div>
 
 يمكن استعمالها لقفل الاتصال من أجل الوصول المتزامن الآمن.
 
-
 ### شغل_الخادم (startServer)
 
 ```
 @تصدير[mg_start]
 دالة شغل_الخادم(مناديات: مؤشر[مـناديات]، بيانات_المستخدم: مؤشر، خيارات: مؤشر[مـؤشر_محارف]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، خيارات: سند[مـتم.مـصفوفة[مؤشر[مـحرف]]]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، خيارات: سند[مـتم.مـصفوفة[مؤشر[مـحرف]]]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، عدد_الخيارات: صـحيح، خيارات: ...مؤشر[محرف]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، عدد_الخيارات: صـحيح، خيارات: ...مؤشر[محرف]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، منفذ: مؤشر[محرف]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، منفذ: مؤشر[محرف]): مؤشر[سـياق]؛
+دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، خيارات: سند[مـتم.مـصفوفة[مـؤشر_محارف]]): مؤشر[سـياق]؛
+دالة شغل_الخادم(منادي: مـنادى_الطلب، خيارات: سند[مـتم.مـصفوفة[مـؤشر_محارف]]): مؤشر[سـياق]؛
+دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، عدد_الخيارات: صـحيح، خيارات: ...مـؤشر_محارف): مؤشر[سـياق]؛
+دالة شغل_الخادم(منادي: مـنادى_الطلب، عدد_الخيارات: صـحيح، خيارات: ...مـؤشر_محارف): مؤشر[سـياق]؛
+دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، منفذ: مـؤشر_محارف): مؤشر[سـياق]؛
+دالة شغل_الخادم(منادي: مـنادى_الطلب، منفذ: مـؤشر_محارف): مؤشر[سـياق]؛
 ```
 
 <div dir=ltr>
 
 ```
 @expname[mg_start]
-func startServer(callbacks: ptr[Callbacks], userData: ptr, options: ptr[CharsPtr]): ptr[Context]
-func startServer(callback: RequestCallback, userData: ptr, options: ref[Srl.Array[CharsPtr]]): ptr[Context]
-func startServer(callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context]
-func startServer(callback: RequestCallback, userData: ptr, optsCount: Int, opts: ...CharsPtr): ptr[Context]
-func startServer(callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context]
-func startServer(callback: RequestCallback, userData: ptr, port: CharsPtr): ptr[Context]
-func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context]
+func startServer(callbacks: ptr[Callbacks], userData: ptr, options: ptr[CharsPtr]): ptr[Context];
+func startServer(callback: RequestCallback, userData: ptr, options: ref[Srl.Array[CharsPtr]]): ptr[Context];
+func startServer(callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context];
+func startServer(callback: RequestCallback, userData: ptr, optsCount: Int, opts: ...CharsPtr): ptr[Context];
+func startServer(callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context];
+func startServer(callback: RequestCallback, userData: ptr, port: CharsPtr): ptr[Context];
+func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context];
 ```
 
 </div>
@@ -1271,14 +1262,15 @@ func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context]
 ### أوقف_الخادم (stopServer)
 
 ```
-دالة أوقف_الخادم(سياق: مؤشر[سـياق])؛
+@تصدير[mg_stop]
+دالة أوقف_الخادم(سياق: مؤشر[سـياق]): فـراغ؛
 ```
 
 <div dir=ltr>
 
 ```
 @expname[mg_stop]
-func stopServer(context: ptr[Context]): Void
+func stopServer(context: ptr[Context]): Void;
 ```
 
 </div>
@@ -1291,6 +1283,7 @@ func stopServer(context: ptr[Context]): Void
 ### اقرأ (read)
 
 ```
+@تصدير[mg_read]
 دالة اقرأ(اتصال: مؤشر[اتـصال]، صوان: مؤشر، حجم_صوان: صحيح): صحيح؛
 ```
 
@@ -1298,7 +1291,7 @@ func stopServer(context: ptr[Context]): Void
 
 ```
 @expname[mg_read]
-func read(connection: ptr[Connection], buffer: ptr, bufferSize: Int): Int
+func read(connection: ptr[Connection], buffer: ptr, bufferSize: Int): Int;
 ```
 
 </div>
@@ -1314,7 +1307,8 @@ func read(connection: ptr[Connection], buffer: ptr, bufferSize: Int): Int
 ### اكتب (write)
 
 ```
-دالة اكتب(اتصال: مؤشر[اتـصال]، صوان: مؤشر[مـحرف]، حجم_صوان: صـحيح): صـحيح؛
+@تصدير[mg_write]
+دالة اكتب(اتصال: مؤشر[اتـصال]، صوان: مـؤشر_محارف، حجم_صوان: صـحيح): صـحيح؛
 ```
 
 <div dir=ltr>
@@ -1336,14 +1330,15 @@ func write(connection: ptr[Connection], buffer: CharsPtr, bufferSize: Int): Int
 ### اطبع (print)
 
 ```
-دالة اطبع(اتصال: مؤشر[اتـصال]، تنسيق: مؤشر[مـحرف]، أي_معطيات_أخرى...): صـحيح؛
+@تصدير[mg_printf]
+دالة اطبع(اتصال: مؤشر[اتـصال]، تنسيق: مـؤشر_محارف، أي_معطيات_أخرى...): صـحيح؛
 ```
 
 <div dir=ltr>
 
 ```
 @expname[mg_printf]
-func print(connection: ptr[Connection], format: CharsPtr, ...any): Int
+func print(connection: ptr[Connection], format: CharsPtr, ...any): Int;
 ```
 
 </div>
@@ -1358,14 +1353,15 @@ func print(connection: ptr[Connection], format: CharsPtr, ...any): Int
 ### أرسل_ملف (sendFile)
 
 ```
-دالة أرسل_ملف(اتصال: مؤشر[اتـصال]، اسم_الملف: مؤشر[مـحرف]): فـارغ؛
+@تصدير[mg_send_file]
+دالة أرسل_ملف(اتصال: مؤشر[اتـصال]، اسم_الملف: مـؤشر_محارف): فـراغ؛
 ```
 
 <div dir=ltr>
 
 ```
 @expname[mg_send_file]
-func sendFile(connection: ptr[Connection], fileName: CharsPtr): Void
+func sendFile(connection: ptr[Connection], fileName: CharsPtr): Void;
 ```
 
 </div>
@@ -1379,16 +1375,17 @@ func sendFile(connection: ptr[Connection], fileName: CharsPtr): Void
 ### هات_الارتباط (getCookie)
 
 ```
+@تصدير[mg_get_cookie]
 دالة هات_الارتباط(
-    نص_الكعكات: مؤشر[مـحرف]، اسم_الكعكة: مؤشر[مـحرف]، محتوى_الكعكة: مؤشر[مـحرف]، حجم_الكعكة: كـلمة[64]
-): كـلمة[64]؛
+    نص_الكعكات: مـؤشر_محارف، اسم_الكعكة: مـؤشر_محارف، محتوى_الكعكة: مـؤشر_محارف، حجم_الكعكة: طـبيعي[64]
+): صحيح؛
 ```
 
 <div dir=ltr>
 
 ```
 @expname[mg_get_cookie]
-func getCookie(cookiesString: CharsPtr, cookieName: CharsPtr, outCookieContent: CharsPtr, outCookieSize: Word[64]): Int
+func getCookie(cookiesString: CharsPtr, cookieName: CharsPtr, outCookieContent: CharsPtr, outCookieSize: Word[64]): Int;
 ```
 
 </div>
@@ -1404,14 +1401,15 @@ func getCookie(cookiesString: CharsPtr, cookieName: CharsPtr, outCookieContent: 
 ### هات_الترويسة (getHeader)
 
 ```
-دالة هات_الترويسة(اتصال: مؤشر[اتـصال]، اسم_الترويسة: مؤشر[مـحرف]): مؤشر[مـحرف]؛
+@تصدير[mg_get_header]
+دالة هات_الترويسة(اتصال: مؤشر[اتـصال]، اسم_الترويسة: مـؤشر_محارف): مـؤشر_محارف؛
 ```
 
 <div dir=ltr>
 
 ```
 @expname[mg_get_header]
-func getHeader(connection: ptr[Connection], headerName: CharsPtr): CharsPtr
+func getHeader(connection: ptr[Connection], headerName: CharsPtr): CharsPtr;
 ```
 
 </div>
@@ -1425,6 +1423,7 @@ func getHeader(connection: ptr[Connection], headerName: CharsPtr): CharsPtr
 ### هات_معلومات_الطلب (getRequestInfo)
 
 ```
+@تصدير[mg_get_request_info]
 دالة هات_معلومات_الطلب(اتصال: مؤشر[اتـصال]): مؤشر[اتـصال]؛
 ```
 
@@ -1432,7 +1431,7 @@ func getHeader(connection: ptr[Connection], headerName: CharsPtr): CharsPtr
 
 ```
 @expname[mg_get_request_info]
-func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo]
+func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo];
 ```
 
 </div>
@@ -1445,8 +1444,9 @@ func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo]
 ### هات_متغير (getVariable)
 
 ```
+@تصدير[mg_get_var]
 دالة هات_متغير(
-    بيانات: مؤشر[مـحرف]، حجم_البيانات: صـحيح، اسم_المتغير: مؤشر[مـحرف]، متغير_الخرج: مؤشر[مـحرف]، حجم_متغير_الخرج: صـحيح
+    بيانات: مـؤشر_محارف، حجم_البيانات: صـحيح، اسم_المتغير: مـؤشر_محارف، متغير_الخرج: مـؤشر_محارف، حجم_متغير_الخرج: صـحيح
 ): صـحيح؛
 ```
 
@@ -1469,8 +1469,6 @@ func getVariable(data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVaria
 * `اسم_المتغير` (`variableName`): اسم المتغير الذي نريد جلب قيمته.
 * `متغير_الخرج` (`outVariable`): صوان الخرج الذي نريد تخزين قيمة المتغير فيه.
 * `حجم_متغير_الخرج` (`outVariableSize`): حجم صوان الخرج المشار له ب `متغير_الخرج`.
-
----
 
 ## الرخصة
 
