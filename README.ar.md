@@ -2,29 +2,29 @@
 
 [[English]](README.md)
 
-<div dir=rtl>
-
 مكتبة لإنشاء خوادم بروتوكول نقل النص الترابطي (HTTP) مع دعم WebSocket بلغة الأسس. تعتمد هذه المكتبة على مكتبة civetweb.
 
 ## الإضافة إلى المشروع
 
 أضف المكتبة لمشروعك باستخدام مدير الحزم:
 
+<div dir=rtl>
+
 ```
 اشمل "مـحا"؛
 مـحا.اشمل_حزمة("Alusus/Http@0.3"، "بـننت.أسس")؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 import "Apm.alusus";
 Apm.importPackage("Alusus/Http@0.3");
 ```
 
-</div>
-
 ## مثال
+
+<div dir=rtl>
 
 ```
 اشمل "مـتم/طـرفية.أسس"؛
@@ -78,7 +78,7 @@ Apm.importPackage("Alusus/Http@0.3");
 أخـتبار_الوحدة.ابدا()؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 import "Srl/Console.alusus";
@@ -131,13 +131,13 @@ module TestModule {
 TestModule.start();
 ```
 
-</div>
-
 ## دعم WebSocket
 
 تتضمن هذه المكتبة الآن دعماً شاملاً لـ WebSocket للتواصل الثنائي الفوري. راجع [توثيق WebSocket الكامل](websocket_documentation.ar.md) للحصول على معلومات مفصلة.
 
 ### مثال سريع لـ WebSocket
+
+<div dir=rtl>
 
 ```
 // تسجيل معالج WebSocket
@@ -154,7 +154,7 @@ TestModule.start();
 بـننت.اكتب_نصا_في_ويب_سوكت(اتصال, "مرحباً WebSocket!")؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```alusus
 // Register WebSocket handler
@@ -171,13 +171,13 @@ Http.setWebSocketHandler(
 Http.writeTextToWebSocket(connection, "Hello WebSocket!");
 ```
 
-</div>
-
 راجع مجد الأمثلة للحصول على مثال كامل.
 
 ## الأصناف والوظائف
 
 ### سـياق (Context)
+
+<div dir=rtl>
 
 ```
 صنف سـياق {
@@ -185,7 +185,7 @@ Http.writeTextToWebSocket(connection, "Hello WebSocket!");
 }
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 class Context{
@@ -193,45 +193,44 @@ class Context{
 };
 ```
 
-</div>
-
 يُستعمل هذا الصنف لتخزين المعلومات الخاصة بالسياق.
 
 #### علم_التوقف (stopFlag)
+
+<div dir=rtl>
 
 ```
 عرف علم_التوقف: صحيح؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 def stopFlag: int
 ```
 
-</div>
-
 يحدد إن كان يجب إيقاف حلقة الأحداث.
 
-
 ### مـناديات (Callbacks)
+
+<div dir=rtl>
 
 ```
 صنف مـناديات {
     عرف بداية_الطلب: منادى_الطلب؛
-    عرف نهاية_الطلب: مؤشر[دالة(اتصال:مؤشر[اتصال]، رمز_حالة_الرد: صحيح): صحيح]؛
-    عرف تسجيل_رسالة: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مؤشر[محرف]): صحيح]؛
-    عرف تسجيل_ولوج: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مؤشر[محرف]): صحيح]؛
-    عرف تهيئة_طما:مؤشر[دالة(سياق_طما:مؤشر[فراغ]، بيانات_المستخدم: مؤشر[فراغ]): صحيح]؛
-    عرف غلق_الاتصال: مؤشر[دالة(اتصال:مؤشر[اتصال]): فراغ]؛
+    عرف نهاية_الطلب: مؤشر[دالة(اتصال:مؤشر[اتصال]، رمز_حالة_الرد: صحيح)]؛
+    عرف تسجيل_رسالة: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مـؤشر_محارف): صحيح]؛
+    عرف تسجيل_ولوج: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مـؤشر_محارف): صحيح]؛
+    عرف تهيئة_طما:مؤشر[دالة(سياق_طما:مؤشر[فـراغ]، بيانات_المستخدم: مؤشر[فـراغ]): صحيح]؛
+    عرف غلق_الاتصال: مؤشر[دالة(اتصال:مؤشر[اتصال]): فـراغ]؛
     عرف خطأ_بننف: مؤشر[دالة(اتصال:مؤشر[اتصال]، الحالة: صحيح، رسالة: مؤشر[مصفوفة[محرف]]): صحيح]؛
-    عرف تهيئة_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فراغ]؛
-    عرف نهاية_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فراغ]؛
-    عرف تهيئة_الموضوع: مؤشر[دالة(سياق:مؤشر[سياق]، نمط_المسلك: صحيح): فراغ]؛
+    عرف تهيئة_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فـراغ]؛
+    عرف نهاية_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فـراغ]؛
+    عرف تهيئة_الموضوع: مؤشر[دالة(سياق:مؤشر[سياق]، نمط_المسلك: صحيح): فـراغ]؛
 }
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 class Callbacks{
@@ -248,24 +247,22 @@ class Callbacks{
 };
 ```
 
-</div>
-
 يحتوي هذا الصنف على المناديات الأساسية التي يمكن استعمالها مع بروتوكول ب.ن.ن.ف.
 كل منادى هو مؤشر إلى دالة يستدعيها السيرفر.
 
 #### بداية_الطلب (beginRequest)
 
+<div dir=rtl>
+
 ```
 عرف بداية_الطلب: منادى_الطلب؛
 ```
 
-<div dir=ltr>
-
-```
-def beginRequest: RequestCallback
-```
-
 </div>
+
+```
+def beginRequest: RequestCallback;
+```
 
 يستدعيها الخادم عند بدء طلب ما.
 
@@ -274,33 +271,33 @@ def beginRequest: RequestCallback
 
 #### نهاية_الطلب (endRequest)
 
-```
-عرف نهاية_الطلب: مؤشر[دالة(اتصال:مؤشر[اتصال]، رمز_حالة_الرد: صحيح): صحيح]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def endRequest: ptr[func (connection: ptr[Connection], replyStatusCode: Int)]
+عرف نهاية_الطلب: مؤشر[دالة(اتصال:مؤشر[اتصال]، رمز_حالة_الرد: صحيح)]؛
 ```
 
 </div>
+
+```
+def endRequest: ptr[func (connection: ptr[Connection], replyStatusCode: Int)];
+```
 
 يُستدعى عند إنهاء الطلب على اتصال معين وبرمز حالة رد معين.
 
 #### تسجيل_رسالة (logMessage)
 
-```
-عرف تسجيل_رسالة: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مؤشر[محرف]): صحيح]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def logMessage: ptr[func (connection: ptr[Connection], message: CharsPtr): Int]
+عرف تسجيل_رسالة: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مـؤشر_محارف: صحيح]؛
 ```
 
 </div>
+
+```
+def logMessage: ptr[func (connection: ptr[Connection], message: CharsPtr): Int];
+```
 
 يستعمل لتسجيل رسالة معينة على اتصال معين.
 
@@ -309,17 +306,17 @@ def logMessage: ptr[func (connection: ptr[Connection], message: CharsPtr): Int]
 
 #### تسجيل_ولوج (logAccess)
 
-```
-عرف تسجيل_ولوج: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مؤشر[محرف]): صحيح]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def logAccess: ptr[func (connection: ptr[Connection], message: CharsPtr): Int]
+عرف تسجيل_ولوج: مؤشر[دالة(اتصال:مؤشر[اتصال]، رسالة: مـؤشر_محارف): صحيح]؛
 ```
 
 </div>
+
+```
+def logAccess: ptr[func (connection: ptr[Connection], message: CharsPtr): Int];
+```
 
 يستعمل لتسجيل رسالة على اتصال معين لتوضيح حالة الوصول.
 
@@ -328,17 +325,17 @@ def logAccess: ptr[func (connection: ptr[Connection], message: CharsPtr): Int]
 
 #### تهيئة_طما (initSsl)
 
-```
-عرف تهيئة_طما:مؤشر[دالة(سياق_طما:مؤشر[فراغ]، بيانات_المستخدم: مؤشر[فراغ]): صحيح]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def initSsl: ptr[func (sslContext: ptr[Void], userData: ptr[Void]): Int]
+عرف تهيئة_طما:مؤشر[دالة(سياق_طما:مؤشر[فـراغ]، بيانات_المستخدم: مؤشر[فـراغ]): صحيح]؛
 ```
 
 </div>
+
+```
+def initSsl: ptr[func (sslContext: ptr[Void], userData: ptr[Void]): Int];
+```
 
 يُستدعى عند تهيئة بروتوكول طبقة المقابل الآمنة (SSL).
 
@@ -348,33 +345,33 @@ def initSsl: ptr[func (sslContext: ptr[Void], userData: ptr[Void]): Int]
 
 #### غلق_الاتصال (connectionClose)
 
-```
-عرف غلق_الاتصال: مؤشر[دالة(اتصال:مؤشر[اتصال]): فراغ]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def connectionClose: ptr[func (connection: ptr[Connection]): Void]
+عرف غلق_الاتصال: مؤشر[دالة(اتصال:مؤشر[اتصال]): فـراغ]؛
 ```
 
 </div>
+
+```
+def connectionClose: ptr[func (connection: ptr[Connection]): Void];
+```
 
 يُستدعى عند إغلاق اتصال.
 
 #### خطأ_بننف (httpError)
 
+<div dir=rtl>
+
 ```
 عرف خطأ_بننف: مؤشر[دالة(اتصال:مؤشر[اتصال]، الحالة: صحيح، رسالة: مؤشر[مصفوفة[محرف]]): صحيح]؛
 ```
 
-<div dir=ltr>
-
-```
-def httpError: ptr[func (connection: ptr[Connection], status: Int, msg: ptr[array[Char]]): Int]
-```
-
 </div>
+
+```
+def httpError: ptr[func (connection: ptr[Connection], status: Int, msg: ptr[array[Char]]): Int];
+```
 
 يستدعى عند حصول خطأ على اتصال ما مع الحالة ورسالة توضح الخطأ.
 
@@ -383,75 +380,76 @@ def httpError: ptr[func (connection: ptr[Connection], status: Int, msg: ptr[arra
 
 #### تهيئة_السياق (initContext)
 
-```
-عرف تهيئة_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فراغ]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def initContext: ptr[func (context: ptr[Context]): Void]
+عرف تهيئة_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فـراغ]؛
 ```
 
 </div>
+
+```
+def initContext: ptr[func (context: ptr[Context]): Void];
+```
 
 يُستدعى لتهيئة السياق المستعمل في مسلك ما.
 
 #### نهاية_السياق (exitContext)
 
-```
-عرف نهاية_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فراغ]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def exitContext: ptr[func (context: ptr[Context]): Void]
+عرف نهاية_السياق: مؤشر[دالة(سياق:مؤشر[سياق]): فـراغ]؛
 ```
 
 </div>
+
+```
+def exitContext: ptr[func (context: ptr[Context]): Void];
+```
 
 يُستدعى عند إنهاء سياق.
 
 #### تهيئة_الموضوع (initThread)
 
-```
-عرف تهيئة_الموضوع: مؤشر[دالة(سياق:مؤشر[سياق]، نمط_المسلك: صحيح): فراغ]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def initThread: ptr[func (context: ptr[Context], threadType: Int): Void]
+عرف تهيئة_الموضوع: مؤشر[دالة(سياق:مؤشر[سياق]، نمط_المسلك: صحيح): فـراغ]؛
 ```
 
 </div>
 
-يُستدعى لتهيئة مسلك بسياق ما مع تحديد نمط المسلك.
+```
+def initThread: ptr[func (context: ptr[Context], threadType: Int): Void];
+```
 
+يُستدعى لتهيئة مسلك بسياق ما مع تحديد نمط المسلك.
 
 ### مـعلومات_الطلب (RequestInfo)
 
+<div dir=rtl>
+
 ```
 صنف مـعلومات_الطلب {
-    عرف طريقة_الطلب: مؤشر[محرف]؛
-    عرف معرف_الطلب: مؤشر[محرف]؛
-    عرف المعرف_المحلي: مؤشر[محرف]؛
-    عرف إصدار_بننف: مؤشر[محرف]؛
-    عرف نص_الاستعلام: مؤشر[محرف]؛
-    عرف المستخدم_البعيد: مؤشر[محرف]؛
+    عرف طريقة_الطلب: مـؤشر_محارف؛
+    عرف معرف_الطلب: مـؤشر_محارف؛
+    عرف المعرف_المحلي: مـؤشر_محارف؛
+    عرف إصدار_بننف: مـؤشر_محارف؛
+    عرف نص_الاستعلام: مـؤشر_محارف؛
+    عرف المستخدم_البعيد: مـؤشر_محارف؛
     عرف العنوان_البعيد: مصفوفة[محرف، 48]؛
     عرف طول_المحتوى: صحيح[64]؛
     عرف المنفذ_البعيد: صحيح؛
     عرف مشفر: صحيح؛
-    عرف بيانات_المستخدم: مؤشر[فراغ]؛
-    عرف بيانات_الاتصال: مؤشر[فراغ]؛
+    عرف بيانات_المستخدم: مؤشر[فـراغ]؛
+    عرف بيانات_الاتصال: مؤشر[فـراغ]؛
     عرف عدد_الترويسات: صحيح؛
     عرف ترويسات_بننف: مصفوفة[ترويسة، 64]؛
 }
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 class RequestInfo {
@@ -472,245 +470,244 @@ class RequestInfo {
 };
 ```
 
-</div>
-
 يستعمل هذا الصنف لتخزين المعلومات الأساسية عن طلب ما.
 
 #### طريقة_الطلب (requestMethod)
 
-```
-عرف طريقة_الطلب: مؤشر[محرف]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def requestMethod: CharsPtr
+عرف طريقة_الطلب: مـؤشر_محارف؛
 ```
 
 </div>
+
+```
+def requestMethod: CharsPtr;
+```
 
 نوع الطلب المستخدم مثلاً: GET.
 
 #### معرف_الطلب (requestUri)
 
-```
-عرف معرف_الطلب: مؤشر[محرف]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def requestUri: CharsPtr
+عرف معرف_الطلب: مـؤشر_محارف؛
 ```
 
 </div>
+
+```
+def requestUri: CharsPtr;
+```
 
 الرابط الذي نرسل عليه الطلب.
 
 #### المعرف_المحلي (localUri)
 
-```
-عرف المعرف_المحلي: مؤشر[محرف]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def localUri: CharsPtr
+عرف المعرف_المحلي: مـؤشر_محارف؛
 ```
 
 </div>
+
+```
+def localUri: CharsPtr;
+```
 
 الرابط المحلي للطلب، يمكن استعماله من أجل الطلبات ضمن نفس الخادم.
 
 #### إصدار_بننف (httpVersion)
 
-```
-عرف إصدار_بننف: مؤشر[محرف]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def httpVersion: CharsPtr
+عرف إصدار_بننف: مـؤشر_محارف؛
 ```
 
 </div>
+
+```
+def httpVersion: CharsPtr;
+```
 
 نسخة البروتوكول المستعمل في هذا الطلب.
 
 #### نص_الاستعلام (queryString)
 
-```
-عرف نص_الاستعلام: مؤشر[محرف]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def queryString: CharsPtr
+عرف نص_الاستعلام: مـؤشر_محارف؛
 ```
 
 </div>
+
+```
+def queryString: CharsPtr;
+```
 
 بارامترات الطلب الموجودة في الرابط.
 
 #### المستخدم_البعيد (remoteUser)
 
-```
-عرف المستخدم_البعيد: مؤشر[محرف]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def remoteUser: CharsPtr
+عرف المستخدم_البعيد: مـؤشر_محارف؛
 ```
 
 </div>
+
+```
+def remoteUser: CharsPtr;
+```
 
 المستخدم البعيد الذي نتعامل معه.
 
 #### العنوان_البعيد (remoteAddr)
 
+<div dir=rtl>
+
 ```
 عرف العنوان_البعيد: مصفوفة[محرف، 48]؛
 ```
 
-<div dir=ltr>
-
-```
-def remoteAddr: array[Char, 48]
-```
-
 </div>
+
+```
+def remoteAddr: array[Char, 48];
+```
 
 عنوان ال IP للمستخدم البعيد.
 
 #### طول_المحتوى (contentLength)
 
+<div dir=rtl>
+
 ```
 عرف طول_المحتوى: صحيح[64]؛
 ```
 
-<div dir=ltr>
-
-```
-def contentLength: Int[64]
-```
-
 </div>
+
+```
+def contentLength: Int[64];
+```
 
 طول جسم الطلب مقدراً بالبايت، و يكون -1 في حال لم يكن الطول محدداً.
 
 #### المنفذ_البعيد (remotePort)
 
+<div dir=rtl>
+
 ```
 عرف المنفذ_البعيد: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def remotePort: Int
-```
-
 </div>
+
+```
+def remotePort: Int;
+```
 
 المنفذ المستعمل على جهاز المستخدم البعيد.
 
 #### مشفر (isSsl)
 
+<div dir=rtl>
+
 ```
 عرف مشفر: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def isSsl: Int
-```
-
 </div>
+
+```
+def isSsl: Int;
+```
 
 هل الاتصال مشفر بتقنية ط.م.آ؟
 
 #### بيانات_المستخدم (userData)
 
-```
-عرف بيانات_المستخدم: مؤشر[فراغ]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def userData: ptr[Void]
+عرف بيانات_المستخدم: مؤشر[فـراغ]؛
 ```
 
 </div>
+
+```
+def userData: ptr[Void];
+```
 
 بيانات خاصة بالمستخدم تُمرر إلى دالة `شغل_الخادم`.
 
 #### بيانات_الاتصال (connData)
 
-```
-عرف بيانات_الاتصال: مؤشر[فراغ]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def connData: ptr[Void]
+عرف بيانات_الاتصال: مؤشر[فـراغ]؛
 ```
 
 </div>
+
+```
+def connData: ptr[Void];
+```
 
 بيانات خاصة بالاتصال.
 
 #### عدد_الترويسات (numberHeaders)
 
+<div dir=rtl>
+
 ```
 عرف عدد_الترويسات: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def numberHeaders: Int
-```
-
 </div>
+
+```
+def numberHeaders: Int;
+```
 
 عدد ترويسات الطلب.
 
 #### ترويسات_بننف (httpHeaders)
 
+<div dir=rtl>
+
 ```
 عرف ترويسات_بننف: مصفوفة[ترويسة، 64]؛
 ```
 
-<div dir=ltr>
-
-```
-def httpHeaders: array[Header, 64]
-```
-
 </div>
+
+```
+def httpHeaders: array[Header, 64];
+```
 
 الترويسات الخاصة بالطلب.
 
-
 ### تـرويسة (Header)
+
+<div dir=rtl>
 
 ```
 صنف تـرويسة {
-    عرف اسم: مؤشر[محرف]؛
-    عرف قيمة: مؤشر[محرف]؛
+    عرف اسم: مـؤشر_محارف؛
+    عرف قيمة: مـؤشر_محارف؛
 }
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 class Header {
@@ -719,44 +716,43 @@ class Header {
 };
 ```
 
-</div>
-
 يستعمل هذا الصنف لتخزين بيانات ترويسة للطلب.
 
 #### اسم (name)
 
+<div dir=rtl>
+
 ```
-عرف اسم: مؤشر[محرف]؛
+عرف اسم: مـؤشر_محارف؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 def name: CharsPtr
 ```
 
-</div>
-
 اسم الترويسة، و هي بمثابة مفتاح.
 
 #### قيمة (value)
 
+<div dir=rtl>
+
 ```
-عرف قيمة: مؤشر[محرف]؛
+عرف قيمة: مـؤشر_محارف؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 def value: CharsPtr
 ```
 
-</div>
-
 قيمة الترويسة و هي بمثابة القيمة المخزنة بهذا المفتاح.
 
-
 ### اتـصال (Connection)
+
+<div dir=rtl>
 
 ```
 صنف اتـصال {
@@ -772,8 +768,8 @@ def value: CharsPtr
     عرف المحتوى_المستهلك: صحيح[64]؛
     عرف مقطع: صحيح؛
     عرف باقي_التقطيع: كلمة[64]؛
-    عرف صوان: مؤشر[محرف]؛
-    عرف معلومات_المسار: مؤشر[محرف]؛
+    عرف صوان: مـؤشر_محارف؛
+    عرف معلومات_المسار: مـؤشر_محارف؛
     عرف يجب_الاغلاق: صحيح؛
     عرف معالج_الاخطاء: صحيح؛
     عرف خطأ_داخلي: صحيح؛
@@ -788,7 +784,7 @@ def value: CharsPtr
 }
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 class Connection {
@@ -820,183 +816,181 @@ class Connection {
 };
 ```
 
-</div>
-
 يستعمل هذا الصنف لتخزين المعلومات المختلفة عن الاتصال.
 
 #### معلومات_الطلب (requestInfo)
+
+<div dir=rtl>
 
 ```
 عرف معلومات_الطلب: مؤشر[مـعلومات_الطلب]؛
 ```
 
-<div dir=ltr>
-
-```
-def requestInfo: ptr[RequestInfo]
-```
-
 </div>
+
+```
+def requestInfo: ptr[RequestInfo];
+```
 
 معلومات الطلب المرافق للاتصال.
 
 #### سياق (context)
 
+<div dir=rtl>
+
 ```
 عرف سياق: مؤشر[سـياق]؛
 ```
 
-<div dir=ltr>
-
-```
-def context: ptr[Context]
-```
-
 </div>
+
+```
+def context: ptr[Context];
+```
 
 معلومات السياق المستعمل في هذا الاتصال.
 
 #### طما (ssl)
 
+<div dir=rtl>
+
 ```
 عرف طما: مؤشر؛
 ```
 
-<div dir=ltr>
-
-```
-def ssl: ptr
-```
-
 </div>
+
+```
+def ssl: ptr;
+```
 
 واصف بروتوكول ط.م.ا.
 
 #### سياق_طما_للعميل (clientSslContext)
 
+<div dir=rtl>
+
 ```
 عرف سياق_طما_للعميل: مؤشر؛
 ```
 
-<div dir=ltr>
-
-```
-def clientSslContext: ptr
-```
-
 </div>
+
+```
+def clientSslContext: ptr;
+```
 
 السياق الخاص بالمستخدم وفق بروتوكول ط.م.ا.
 
 #### عميل (client)
 
+<div dir=rtl>
+
 ```
 عرف عميل: مؤشر؛
 ```
 
-<div dir=ltr>
-
-```
-def client: ptr
-```
-
 </div>
+
+```
+def client: ptr;
+```
 
 العميل المتصل عبر هذا الاتصال.
 
 #### موعد_الاتصال (connectionBirthTime)
 
+<div dir=rtl>
+
 ```
 عرف موعد_الاتصال: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def connectionBirthTime: Int
-```
-
 </div>
+
+```
+def connectionBirthTime: Int;
+```
 
 الوقت الذي تم فيه إنشاء الاتصال.
 
 #### وقت_الطلب (requestTime)
 
+<div dir=rtl>
+
 ```
 عرف وقت_الطلب: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def requestTime: Int
-```
-
 </div>
+
+```
+def requestTime: Int;
+```
 
 الوقت الذي تم فيه إنشاء الاتصال بالنسبة لوقت الخادم.
 
 #### عدد_البايت_المرسلة (numberBytesSent)
 
+<div dir=rtl>
+
 ```
 عرف عدد_البايت_المرسلة: صحيح[64]؛
 ```
 
-<div dir=ltr>
-
-```
-def numberBytesSent: int[64]
-```
-
 </div>
+
+```
+def numberBytesSent: int[64];
+```
 
 عدد البايتات التي تم إرسالها إلى العميل.
 
 #### حجم_المحتوى (contentLen)
 
+<div dir=rtl>
+
 ```
 عرف حجم_المحتوى: صحيح[64]؛
 ```
 
-<div dir=ltr>
-
-```
-def contentLen: int[64]
-```
-
 </div>
+
+```
+def contentLen: int[64];
+```
 
 قيمة الترويسة حجم_المحتوى.
 
 #### المحتوى_المستهلك (consumedContent)
 
+<div dir=rtl>
+
 ```
 عرف المحتوى_المستهلك: صحيح[64]؛
 ```
 
-<div dir=ltr>
-
-```
-def consumedContent: int[64]
-```
-
 </div>
+
+```
+def consumedContent: int[64];
+```
 
 عدد بايتات المحتوى التي تم قراءتها.
 
 #### مقطع (isChunked)
 
+<div dir=rtl>
+
 ```
 عرف مقطع: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def isChunked: int
-```
-
 </div>
+
+```
+def isChunked: int;
+```
 
 هل تم تقطيع النقل، يأخذ القيم التالية:
 
@@ -1006,256 +1000,255 @@ def isChunked: int
 
 #### باقي_التقطيع (chunkRemainder)
 
+<div dir=rtl>
+
 ```
 عرف باقي_التقطيع: كلمة[64]؛
 ```
 
-<div dir=ltr>
-
-```
-def chunkRemainder: word[64]
-```
-
 </div>
+
+```
+def chunkRemainder: word[64];
+```
 
 البيانات التي لم يتم قراءتها بعد من آخر مقطع.
 
 #### صوان (buf)
 
-```
-عرف صوان: مؤشر[محرف]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def buf: CharsPtr
+عرف صوان: مـؤشر_محارف؛
 ```
 
 </div>
+
+```
+def buf: CharsPtr;
+```
 
 صوان يستعمل من أجل البيانات التي يتم تلقيها.
 
 #### معلومات_المسار (pathInfo)
 
-```
-عرف معلومات_المسار: مؤشر[محرف]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-def pathInfo: CharsPtr
+عرف معلومات_المسار: مـؤشر_محارف؛
 ```
 
 </div>
+
+```
+def pathInfo: CharsPtr;
+```
 
 المعلومات الخاصة بالمسار ضمن الرابط.
 
 #### يجب_الاغلاق (mustClose)
 
+<div dir=rtl>
+
 ```
 عرف يجب_الاغلاق: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def mustClose: int
-```
-
 </div>
+
+```
+def mustClose: int;
+```
 
 هل يجب إغلاق الاتصال.
 
 #### معالج_الاخطاء (inErrorHandler)
 
+<div dir=rtl>
+
 ```
 عرف معالج_الاخطاء: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def inErrorHandler: int
-```
-
 </div>
+
+```
+def inErrorHandler: int;
+```
 
 هل تتم معالجة الأخطاء؟
 
 #### خطأ_داخلي (internalError)
 
+<div dir=rtl>
+
 ```
 عرف خطأ_داخلي: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def internalError: int
-```
-
 </div>
+
+```
+def internalError: int;
+```
 
 هل حدث خطأ أثناء معالجة الطلب؟
 
 #### حجم_الصوان (bufSize)
 
+<div dir=rtl>
+
 ```
 عرف حجم_الصوان: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def bufSize: int
-```
-
 </div>
+
+```
+def bufSize: int;
+```
 
 حجم الصوان.
 
 #### حجم_الطلب (requestLen)
 
+<div dir=rtl>
+
 ```
 عرف حجم_الطلب: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def requestLen: int
-```
-
 </div>
+
+```
+def requestLen: int;
+```
 
 الحجم الكلي بالبايتات للطلب بالإضافة للترويسات ضمن الصوان.
 
 #### حجم_البيانات (dataLen)
 
+<div dir=rtl>
+
 ```
 عرف حجم_البيانات: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def dataLen: int
-```
-
 </div>
+
+```
+def dataLen: int;
+```
 
 الحجم الكلي بالبايتات للبيانات ضمن الصوان.
 
 #### رمز_الحالة (statusCode)
 
+<div dir=rtl>
+
 ```
 عرف رمز_الحالة: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def statusCode: int
-```
-
 </div>
+
+```
+def statusCode: int;
+```
 
 رمز الحالة للرد ضمن بروتوكول ب.ن.ن.ف.
 
 #### خنق (throttle)
 
+<div dir=rtl>
+
 ```
 عرف خنق: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def throttle: int
-```
-
 </div>
+
+```
+def throttle: int;
+```
 
 قيمة الخنق.
 
 #### آخر_وقت_خنق (lastThrottleTime)
 
+<div dir=rtl>
+
 ```
 عرف آخر_وقت_خنق: صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-def lastThrottleTime: int
-```
-
 </div>
+
+```
+def lastThrottleTime: int;
+```
 
 آخر وقت تم إرسال فيه بيانات مخنوقة.
 
 #### آخر_بايتات_خنق (lastThrottleBytes)
 
+<div dir=rtl>
+
 ```
 عرف آخر_بايتات_خنق: صحيح[64]؛
 ```
 
-<div dir=ltr>
-
-```
-def lastThrottleBytes: int[64]
-```
-
 </div>
+
+```
+def lastThrottleBytes: int[64];
+```
 
 البايتات التي تم إرسالها في هذه الثانية.
 
 #### قفل_المزامنة (mutex)
 
+<div dir=rtl>
+
 ```
 عرف قفل_المزامنة: صحيح[64]؛
 ```
 
-<div dir=ltr>
-
-```
-def mutex: int[64]
-```
-
 </div>
+
+```
+def mutex: int[64];
+```
 
 يمكن استعمالها لقفل الاتصال من أجل الوصول المتزامن الآمن.
 
-
 ### شغل_الخادم (startServer)
+
+<div dir=rtl>
 
 ```
 @تصدير[mg_start]
 دالة شغل_الخادم(مناديات: مؤشر[مـناديات]، بيانات_المستخدم: مؤشر، خيارات: مؤشر[مـؤشر_محارف]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، خيارات: سند[مـتم.مـصفوفة[مؤشر[مـحرف]]]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، خيارات: سند[مـتم.مـصفوفة[مؤشر[مـحرف]]]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، عدد_الخيارات: صـحيح، خيارات: ...مؤشر[محرف]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، عدد_الخيارات: صـحيح، خيارات: ...مؤشر[محرف]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، منفذ: مؤشر[محرف]): مؤشر[سـياق]؛
-دالة شغل_الخادم(منادي: مـنادى_الطلب، منفذ: مؤشر[محرف]): مؤشر[سـياق]؛
-```
-
-<div dir=ltr>
-
-```
-@expname[mg_start]
-func startServer(callbacks: ptr[Callbacks], userData: ptr, options: ptr[CharsPtr]): ptr[Context]
-func startServer(callback: RequestCallback, userData: ptr, options: ref[Srl.Array[CharsPtr]]): ptr[Context]
-func startServer(callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context]
-func startServer(callback: RequestCallback, userData: ptr, optsCount: Int, opts: ...CharsPtr): ptr[Context]
-func startServer(callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context]
-func startServer(callback: RequestCallback, userData: ptr, port: CharsPtr): ptr[Context]
-func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context]
+دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، خيارات: سند[مـتم.مـصفوفة[مـؤشر_محارف]]): مؤشر[سـياق]؛
+دالة شغل_الخادم(منادي: مـنادى_الطلب، خيارات: سند[مـتم.مـصفوفة[مـؤشر_محارف]]): مؤشر[سـياق]؛
+دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، عدد_الخيارات: صـحيح، خيارات: ...مـؤشر_محارف): مؤشر[سـياق]؛
+دالة شغل_الخادم(منادي: مـنادى_الطلب، عدد_الخيارات: صـحيح، خيارات: ...مـؤشر_محارف): مؤشر[سـياق]؛
+دالة شغل_الخادم(منادي: مـنادى_الطلب، بيانات_المستخدم: مؤشر، منفذ: مـؤشر_محارف): مؤشر[سـياق]؛
+دالة شغل_الخادم(منادي: مـنادى_الطلب، منفذ: مـؤشر_محارف): مؤشر[سـياق]؛
 ```
 
 </div>
+
+```
+@expname[mg_start]
+func startServer(callbacks: ptr[Callbacks], userData: ptr, options: ptr[CharsPtr]): ptr[Context];
+func startServer(callback: RequestCallback, userData: ptr, options: ref[Srl.Array[CharsPtr]]): ptr[Context];
+func startServer(callback: RequestCallback, options: ref[Srl.Array[CharsPtr]]): ptr[Context];
+func startServer(callback: RequestCallback, userData: ptr, optsCount: Int, opts: ...CharsPtr): ptr[Context];
+func startServer(callback: RequestCallback, optsCount: Int, opts: ...CharsPtr): ptr[Context];
+func startServer(callback: RequestCallback, userData: ptr, port: CharsPtr): ptr[Context];
+func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context];
+```
 
 تستخدم هذه الدالة لتهيئة الخادم و تشغيله. تُرجع مؤشراً إلى سياق الخادم، أو مؤشراً إلى لاشيء في حال فشل الإنشاء.
 في حال كان أحد المناديات غير موجود فيتم استبداله بمنادي افتراضي من قبل الخادم.
@@ -1270,18 +1263,19 @@ func startServer(callback: RequestCallback, port: CharsPtr): ptr[Context]
 
 ### أوقف_الخادم (stopServer)
 
-```
-دالة أوقف_الخادم(سياق: مؤشر[سـياق])؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-@expname[mg_stop]
-func stopServer(context: ptr[Context]): Void
+@تصدير[mg_stop];
+دالة أوقف_الخادم(سياق: مؤشر[سـياق]): فـراغ؛
 ```
 
 </div>
+
+```
+@expname[mg_stop];
+func stopServer(context: ptr[Context]): Void;
+```
 
 تستعمل هذه الدالة لإيقاف الخادم وتحرير أي موارد كان يستعملها، تنتظر هذه الدالة
 حتى يتم إنهاء كل المسالك التي يتم تنفيذها و بعدها يقوم بتحرير الموارد و إغلاق الخادم.
@@ -1290,18 +1284,19 @@ func stopServer(context: ptr[Context]): Void
 
 ### اقرأ (read)
 
+<div dir=rtl>
+
 ```
+@تصدير[mg_read]؛
 دالة اقرأ(اتصال: مؤشر[اتـصال]، صوان: مؤشر، حجم_صوان: صحيح): صحيح؛
 ```
 
-<div dir=ltr>
-
-```
-@expname[mg_read]
-func read(connection: ptr[Connection], buffer: ptr, bufferSize: Int): Int
-```
-
 </div>
+
+```
+@expname[mg_read];
+func read(connection: ptr[Connection], buffer: ptr, bufferSize: Int): Int;
+```
 
 تقوم هذه الدالة بقراءة البيانات من الاتصال المشار إليه عن طريق `اتصال`.
 يتم التعامل مع البيانات على أنها بيانات ثنائية و يتم تخزينها في الصوان المشار إليه من قبل `صوان`.
@@ -1313,18 +1308,19 @@ func read(connection: ptr[Connection], buffer: ptr, bufferSize: Int): Int
 
 ### اكتب (write)
 
+<div dir=rtl>
+
 ```
-دالة اكتب(اتصال: مؤشر[اتـصال]، صوان: مؤشر[مـحرف]، حجم_صوان: صـحيح): صـحيح؛
+@تصدير[mg_write]؛
+دالة اكتب(اتصال: مؤشر[اتـصال]، صوان: مـؤشر_محارف، حجم_صوان: صـحيح): صـحيح؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 @expname[mg_write]
 func write(connection: ptr[Connection], buffer: CharsPtr, bufferSize: Int): Int
 ```
-
-</div>
 
 تستعمل هذه الدالة لإرسال البيانات عبر اتصال ما.
 تُرجع عدد البايتات المرسلة عند النجاح، أو `-1` عند الفشل.
@@ -1335,18 +1331,19 @@ func write(connection: ptr[Connection], buffer: CharsPtr, bufferSize: Int): Int
 
 ### اطبع (print)
 
-```
-دالة اطبع(اتصال: مؤشر[اتـصال]، تنسيق: مؤشر[مـحرف]، أي_معطيات_أخرى...): صـحيح؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-@expname[mg_printf]
-func print(connection: ptr[Connection], format: CharsPtr, ...any): Int
+@تصدير[mg_printf]؛
+دالة اطبع(اتصال: مؤشر[اتـصال]، تنسيق: مـؤشر_محارف، أي_معطيات_أخرى...): صـحيح؛
 ```
 
 </div>
+
+```
+@expname[mg_printf];
+func print(connection: ptr[Connection], format: CharsPtr, ...any): Int;
+```
 
 تستعمل هذه الدالة لإرسال رسائل منسقة عبر اتصال ما.
 تُرجع عدد البايتات المرسلة عند النجاح، `0` عند إغلاق الاتصال، أو `-1` عند حدوث خطأ.
@@ -1357,18 +1354,19 @@ func print(connection: ptr[Connection], format: CharsPtr, ...any): Int
 
 ### أرسل_ملف (sendFile)
 
-```
-دالة أرسل_ملف(اتصال: مؤشر[اتـصال]، اسم_الملف: مؤشر[مـحرف]): فـارغ؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-@expname[mg_send_file]
-func sendFile(connection: ptr[Connection], fileName: CharsPtr): Void
+@تصدير[mg_send_file]؛
+دالة أرسل_ملف(اتصال: مؤشر[اتـصال]، اسم_الملف: مـؤشر_محارف): فـراغ؛
 ```
 
 </div>
+
+```
+@expname[mg_send_file];
+func sendFile(connection: ptr[Connection], fileName: CharsPtr): Void;
+```
 
 تستعمل هذه الدالة لإرسال ملف عبر اتصال ما.
 تقوم هذه الدالة تلقائياً بإضافة الترويسات اللازمة.
@@ -1378,20 +1376,21 @@ func sendFile(connection: ptr[Connection], fileName: CharsPtr): Void
 
 ### هات_الارتباط (getCookie)
 
+<div dir=rtl>
+
 ```
+@تصدير[mg_get_cookie]؛
 دالة هات_الارتباط(
-    نص_الكعكات: مؤشر[مـحرف]، اسم_الكعكة: مؤشر[مـحرف]، محتوى_الكعكة: مؤشر[مـحرف]، حجم_الكعكة: كـلمة[64]
-): كـلمة[64]؛
-```
-
-<div dir=ltr>
-
-```
-@expname[mg_get_cookie]
-func getCookie(cookiesString: CharsPtr, cookieName: CharsPtr, outCookieContent: CharsPtr, outCookieSize: Word[64]): Int
+    نص_الكعكات: مـؤشر_محارف، اسم_الكعكة: مـؤشر_محارف، محتوى_الكعكة: مـؤشر_محارف، حجم_الكعكة: كـلمة[64]
+): صحيح؛
 ```
 
 </div>
+
+```
+@expname[mg_get_cookie];
+func getCookie(cookiesString: CharsPtr, cookieName: CharsPtr, outCookieContent: CharsPtr, outCookieSize: Word[64]): Int;
+```
 
 تستعمل هذه الدالة لجلب قيمة متغير معين ضمن كعكة ما.
 تُرجع حجم الكعكة بالبايت عند النجاح، `-1` عند عدم إيجاد الكعكة، أو `-2` عند فشل التخزين في الصوان.
@@ -1403,18 +1402,19 @@ func getCookie(cookiesString: CharsPtr, cookieName: CharsPtr, outCookieContent: 
 
 ### هات_الترويسة (getHeader)
 
-```
-دالة هات_الترويسة(اتصال: مؤشر[اتـصال]، اسم_الترويسة: مؤشر[مـحرف]): مؤشر[مـحرف]؛
-```
-
-<div dir=ltr>
+<div dir=rtl>
 
 ```
-@expname[mg_get_header]
-func getHeader(connection: ptr[Connection], headerName: CharsPtr): CharsPtr
+@تصدير[mg_get_header]؛
+دالة هات_الترويسة(اتصال: مؤشر[اتـصال]، اسم_الترويسة: مـؤشر_محارف): مـؤشر_محارف؛
 ```
 
 </div>
+
+```
+@expname[mg_get_header];
+func getHeader(connection: ptr[Connection], headerName: CharsPtr): CharsPtr;
+```
 
 تستعمل هذه الدالة لجلب الترويسة عبر اتصال ما.
 تُرجع مؤشراً إلى قيمة الترويسة أو مؤشراً إلى لا شيء عند الفشل.
@@ -1424,18 +1424,19 @@ func getHeader(connection: ptr[Connection], headerName: CharsPtr): CharsPtr
 
 ### هات_معلومات_الطلب (getRequestInfo)
 
+<div dir=rtl>
+
 ```
+@تصدير[mg_get_request_info]؛
 دالة هات_معلومات_الطلب(اتصال: مؤشر[اتـصال]): مؤشر[اتـصال]؛
 ```
 
-<div dir=ltr>
-
-```
-@expname[mg_get_request_info]
-func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo]
-```
-
 </div>
+
+```
+@expname[mg_get_request_info];
+func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo];
+```
 
 تستعمل هذه الدالة لجلب معلومات الطلب عبر اتصال ما.
 تُرجع مؤشراً إلى معلومات الطلب.
@@ -1444,20 +1445,21 @@ func getRequestInfo(connection: ptr[Connection]): ptr[RequestInfo]
 
 ### هات_متغير (getVariable)
 
+<div dir=rtl>
+
 ```
+@تصدير[mg_get_var]؛
 دالة هات_متغير(
-    بيانات: مؤشر[مـحرف]، حجم_البيانات: صـحيح، اسم_المتغير: مؤشر[مـحرف]، متغير_الخرج: مؤشر[مـحرف]، حجم_متغير_الخرج: صـحيح
+    بيانات: مـؤشر_محارف، حجم_البيانات: صـحيح، اسم_المتغير: مـؤشر_محارف، متغير_الخرج: مـؤشر_محارف، حجم_متغير_الخرج: صـحيح
 ): صـحيح؛
 ```
 
-<div dir=ltr>
+</div>
 
 ```
 @expname[mg_get_var]
 func getVariable(data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVariable: CharsPtr, outVariableSize: Int): Int
 ```
-
-</div>
 
 تستعمل هذه الدالة لجلب قيمة متغير ما من الخادم.
 هذا المتغير تم تمريره إلى الخادم إما عن طريق طلب POST أي ضمن الجسم الخاص بالطلب،
@@ -1478,4 +1480,3 @@ func getVariable(data: CharsPtr, dataSize: Int, variableName: CharsPtr, outVaria
 
 هذا المشروع مرخص بموجب رخصة غنو العمومية الصغرى الإصدار 3.0 (LGPL-3.0). راجع ملفات `COPYING` و `COPYING.LESSER` للحصول على التفاصيل.
 
-</div>
