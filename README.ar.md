@@ -1,4 +1,4 @@
-# بـننت (HTTP)
+# بـننت (Http)
 
 <div dir=rtl>
 

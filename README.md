@@ -1,6 +1,6 @@
 # HTTP
 
-[[عربي]](readme.ar.md)
+[[عربي]](README.ar.md)
 
 A library for creating HTTP servers with WebSocket support using Alusus Language. This library is based on civetweb.
 
