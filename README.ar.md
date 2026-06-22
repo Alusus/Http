@@ -152,7 +152,7 @@ TestModule.start();
 
 <div dir=ltr>
 
-```alusus
+```
 // Register WebSocket handler
 Http.setWebSocketHandler(
     context,
