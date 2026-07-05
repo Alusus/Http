@@ -71,6 +71,9 @@
 
     عرف اتـصال: لقب Connection؛
 
+    عرف عين_بيانات_إتصال_المستخدم: لقب setUserConnectionData؛ 
+    عرف هات_بيانات_إتصال_المستخدم: لقب getUserConnectionData؛
+    
     // أصناف ويب سوكت
     عرف مـنادى_اتصال_ويب_سوكت: لقب WebSocketConnectCallback؛
     عرف مـنادى_استعداد_ويب_سوكت: لقب WebSocketReadyCallback؛

@@ -568,6 +568,35 @@ def mutex: int[64]
 ```
 Used for locking when we need to access synced data safely.
 
+### setUserConnectionData
+
+```
+@expname[mg_set_user_connection_data]
+func setUserConnectionData (connection: ptr[Connection], data : ptr[Void]);
+```
+
+Registers a data pointer to a connection.
+
+* `connection` : pointer to the connection you want to register data to.
+* `userData`   : pointer for data you want to register.
+
+Calling this function again on the same connection pointer overwrites any previously registered data pointer.
+
+You can retrieve the registered data by calling `getUserConnectionData`;
+
+### getUserConnectionData
+
+```
+@expname[mg_get_user_connection_data]
+func getUserConnectionData (connection: ptr[Connection]) : ptr[Void];
+```
+
+This function returns the data pointer that was previously registered for a connection via `setUserConnectionData`.
+
+* `connection` : pointer to the connection you want to get the data that was registered to.
+
+Returns `null` if no data has been registered yet for this connection.
+
 ### startServer
 
 ```
