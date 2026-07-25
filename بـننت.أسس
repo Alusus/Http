@@ -71,7 +71,7 @@
 
     عرف اتـصال: لقب Connection؛
 
-    عرف عين_بيانات_إتصال_المستخدم: لقب setUserConnectionData؛ 
+    عرف حدد_بيانات_اتصال_المستخدم: لقب setUserConnectionData؛
     عرف هات_بيانات_إتصال_المستخدم: لقب getUserConnectionData؛
     
     // أصناف ويب سوكت
