@@ -91,6 +91,13 @@ module Http {
     class Connection {
     };
 
+    // connection user data
+    @expname[mg_set_user_connection_data]
+    func setUserConnectionData (connection: ptr[Connection], data : ptr[Void]);
+
+    @expname[mg_get_user_connection_data]
+    func getUserConnectionData (connection: ptr[Connection]) : ptr[Void];
+
     // WebSocket Types
     def WebSocketConnectCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Int];
     def WebSocketReadyCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Void];
