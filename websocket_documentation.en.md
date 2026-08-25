@@ -19,29 +19,48 @@ The Alusus HTTP module now includes comprehensive WebSocket support, built on to
 ## WebSocket Callback Types
 
 ### WebSocketConnectCallback
+
 ```alusus
 def WebSocketConnectCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Int];
 ```
 Called when a new WebSocket connection is established. Return 0 to accept the connection, non-zero to reject.
 
 ### WebSocketReadyCallback
+
 ```alusus
 def WebSocketReadyCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Void];
 ```
 Called when the WebSocket connection is ready for communication.
 
 ### WebSocketDataCallback
+
 ```alusus
 def WebSocketDataCallback: alias ptr[func (connection: ptr[Connection], bits: Int, data: CharsPtr, dataLen: Int, userData: ptr[Void]): Int];
 ```
-Called when data is received from the client. The `bits` parameter indicates the frame type:
-- `1`: Text frame
-- `2`: Binary frame
-- `8`: Close frame
-- `9`: Ping frame
-- `10`: Pong frame
+Called when data is received from the client. The `bits` parameter is the raw first byte of the WebSocket frame header, not the frame type by itself. Per RFC 6455, that byte packs at:
+
+- bit 7 (`0x80`): The FIN flag.
+- bits 4-6 (`0x70`): Reserved bits, usually `0` unless extensions are used.
+- bits 0-3 (`0x0F`): The opcode.
+
+Extract each piece before checking it:
+
+```alusus
+def opcode: Int = bits & 0x0F;
+def fin: Bool = (bits & 0x80) != 0;
+```
+
+* `opcode` values:
+ - `1`: Text frame
+ - `2`: Binary frame
+ - `8`: Close frame
+ - `9`: Ping frame
+ - `10`: Pong frame
+
+* `fin` is `true` when this is the final (or only) fragment of the message.
 
 ### WebSocketCloseCallback
+
 ```alusus
 def WebSocketCloseCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Void];
 ```
@@ -50,6 +69,7 @@ Called when a WebSocket connection is closed.
 ## Core Functions
 
 ### setWebSocketHandler
+
 ```alusus
 func setWebSocketHandler(
     context: ptr[Context],
@@ -73,6 +93,7 @@ Registers WebSocket handlers for a specific URI path.
 - `userData`: Optional user data passed to callbacks
 
 ### setWebSocketHandlerWithSubprotocols
+
 ```alusus
 func setWebSocketHandlerWithSubprotocols(
     context: ptr[Context],
@@ -90,6 +111,7 @@ Same as `setWebSocketHandler` but with support for WebSocket subprotocols.
 ## Message Sending Functions
 
 ### writeToWebSocket
+
 ```alusus
 func writeToWebSocket(connection: ptr[Connection], opcode: Int, data: CharsPtr, dataLen: Int): Int;
 ```
@@ -103,18 +125,21 @@ Send raw WebSocket frame with specified opcode.
 - `10`: Pong frame
 
 ### writeTextToWebSocket
+
 ```alusus
 func writeTextToWebSocket(connection: ptr[Connection], data: CharsPtr, dataLen: Int): Int;
 ```
 Send text message to WebSocket client.
 
 ### writeBinaryToWebSocket
+
 ```alusus
 func writeBinaryToWebSocket(connection: ptr[Connection], data: CharsPtr, dataLen: Int): Int;
 ```
 Send binary message to WebSocket client.
 
 ### closeWebSocket
+
 ```alusus
 func closeWebSocket(connection: ptr[Connection]): Int;
 ```
@@ -172,7 +197,7 @@ module WebSocketExample {
     };
 
     func onData(connection: ptr[Http.Connection], bits: Int, data: CharsPtr, dataLen: Int, userData: ptr[Void]): Int {
-        if bits == 1 { // Text frame
+        if (bits & 0x0F) == 1 { // Text frame
             Console.print("Received: ");
             Console.print(data, dataLen);
             Console.print("\n");
