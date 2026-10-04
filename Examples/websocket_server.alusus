@@ -133,12 +133,12 @@ module WebSocketExample {
 
     func onWebSocketData(
         connection: ptr[Http.Connection],
-        opcode: Int,
+        bits: Int,
         data: CharsPtr,
         dataLen: ArchWord,
         userData: ptr[Void]
     ): Int {
-        if ((opcode & 0x1) == 0) {
+        if ((bits & 0x0F) != 1) { // Ignore non-text frames
             return 1;
         }
 

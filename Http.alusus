@@ -102,7 +102,7 @@ module Http {
     def WebSocketConnectCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Int];
     def WebSocketReadyCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Void];
     def WebSocketDataCallback: alias ptr[func (
-        connection: ptr[Connection], opcode: Int, data: CharsPtr, dataLen: ArchWord, userData: ptr[Void]
+        connection: ptr[Connection], bits: Int, data: CharsPtr, dataLen: ArchWord, userData: ptr[Void]
     ): Int];
     def WebSocketCloseCallback: alias ptr[func (connection: ptr[Connection], userData: ptr[Void]): Void];
 

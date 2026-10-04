@@ -46,12 +46,12 @@ module WebSocketChat {
 
     func onWebSocketData(
         conn: ptr[Http.Connection],
-        opcode: Int,
+        bits: Int,
         data: CharsPtr,
         len: ArchWord,
         _: ptr[Void]
     ): Int {
-        if (opcode & 1) == 0 return 1;
+        if (bits & 0x0F) != 1 return 1; // Ignore non-text frames
 
         def i: Int = 0;
         while i < clientCount and clients(i).conn != conn {
